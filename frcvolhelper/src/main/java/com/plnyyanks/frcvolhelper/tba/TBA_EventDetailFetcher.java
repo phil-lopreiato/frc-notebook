@@ -24,7 +24,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
 
     public TBA_EventDetailFetcher(Activity parentActivity,String eventKey){
         activity = parentActivity;
-        event = eventKey.replaceAll("^\"|\"$", "");
+        event = eventKey;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         loadIntoDatabase(s);
-        Toast.makeText(activity, "Info downloaded for " + event, Toast.LENGTH_SHORT).show();
+
     }
 
     private void loadIntoDatabase(String data){
@@ -61,6 +61,10 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
         String end = eventObject.get("end_date").toString();
         event.setEventEnd(end.substring(1, end.length()-1));
 
-        StartActivity.db.addEvent(event);
+        if(StartActivity.db.addEvent(event) == -1){
+            Toast.makeText(activity, "Error writing to database",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
+        }
     }
 }

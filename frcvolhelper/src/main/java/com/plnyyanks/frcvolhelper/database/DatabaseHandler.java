@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
 import com.plnyyanks.frcvolhelper.datatypes.Note;
@@ -115,32 +117,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //managing events in SQL
-    public void addEvent(Event in){
-        ContentValues values = new ContentValues();
-        values.put(KEY_EVENTKEY,    in.getEventKey());
-        values.put(KEY_EVENTNAME,   in.getEventName());
-        values.put(KEY_EVENTYEAR,   in.getEventYear());
-        values.put(KEY_EVENTLOC,    in.getEventLocation());
-        values.put(KEY_EVENTSTART,  in.getEventStart());
-        values.put(KEY_EVENTEND,    in.getEventEnd());
+    public long addEvent(Event in){
+        //first, check if that event exists already and only insert if it doesn't
+        if(!eventExists(in.getEventKey())){
 
-        //insert the row
-        db.insert(TABLE_EVENTS,null,values);
+            ContentValues values = new ContentValues();
+            values.put(KEY_EVENTKEY,    in.getEventKey());
+            values.put(KEY_EVENTNAME,   in.getEventName());
+            values.put(KEY_EVENTYEAR,   in.getEventYear());
+            values.put(KEY_EVENTLOC,    in.getEventLocation());
+            values.put(KEY_EVENTSTART,  in.getEventStart());
+            values.put(KEY_EVENTEND,    in.getEventEnd());
 
+            //insert the row
+            return db.insert(TABLE_EVENTS,null,values);
+        }else{
+            return updateEvent(in);
+        }
     }
     public Event getEvent(String key){
 
-        Cursor cursor = db.query(TABLE_MATCHES, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
-                                 KEY_MATCHKEY + "?=",new String[] {key},null,null,null,null);
+        Cursor cursor = db.query(TABLE_EVENTS, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
+                                 KEY_EVENTKEY + "=?",new String[] {key},null,null,null,null);
+        Log.d(Constants.LOG_TAG, "Get Event Cursor: " + cursor.toString());
+        if(cursor!= null && cursor.moveToFirst()){
+            Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),Integer.parseInt(cursor.getString(2)));
+            cursor.close();
+            return event;
+        }else{
+            return null;
+        }
 
-        if(cursor!= null)
-            cursor.moveToFirst();
-
-        Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),Integer.parseInt(cursor.getString(2)));
-
-        cursor.close();
-
-        return event;
     }
     public List<Event> getAllEvents(){
         List<Event> eventList = new ArrayList<Event>();
@@ -168,6 +175,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return eventList;
     }
+    public boolean eventExists(String key){
+        Cursor cursor = db.query(TABLE_EVENTS,new String[]{KEY_EVENTKEY},KEY_EVENTKEY + "=?",new String[]{key},null,null,null,null);
+        if(cursor.moveToFirst())
+            return true;
+        else
+            return false;
+    }
     public int updateEvent(Event in){
 
         ContentValues values = new ContentValues();
@@ -178,7 +192,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EVENTSTART,  in.getEventStart());
         values.put(KEY_EVENTEND,    in.getEventEnd());
 
-        return db.update(TABLE_EVENTS,values, KEY_EVENTKEY + "=?", new String[]{in.getEventKey()});
+        return db.update(TABLE_EVENTS,values, KEY_EVENTKEY + " =?", new String[]{in.getEventKey()});
     }
     public void deleteEvent(Event in){
         db.delete(TABLE_EVENTS,KEY_EVENTKEY + "=?", new String[]{in.getEventKey()});

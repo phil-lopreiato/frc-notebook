@@ -38,7 +38,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
     @Override
     protected void onPostExecute(JsonArray result) {
         super.onPostExecute(result);
-        Log.d(Constants.LOG_TAG,"Event Data: "+result.toString());
+        //Log.d(Constants.LOG_TAG,"Event Data: "+result.toString());
 
         //now, add the events to the event picker activity
         Iterator<JsonElement> iterator = result.iterator();
@@ -74,7 +74,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
         @Override
         public void onClick(View view) {
-            key = (String)view.getTag();
+            key = ((String)view.getTag()).replaceAll("^\"|\"$", "");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(listActivity);
             DialogInterface.OnClickListener dialogClickListener = new DialogClickListener();
