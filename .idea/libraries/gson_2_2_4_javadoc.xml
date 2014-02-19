@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gson-2.2.4-javadoc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/frcvolhelper/libs/gson-2.2.4-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

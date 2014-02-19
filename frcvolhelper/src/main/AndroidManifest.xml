@@ -8,8 +8,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.plnyyanks.frcvolhelper.StartActivity"
-            android:label="@string/app_name" >
+            android:name="com.plnyyanks.frcvolhelper.activities.StartActivity"
+            android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,5 +17,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

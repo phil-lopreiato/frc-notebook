@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FRCVolunteerCompanion.iml" filepath="$PROJECT_DIR$/FRCVolunteerCompanion.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frcvolhelper/frcvolhelper.iml" filepath="$PROJECT_DIR$/frcvolhelper/frcvolhelper.iml" />
     </modules>
   </component>
 </project>
