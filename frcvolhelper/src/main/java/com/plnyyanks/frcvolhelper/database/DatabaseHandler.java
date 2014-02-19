@@ -299,7 +299,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_TEAMS,values, KEY_TEAMKEY + " =?", new String[]{in.getTeamKey()});
     }
     public void deleteTeam(Team in){
-
+        db.delete(TABLE_TEAMS,KEY_TEAMKEY + "=?", new String[]{in.getTeamKey()});
     }
 
     //managing notes in SQL
