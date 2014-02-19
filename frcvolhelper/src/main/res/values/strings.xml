@@ -9,5 +9,7 @@
     <string name="event_content_layout">event_list_layout</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_event_download">EventDownloadActivity</string>
+    <string name="title_activity_view_event">ViewEvent</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

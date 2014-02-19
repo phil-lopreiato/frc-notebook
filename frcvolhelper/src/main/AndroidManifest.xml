@@ -17,8 +17,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.EventDownloadActivity"
+            android:name="com.plnyyanks.frcvolhelper.activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download" >
+        </activity>
+        <activity
+            android:name=".activities.ViewEvent"
+            android:label="@string/title_activity_view_event" >
         </activity>
     </application>
 
