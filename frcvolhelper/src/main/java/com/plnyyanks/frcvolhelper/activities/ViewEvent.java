@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.Notification;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
@@ -20,6 +23,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     private static String key;
     private static Event event;
+    protected static Context context;
 
     public static void setEvent(String eventKey){
         key = eventKey;
@@ -35,15 +39,12 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             getFragmentManager().beginTransaction().commit();
         }
 
+        context = getApplicationContext();
+
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setTitle(event.getEventName());
-
-        //tab for viewing event info
-        ActionBar.Tab eventInfoTab = bar.newTab();
-        eventInfoTab.setText("Event Info");
-        eventInfoTab.setTabListener(this);
-        bar.addTab(eventInfoTab);
+        bar.setSubtitle("#"+key);
 
         //tab for team list
         ActionBar.Tab teamListTab = bar.newTab();
@@ -85,10 +86,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         switch(tab.getPosition()){
             case 0:
             default:
-                f = new EventInfoFragment(); break;
-            case 1:
                 f = new EventTeamListFragment(); break;
-            case 2:
+            case 1:
                 f = new EventScheduleFragment(); break;
         }
 
@@ -104,21 +103,6 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
-    }
-
-    public static class EventInfoFragment extends Fragment{
-
-        int index;
-
-        public void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-           View v = inflater.inflate(R.layout.fragment_event_info, null);
-           return v;
-        }
     }
 
     public static class EventTeamListFragment extends Fragment{
