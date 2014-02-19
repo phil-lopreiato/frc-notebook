@@ -2,20 +2,16 @@ package com.plnyyanks.frcvolhelper.tba;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.json.JSONManager;
 
@@ -32,7 +28,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
     protected JsonArray doInBackground(Activity... args) {
         listActivity = args[0];
         String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year=2014");
-        return JSONManager.eventStringtoArray(data);
+        return JSONManager.getasJsonArray(data);
     }
 
     @Override

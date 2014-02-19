@@ -12,6 +12,7 @@ import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
 import com.plnyyanks.frcvolhelper.datatypes.Note;
 import com.plnyyanks.frcvolhelper.datatypes.Team;
+import com.plnyyanks.frcvolhelper.json.JSONManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +140,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_EVENTS, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
                                  KEY_EVENTKEY + "=?",new String[] {key},null,null,null,null);
-        Log.d(Constants.LOG_TAG, "Get Event Cursor: " + cursor.toString());
         if(cursor!= null && cursor.moveToFirst()){
             Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),Integer.parseInt(cursor.getString(2)));
             cursor.close();
@@ -210,14 +210,96 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //managing teams in SQL
-    public void addTeam(Team in){
+    public long addTeam(Team in){
+        //first, check if that event exists already and only insert if it doesn't
+        if(!teamExists(in.getTeamKey())){
 
+            ContentValues values = new ContentValues();
+            values.put(KEY_TEAMKEY,     in.getTeamKey());
+            values.put(KEY_TEAMNUMBER,  in.getTeamNumber());
+            values.put(KEY_TEAMEVENTS,  JSONManager.flattenToJsonArray(in.getTeamEvents()));
+
+            //insert the row
+            return db.insert(TABLE_TEAMS,null,values);
+        }else{
+            return updateTeam(in);
+        }
     }
     public Team getTeam(String key){
-        return null;
+        Cursor cursor = db.query(TABLE_TEAMS, new String[] {KEY_TEAMKEY,KEY_TEAMNUMBER,KEY_TEAMEVENTS},
+                KEY_TEAMKEY + "=?",new String[] {key},null,null,null,null);
+        if(cursor!= null && cursor.moveToFirst()){
+            Team team = new Team(cursor.getString(0),Integer.parseInt(cursor.getString(1)), JSONManager.getAsArrayList(cursor.getString(2)));
+            cursor.close();
+            return team;
+        }else{
+            return null;
+        }
+
     }
-    public Team updateTeam(String key){
-        return null;
+    public List<Team> getAllTeams(){
+        List<Team> teamList = new ArrayList<Team>();
+
+        String selectQuery = "SELECT * FROM "+TABLE_TEAMS;
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Team team = new Team();
+                team.setTeamKey(cursor.getString(0));
+                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(2)));
+
+                teamList.add(team);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return teamList;
+    }
+    public List<Team> getAllTeamAtEvent(String eventKey){
+        List<Team> teamList = new ArrayList<Team>();
+
+        String selectQuery = "SELECT * FROM "+TABLE_TEAMS+"WHERE "+KEY_TEAMEVENTS + "LIKE ('%$"+eventKey+"%')";
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Team team = new Team();
+                team.setTeamKey(cursor.getString(0));
+                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(2)));
+
+                teamList.add(team);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return teamList;
+    }
+    public boolean teamExists(String key){
+        Cursor cursor = db.query(TABLE_TEAMS,new String[]{KEY_TEAMKEY},KEY_TEAMKEY + "=?",new String[]{key},null,null,null,null);
+        if(cursor.moveToFirst())
+            return true;
+        else
+            return false;
+    }
+    public int updateTeam(Team in){
+        ContentValues values = new ContentValues();
+        values.put(KEY_TEAMKEY,    in.getTeamKey());
+        values.put(KEY_TEAMNUMBER,  in.getTeamNumber());
+        values.put(KEY_TEAMEVENTS,  in.getTeamEvents().toString());
+
+        return db.update(TABLE_TEAMS,values, KEY_TEAMKEY + " =?", new String[]{in.getTeamKey()});
+    }
+    public void deleteTeam(Team in){
+
     }
 
     //managing notes in SQL

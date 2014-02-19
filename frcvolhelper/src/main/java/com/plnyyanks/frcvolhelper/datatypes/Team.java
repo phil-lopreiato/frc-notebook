@@ -10,6 +10,10 @@ public class Team {
     private int                 teamNumber;
     private ArrayList<String>   teamEvents;
 
+    public Team(){
+
+    }
+
     public Team(String teamKey, int teamNumber) {
         this.teamKey = teamKey;
         this.teamNumber = teamNumber;
