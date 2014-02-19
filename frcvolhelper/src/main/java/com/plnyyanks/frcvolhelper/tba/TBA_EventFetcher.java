@@ -49,7 +49,8 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
             eventName = element.getAsJsonObject().get("name").toString();
             TextView tv=new TextView(listActivity);
             tv.setLayoutParams(lparams);
-            tv.setText(eventName.substring(1, eventName.length()-1));
+            tv.setText("• "+eventName.substring(1, eventName.length()-1));
+            tv.setTextSize(20);
             eventList.addView(tv);
         }
     }
