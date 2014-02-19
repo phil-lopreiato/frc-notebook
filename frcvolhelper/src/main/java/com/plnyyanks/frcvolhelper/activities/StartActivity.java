@@ -18,7 +18,7 @@ import com.plnyyanks.frcvolhelper.tba.TBA_API;
 
 import java.util.List;
 
-public class StartActivity extends Activity {
+public class StartActivity extends Activity implements View.OnClickListener {
 
     public static Context startActivityContext;
     public static DatabaseHandler db;
@@ -58,6 +58,8 @@ public class StartActivity extends Activity {
             tv.setLayoutParams(lparams);
             tv.setText("• " + e.getEventName());
             tv.setTextSize(20);
+            tv.setTag(e.getEventKey());
+            tv.setOnClickListener(this);
             eventList.addView(tv);
         }
 
@@ -100,4 +102,12 @@ public class StartActivity extends Activity {
             db.close();
     }
 
+
+    @Override
+    public void onClick(View view) {
+        String eventKey = (String)view.getTag();
+        ViewEvent.setEvent(eventKey);
+        Intent intent = new Intent(this, ViewEvent.class);
+        startActivity(intent);
+    }
 }
