@@ -2,6 +2,8 @@ package com.plnyyanks.frcvolhelper.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
@@ -16,5 +18,11 @@ public class JSONManager {
            parser = new JsonParser();
 
         return parser.parse(input).getAsJsonArray();
+    }
+
+    public static JsonObject getAsJsonObject(String input){
+        if(parser == null)
+            parser = new JsonParser();
+        return parser.parse(input).getAsJsonObject();
     }
 }

@@ -9,13 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.plnyyanks.frcvolhelper.R;
+import com.plnyyanks.frcvolhelper.database.DatabaseHandler;
+import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.tba.TBA_API;
+
+import java.util.List;
 
 public class StartActivity extends Activity {
 
     public static Context startActivityContext;
+    public static DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +34,32 @@ public class StartActivity extends Activity {
         }
 
         startActivityContext = this;
+        getdb();
+
+        showEventsFromDatabase();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showEventsFromDatabase();
+    }
+
+    private void showEventsFromDatabase(){
+        getdb();
+        List<Event> storedEvents = db.getAllEvents();
 
         LinearLayout eventList = (LinearLayout) findViewById(R.id.event_list);
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-       /* TextView tv=new TextView(this);
-        tv.setLayoutParams(lparams);
-        tv.setText("moo!");
-        eventList.addView(tv); */
-
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        eventList.removeAllViews();
+        for(Event e:storedEvents){
+            TextView tv=new TextView(this);
+            tv.setLayoutParams(lparams);
+            tv.setText("• " + e.getEventName());
+            tv.setTextSize(20);
+            eventList.addView(tv);
+        }
 
     }
 
@@ -65,6 +88,16 @@ public class StartActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public  DatabaseHandler getdb(){
+        if(db == null)
+            db = new DatabaseHandler(this);
 
+        return db;
+    }
+
+    public void closedb(){
+        if(db != null)
+            db.close();
+    }
 
 }
