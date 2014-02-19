@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
@@ -42,11 +43,13 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView test = new TextView(listActivity);
         JsonElement element;
+        String eventName;
         while(iterator.hasNext()){
             element = iterator.next();
+            eventName = element.getAsJsonObject().get("name").toString();
             TextView tv=new TextView(listActivity);
             tv.setLayoutParams(lparams);
-            tv.setText(element.getAsJsonObject().get("name").toString());
+            tv.setText(eventName.substring(1, eventName.length()-1));
             eventList.addView(tv);
         }
     }
