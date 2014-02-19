@@ -1,10 +1,12 @@
 package com.plnyyanks.frcvolhelper.tba;
 
+import android.app.Activity;
+
 /**
  * Created by phil on 2/18/14.
  */
 public class TBA_API {
-    public static void getEventsForSeason(String season){
-      new TBA_EventFetcher().execute("http://www.thebluealliance.com/api/v1/events/list?year="+season);
+    public static void getEventsForSeason(Activity parent){
+      new TBA_EventFetcher().execute(parent);
     }
 }

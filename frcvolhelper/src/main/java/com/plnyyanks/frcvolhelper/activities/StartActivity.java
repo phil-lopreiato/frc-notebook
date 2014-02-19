@@ -2,9 +2,12 @@ package com.plnyyanks.frcvolhelper.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.plnyyanks.frcvolhelper.R;
@@ -34,9 +37,14 @@ public class StartActivity extends Activity {
         tv.setText("moo!");
         eventList.addView(tv); */
 
-        TBA_API.getEventsForSeason("2014");
 
     }
+
+    public void openDownloader(View view){
+        Intent intent = new Intent(this, EventDownloadActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 

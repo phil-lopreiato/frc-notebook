@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.EventDownloadActivity"
+            android:label="@string/title_activity_event_download" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

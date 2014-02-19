@@ -39,5 +39,6 @@
         android:text="Download Info For An Event"
         android:id="@+id/button"
         android:layout_centerHorizontal="true"
-        android:gravity="bottom"/>
+        android:gravity="bottom"
+        android:onClick="openDownloader"/>
 </LinearLayout>

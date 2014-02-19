@@ -4,9 +4,10 @@
     <string name="app_name">FRC Volunteer Companion</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="download_event_title">Select an Event to Download</string>
     <string name="select_event_title">Select an Event</string>
     <string name="event_content_layout">event_list_layout</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_event_download">EventDownloadActivity</string>
 
 </resources>

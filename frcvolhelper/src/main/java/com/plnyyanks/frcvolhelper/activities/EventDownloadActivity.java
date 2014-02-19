@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.LinearLayout;
 
 import com.plnyyanks.frcvolhelper.R;
+import com.plnyyanks.frcvolhelper.tba.TBA_API;
 
 public class EventDownloadActivity extends Activity {
 
@@ -22,9 +24,10 @@ public class EventDownloadActivity extends Activity {
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        TBA_API.getEventsForSeason(this);
     }
 
 
