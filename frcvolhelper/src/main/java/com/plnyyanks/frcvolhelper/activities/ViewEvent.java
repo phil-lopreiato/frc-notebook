@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
+import com.plnyyanks.frcvolhelper.datatypes.Team;
+
+import java.util.ArrayList;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
@@ -107,8 +110,6 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     public static class EventTeamListFragment extends Fragment{
 
-        int index;
-
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
         }
@@ -116,6 +117,18 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_team_list, null);
+
+            LinearLayout eventList = (LinearLayout) v.findViewById(R.id.team_list);
+            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            ArrayList<Team> teams = StartActivity.db.getAllTeamAtEvent(key);
+            for(Team team:teams){
+                TextView t = new TextView(context);
+                t.setText("• " + team.getTeamNumber());
+                t.setTextSize(15);
+                eventList.addView(t);
+            }
+
             return v;
         }
     }

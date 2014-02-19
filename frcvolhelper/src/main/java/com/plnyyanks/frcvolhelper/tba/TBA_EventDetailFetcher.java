@@ -50,7 +50,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
         JsonObject eventObject = JSONManager.getAsJsonObject(data);
         JsonArray teams = eventObject.getAsJsonArray("teams");
 
-        String eventKey = eventObject.get("key").toString();
+        String eventKey = eventObject.get("key").getAsString();
 
         if(addEventDetails(eventObject,eventKey) == -1 ){
             Toast.makeText(activity, "Error writing event to database",Toast.LENGTH_SHORT).show();
@@ -66,22 +66,22 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
     private long addEventDetails(JsonObject data, String eventKey){
         Event event = new Event();
 
-        String key = eventKey;
+        event.setEventKey(eventKey);
 
-        String name = data.get("name").toString();
-        event.setEventName(name.substring(1, name.length()-1));
+        String name = data.get("name").getAsString();
+        event.setEventName(name);
 
-        String year = data.get("year").toString();
-        event.setEventYear(Integer.parseInt(year.substring(1, year.length()-1)));
+        String year = data.get("year").getAsString();
+        event.setEventYear(Integer.parseInt(year));
 
-        String location = data.get("location").toString();
-        event.setEventLocation(location.substring(1, location.length()-1));
+        String location = data.get("location").getAsString();
+        event.setEventLocation(location);
 
-        String start = data.get("start_date").toString();
-        event.setEventStart(start.substring(1, start.length()-1));
+        String start = data.get("start_date").getAsString();
+        event.setEventStart(start);
 
-        String end = data.get("end_date").toString();
-        event.setEventEnd(end.substring(1, end.length()-1));
+        String end = data.get("end_date").getAsString();
+        event.setEventEnd(end);
 
         return StartActivity.db.addEvent(event);
     }

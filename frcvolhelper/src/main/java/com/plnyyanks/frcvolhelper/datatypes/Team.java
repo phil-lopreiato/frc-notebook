@@ -8,15 +8,16 @@ import java.util.ArrayList;
 public class Team {
     private String              teamKey;
     private int                 teamNumber;
-    private ArrayList<String>   teamEvents;
+    private ArrayList<String>   teamEvents = new ArrayList<String>();
 
     public Team(){
-
+        teamEvents = new ArrayList<String>();
     }
 
     public Team(String teamKey, int teamNumber) {
         this.teamKey = teamKey;
         this.teamNumber = teamNumber;
+        teamEvents = new ArrayList<String>();
     }
 
     public Team(String teamKey, int teamNumber, ArrayList<String> teamEvents) {
@@ -55,6 +56,8 @@ public class Team {
     }
 
     public ArrayList<String> getTeamEvents() {
+        if(teamEvents == null)
+            teamEvents = new ArrayList<String>();
         return teamEvents;
     }
 

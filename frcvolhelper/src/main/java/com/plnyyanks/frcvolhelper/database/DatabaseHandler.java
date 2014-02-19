@@ -89,18 +89,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_MATCHES_TABLE);
 
         String CREATE_TEAMS_TABLE = "CREATE TABLE " + TABLE_TEAMS + "("
-                + KEY_TEAMKEY    + "TEXT PRIMARY KEY,"
-                + KEY_TEAMNUMBER + "INTEGER,"
-                + KEY_TEAMEVENTS + "TEXT"
+                + KEY_TEAMKEY    + " TEXT PRIMARY KEY,"
+                + KEY_TEAMNUMBER + " INTEGER,"
+                + KEY_TEAMEVENTS + " TEXT"
                 + ")";
         db.execSQL(CREATE_TEAMS_TABLE);
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
-                + KEY_NOTEID    + "INTEGER PRIMARY KEY,"
-                + KEY_EVENTKEY  + "TEXT,"
-                + KEY_MATCHKEY  + "TEXT,"
-                + KEY_TEAMKEY   + "TEXT,"
-                + KEY_NOTE      + "TEXT"
+                + KEY_NOTEID    + " INTEGER PRIMARY KEY,"
+                + KEY_EVENTKEY  + " TEXT,"
+                + KEY_MATCHKEY  + " TEXT,"
+                + KEY_TEAMKEY   + " TEXT,"
+                + KEY_NOTE      + " TEXT"
                 + ")";
         db.execSQL(CREATE_NOTES_TABLE);
     }
@@ -260,16 +260,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return teamList;
     }
-    public List<Team> getAllTeamAtEvent(String eventKey){
-        List<Team> teamList = new ArrayList<Team>();
+    public ArrayList<Team> getAllTeamAtEvent(String eventKey){
+        ArrayList<Team> teamList = new ArrayList<Team>();
 
-        String selectQuery = "SELECT * FROM "+TABLE_TEAMS+"WHERE "+KEY_TEAMEVENTS + "LIKE ('%$"+eventKey+"%')";
+        String selectQuery = "SELECT * FROM "+TABLE_TEAMS+" WHERE "+KEY_TEAMEVENTS + " LIKE '%"+eventKey+"%'";
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
         //loop through rows
         if(cursor.moveToFirst()){
             do{
+                Log.d(Constants.LOG_TAG,"Team Events: "+cursor.getString(2));
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
                 team.setTeamNumber(Integer.parseInt(cursor.getString(1)));

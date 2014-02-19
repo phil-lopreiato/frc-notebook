@@ -43,7 +43,6 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        TextView test = new TextView(listActivity);
         JsonElement element;
         String eventName;
         while(iterator.hasNext()){
