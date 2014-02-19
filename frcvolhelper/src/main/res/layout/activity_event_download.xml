@@ -19,6 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/event_list_to_download"></LinearLayout>
+            android:id="@+id/event_list_to_download">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/event_loading_progress"
+                android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
         </ScrollView>
+
+
 </LinearLayout>
