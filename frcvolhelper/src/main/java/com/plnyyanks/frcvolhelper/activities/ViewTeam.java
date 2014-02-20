@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
+import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Note;
@@ -112,7 +114,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     public static class EventFragment extends Fragment{
 
-        private String eventKey;
+        private static String eventKey;
         private View thisView;
 
         public EventFragment(String key){
@@ -139,7 +141,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                     Note newNote = new Note();
                     newNote.setTeamKey(teamKey);
                     newNote.setEventKey(eventKey);
-                    newNote.setMatchKey("all");
+                    newNote.setMatchKey(eventKey);
                     String noteText = ((EditText)v.findViewById(R.id.new_general_note)).getText().toString();
                     newNote.setNote(noteText);
 
@@ -164,7 +166,8 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         }
 
         private void fetchNotes(){
-            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,"all");
+            Log.d(Constants.LOG_TAG,"Fetching notes, team: "+teamKey+" event: "+eventKey);
+            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey);
 
             LinearLayout eventList = (LinearLayout) thisView.findViewById(R.id.general_notes);
 

@@ -285,7 +285,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //loop through rows
         if(cursor.moveToFirst()){
             do{
-                Log.d(Constants.LOG_TAG,"Team Events: "+cursor.getString(2));
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
                 team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
@@ -335,7 +334,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(KEY_EVENTKEY,    in.getEventKey());
             values.put(KEY_MATCHKEY,    in.getMatchKey());
             values.put(KEY_TEAMKEY,     in.getTeamKey());
-            values.put(KEY_NOTE, in.getNote());
+            values.put(KEY_NOTE,        in.getNote());
             values.put(KEY_NOTETIME,    in.getTimestamp());
 
             //insert the row
@@ -344,8 +343,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return updateNote(in);
         }
     }
-    public Note getNote(String eventKey, String matchKey, String teamKey){
-        return null;
+    public Note getNote(short id){
+        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                KEY_NOTEID + "=? ",new String[] {Short.toString(id)},null,null,null,null);
+
+        //loop through rows
+        Note note = new Note();
+        if(cursor.moveToFirst()){
+
+            note.setId(Short.parseShort(cursor.getString(0)));
+            note.setEventKey(cursor.getString(1));
+            note.setMatchKey(cursor.getString(2));
+            note.setTeamKey(cursor.getString(3));
+            note.setNote(cursor.getString(4));
+            note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+        }
+        cursor.close();
+        return note;
     }
     public ArrayList<Note> getAllNotes(){
         ArrayList<Note> noteList = new ArrayList<Note>();
@@ -398,17 +413,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return noteList;
     }
-    public ArrayList<Note> getAllNotes(String teamKey, String matchKey){
+    public ArrayList<Note> getAllNotes(String teamKey, String eventKey){
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
-                KEY_TEAMKEY + "=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,matchKey},null,null,null,null);
+                KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=?",new String[] {teamKey,eventKey},null,null,null,null);
 
         //loop through rows
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                Log.d(Constants.LOG_TAG,"NOTE ID "+cursor.getString(0));
                 note.setId(Short.parseShort(cursor.getString(0)));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
