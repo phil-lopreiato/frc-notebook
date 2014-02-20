@@ -21,6 +21,7 @@ import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Team;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
@@ -122,10 +123,12 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             ArrayList<Team> teams = StartActivity.db.getAllTeamAtEvent(key);
+            Collections.sort(teams);
             for(Team team:teams){
                 TextView t = new TextView(context);
                 t.setText("• " + team.getTeamNumber());
-                t.setTextSize(15);
+                t.setTextSize(20);
+                t.setTextColor(0xFF000000);
                 eventList.addView(t);
             }
 

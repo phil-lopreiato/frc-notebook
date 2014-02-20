@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by phil on 2/19/14.
  */
-public class Team {
+public class Team implements Comparable<Team>{
     private String              teamKey;
     private int                 teamNumber;
     private ArrayList<String>   teamEvents = new ArrayList<String>();
@@ -63,5 +63,10 @@ public class Team {
 
     public void setTeamEvents(ArrayList<String> teamEvents) {
         this.teamEvents = teamEvents;
+    }
+
+    @Override
+    public int compareTo(Team team) {
+        return Integer.compare(teamNumber,team.teamNumber);
     }
 }
