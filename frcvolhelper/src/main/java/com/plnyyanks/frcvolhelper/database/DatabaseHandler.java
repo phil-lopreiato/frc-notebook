@@ -21,7 +21,7 @@ import java.util.List;
  * Created by phil on 2/19/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION       = 5;
+    private static final int DATABASE_VERSION       = 7;
     private static final String DATABASE_NAME       = "VOL_NOTES",
 
                                 TABLE_EVENTS        = "events",
@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TEAMS_TABLE);
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
-                + KEY_NOTEID    + " INTEGER AUTO INCREMENT PRIMARY KEY,"
+                + KEY_NOTEID    + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + KEY_EVENTKEY  + " TEXT,"
                 + KEY_MATCHKEY  + " TEXT,"
                 + KEY_TEAMKEY   + " TEXT,"
@@ -408,6 +408,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
+                Log.d(Constants.LOG_TAG,"NOTE ID "+cursor.getString(0));
                 note.setId(Short.parseShort(cursor.getString(0)));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));

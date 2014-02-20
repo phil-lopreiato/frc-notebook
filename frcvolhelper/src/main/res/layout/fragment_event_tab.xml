@@ -8,7 +8,8 @@
     android:descendantFocusability="beforeDescendants">
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/view_event_scroll">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +22,13 @@
         <View
             android:layout_width="wrap_content"
             android:layout_height="10dp"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/general_notes">
 
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"

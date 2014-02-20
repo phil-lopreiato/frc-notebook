@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Note;
@@ -66,7 +70,6 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -110,6 +113,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
     public static class EventFragment extends Fragment{
 
         private String eventKey;
+        private View thisView;
 
         public EventFragment(String key){
             super();
@@ -127,6 +131,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.fragment_event_tab, null);
+            thisView = v;
             Button addNote = (Button)v.findViewById(R.id.submit_general_note);
             addNote.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,9 +150,42 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                         resultToast = "Error adding note to database";
                     }
                     Toast.makeText(context,resultToast,Toast.LENGTH_SHORT).show();
+                    LinearLayout eventList = (LinearLayout) thisView.findViewById(R.id.general_notes);
+
+                    LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
+                    addNote(newNote,eventList,lparams);
+                    EditText addBox = (EditText)v.findViewById(R.id.new_general_note);
+                    addBox.setText("");
                 }
             });
+            fetchNotes();
             return v;
         }
+
+        private void fetchNotes(){
+            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,"all");
+
+            LinearLayout eventList = (LinearLayout) thisView.findViewById(R.id.general_notes);
+
+            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
+            for(Note note:generalNotes){
+                addNote(note,eventList,lparams);
+            }
+
+        }
+
+        private void addNote(Note note,LinearLayout layout,LinearLayout.LayoutParams params){
+            TextView tv=new TextView(context);
+            tv.setLayoutParams(params);
+            tv.setText("• " + note.getNote());
+            tv.setTextSize(20);
+            tv.setClickable(true);
+            tv.setTag(note.getId());
+
+            layout.addView(tv);
+        }
+
     }
 }
