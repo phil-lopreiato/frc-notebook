@@ -39,6 +39,7 @@ public class TBA_MatchDetailFetcher extends AsyncTask<String,String,String>{
             match.setMatchKey(element.get("key").getAsString());
             match.setMatchType(element.get("competition_level").getAsString());
             match.setMatchNumber(Integer.parseInt(element.get("match_number").getAsString()));
+            match.setSetNumber(Integer.parseInt(element.get("set_number").getAsString()));
 
             //now, for alliances. Hardest part of JSON wizardry...
             alliances = element.get("alliances").getAsJsonObject();

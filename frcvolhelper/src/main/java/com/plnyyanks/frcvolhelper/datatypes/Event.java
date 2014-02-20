@@ -1,5 +1,8 @@
 package com.plnyyanks.frcvolhelper.datatypes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Created by phil on 2/19/14.
  */
@@ -13,6 +16,8 @@ public class Event {
     private String eventStart;
     private String eventEnd;
     private int     eventYear;
+
+    private ArrayList<Match> quals,quarterFinals,semiFinals,finals;
 
     public Event(){
 
@@ -82,5 +87,61 @@ public class Event {
 
     public void setEventYear(int eventYear) {
         this.eventYear = eventYear;
+    }
+
+    public ArrayList<Match> getQuals() {
+        if(quals == null)
+            quals = new ArrayList<Match>();
+        return quals;
+    }
+
+    public ArrayList<Match> getQuarterFinals() {
+        if(quarterFinals==null)
+            quarterFinals = new ArrayList<Match>();
+        return quarterFinals;
+    }
+
+    public ArrayList<Match> getSemiFinals() {
+        if(semiFinals==null)
+            semiFinals = new ArrayList<Match>();
+        return semiFinals;
+    }
+
+    public ArrayList<Match> getFinals() {
+        if(finals==null)
+            finals = new ArrayList<Match>();
+        return finals;
+    }
+
+    public void sortMatches(ArrayList<Match> allMatches){
+        quals = getQuals();
+        quarterFinals = getQuarterFinals();
+        semiFinals = getSemiFinals();
+        finals = getFinals();
+
+        String matchKey;
+        for(Match m:allMatches){
+            matchKey = m.getMatchKey();
+            if(matchKey.contains("_qm")){
+                //qualification match
+                quals.add(m);
+            }
+            if(matchKey.contains("_qf")){
+                //quarter final match
+                quarterFinals.add(m);
+            }
+            if(matchKey.contains("_sf")){
+                //semifinal match
+                semiFinals.add(m);
+            }
+            if(matchKey.contains("_f")){
+                //final match
+                finals.add(m);
+            }
+        }
+        Collections.sort(quals);
+        Collections.sort(quarterFinals);
+        Collections.sort(semiFinals);
+        Collections.sort(finals);
     }
 }

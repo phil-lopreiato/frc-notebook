@@ -152,8 +152,6 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     public static class EventScheduleFragment extends Fragment{
 
-        int index;
-
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
         }
@@ -164,8 +162,21 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
             LinearLayout matchList = (LinearLayout) v.findViewById(R.id.match_list);
             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            ArrayList<Match> matches = StartActivity.db.getAllMatches(key);
-            for(Match m:matches){
+            ArrayList<Match>    allMatches = StartActivity.db.getAllMatches(key),
+                                qualMatches,qfMatches,sfMatches,fMatches;
+            event.sortMatches(allMatches);
+            qualMatches = event.getQuals();
+            qfMatches = event.getQuarterFinals();
+            sfMatches = event.getSemiFinals();
+            fMatches = event.getFinals();
+
+            allMatches = new ArrayList<Match>();
+            allMatches.addAll(qualMatches);
+            allMatches.addAll(qfMatches);
+            allMatches.addAll(sfMatches);
+            allMatches.addAll(fMatches);
+
+            for(Match m:allMatches){
                 TextView tv = new TextView(context);
                 tv.setText(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
