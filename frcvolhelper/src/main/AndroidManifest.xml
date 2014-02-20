@@ -19,17 +19,21 @@
         <activity
             android:name="com.plnyyanks.frcvolhelper.activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download"
-            android:parentActivityName=".activities.StartActivity">
+            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
         </activity>
         <activity
             android:name="com.plnyyanks.frcvolhelper.activities.ViewEvent"
             android:label="@string/title_activity_view_event"
-            android:parentActivityName=".activities.StartActivity">
+            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
         </activity>
         <activity
-            android:name=".activities.ViewTeam"
+            android:name="com.plnyyanks.frcvolhelper.activities.ViewTeam"
             android:label="@string/title_activity_view_team"
-            android:parentActivityName=".activities.ViewEvent">
+            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.ViewEvent" >
+        </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

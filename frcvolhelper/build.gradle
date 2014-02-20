@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:18.0.0'
     compile files('libs/gson-2.2.4-javadoc.jar')
     compile files('libs/gson-2.2.4.jar')
 }
