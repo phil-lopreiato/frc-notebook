@@ -144,7 +144,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public void onClick(View view) {
             String teamKey = (String)view.getTag();
-           ViewTeam.setTeam(teamKey);
+            ViewTeam.setTeam(teamKey);
             Intent intent = new Intent(context, ViewTeam.class);
             startActivity(intent);
         }

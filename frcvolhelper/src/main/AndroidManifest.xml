@@ -32,9 +32,13 @@
             android:parentActivityName="com.plnyyanks.frcvolhelper.activities.ViewEvent" >
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="com.plnyyanks.frcvolhelper.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity">
+            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
+        </activity>
+        <activity
+            android:name=".activities.ViewMatch"
+            android:label="@string/title_activity_view_match" >
         </activity>
     </application>
 
