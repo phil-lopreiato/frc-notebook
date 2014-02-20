@@ -3,7 +3,9 @@ package com.plnyyanks.frcvolhelper.tba;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,11 +25,15 @@ import java.util.Iterator;
 public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
     private Activity listActivity;
+    private String year;
 
     @Override
     protected JsonArray doInBackground(Activity... args) {
+
         listActivity = args[0];
-        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year=2014");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(listActivity);
+        year = prefs.getString("competition_season","2014");
+        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year="+year);
         return JSONManager.getasJsonArray(data);
     }
 
@@ -50,7 +56,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
             eventName = element.getAsJsonObject().get("name").toString();
             TextView tv=new TextView(listActivity);
             tv.setLayoutParams(lparams);
-            tv.setText("• " + eventName.substring(1, eventName.length() - 1));
+            tv.setText("• " + eventName.substring(1, eventName.length() - 1)+ " - "+year);
             tv.setTextSize(20);
             tv.setClickable(true);
             tv.setTag(element.getAsJsonObject().get("key").toString());

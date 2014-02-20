@@ -56,7 +56,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
         for(Event e:storedEvents){
             TextView tv=new TextView(this);
             tv.setLayoutParams(lparams);
-            tv.setText("• " + e.getEventName());
+            tv.setText("• " + e.getEventName()+ " - "+e.getEventYear());
             tv.setTextSize(20);
             tv.setTag(e.getEventKey());
             tv.setOnClickListener(this);
