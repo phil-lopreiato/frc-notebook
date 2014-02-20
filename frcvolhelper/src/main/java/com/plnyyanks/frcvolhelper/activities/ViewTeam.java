@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
+import com.plnyyanks.frcvolhelper.datatypes.Note;
 import com.plnyyanks.frcvolhelper.datatypes.Team;
 
 import java.util.ArrayList;
@@ -125,12 +126,25 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_event_tab, null);
+            final View v = inflater.inflate(R.layout.fragment_event_tab, null);
             Button addNote = (Button)v.findViewById(R.id.submit_general_note);
             addNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context,"Clicky!",Toast.LENGTH_SHORT).show();
+                    Note newNote = new Note();
+                    newNote.setTeamKey(teamKey);
+                    newNote.setEventKey(eventKey);
+                    newNote.setMatchKey("all");
+                    String noteText = ((EditText)v.findViewById(R.id.new_general_note)).getText().toString();
+                    newNote.setNote(noteText);
+
+                    String resultToast;
+                    if(StartActivity.db.addNote(newNote) != -1){
+                        resultToast = "Note added sucessfully";
+                    }else{
+                        resultToast = "Error adding note to database";
+                    }
+                    Toast.makeText(context,resultToast,Toast.LENGTH_SHORT).show();
                 }
             });
             return v;

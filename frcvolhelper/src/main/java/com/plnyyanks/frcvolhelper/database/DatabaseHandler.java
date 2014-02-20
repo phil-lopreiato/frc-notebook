@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TEAMS_TABLE);
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
-                + KEY_NOTEID    + " INTEGER AUTOINCREMENT PRIMARY KEY,"
+                + KEY_NOTEID    + " INTEGER AUTO INCREMENT PRIMARY KEY,"
                 + KEY_EVENTKEY  + " TEXT,"
                 + KEY_MATCHKEY  + " TEXT,"
                 + KEY_TEAMKEY   + " TEXT,"
@@ -332,7 +332,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(!noteExists(in.getId())){
 
             ContentValues values = new ContentValues();
-            values.put(KEY_NOTEID,      in.getId());
             values.put(KEY_EVENTKEY,    in.getEventKey());
             values.put(KEY_MATCHKEY,    in.getMatchKey());
             values.put(KEY_TEAMKEY,     in.getTeamKey());
