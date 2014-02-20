@@ -5,20 +5,23 @@ package com.plnyyanks.frcvolhelper.datatypes;
  */
 public class Event {
 
-    private String  eventKey,
-                    eventName,
-                    eventLocation,
-                    eventStart,
-                    eventEnd;
+    private String  eventKey;
+    private String eventName;
+
+    private String shortName;
+    private String eventLocation;
+    private String eventStart;
+    private String eventEnd;
     private int     eventYear;
 
     public Event(){
 
     }
 
-    public Event(String eventKey, String eventName, String eventLocation, String eventStart, String eventEnd, int eventYear) {
+    public Event(String eventKey, String eventName, String shortName, String eventLocation, String eventStart, String eventEnd, int eventYear) {
         this.eventKey = eventKey;
         this.eventName = eventName;
+        this.shortName = shortName;
         this.eventLocation = eventLocation;
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
@@ -39,6 +42,14 @@ public class Event {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getEventLocation() {

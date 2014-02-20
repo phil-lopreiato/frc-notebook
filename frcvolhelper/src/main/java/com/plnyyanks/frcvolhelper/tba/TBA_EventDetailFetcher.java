@@ -71,6 +71,9 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
         String name = data.get("name").getAsString();
         event.setEventName(name);
 
+        String shortName = data.get("short_name").getAsString();
+        event.setShortName(shortName);
+
         String year = data.get("year").getAsString();
         event.setEventYear(Integer.parseInt(year));
 

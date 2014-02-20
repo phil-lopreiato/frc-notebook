@@ -21,12 +21,13 @@ import java.util.List;
  * Created by phil on 2/19/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION       = 1;
+    private static final int DATABASE_VERSION       = 4;
     private static final String DATABASE_NAME       = "VOL_NOTES",
 
                                 TABLE_EVENTS        = "events",
                                     KEY_EVENTKEY    = "eventKey",
                                     KEY_EVENTNAME   = "eventName",
+                                    KEY_EVENTSHORT  = "eventShortName",
                                     KEY_EVENTYEAR   = "eventYear",
                                     KEY_EVENTLOC    = "eventLocation",
                                     KEY_EVENTSTART  = "startDate",
@@ -47,6 +48,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                 TABLE_TEAMS         = "teams",
                                     KEY_TEAMKEY     = "teamKey",
                                     KEY_TEAMNUMBER  = "teamNumber",
+                                    KEY_TEAMNAME    = "teamName",
+                                    KEY_TEAMSITE    = "teamWebsite",
                                     KEY_TEAMEVENTS  = "events",
 
                                 TABLE_NOTES         = "notes",
@@ -68,6 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
                 + KEY_EVENTKEY  + " TEXT PRIMARY KEY,"
                 + KEY_EVENTNAME + " TEXT,"
+                + KEY_EVENTSHORT+ " TEXT,"
                 + KEY_EVENTYEAR + " INTEGER,"
                 + KEY_EVENTLOC  + " TEXT,"
                 + KEY_EVENTSTART+ " TEXT,"
@@ -91,6 +95,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_TEAMS_TABLE = "CREATE TABLE " + TABLE_TEAMS + "("
                 + KEY_TEAMKEY    + " TEXT PRIMARY KEY,"
                 + KEY_TEAMNUMBER + " INTEGER,"
+                + KEY_TEAMNAME   + " TEXT,"
+                + KEY_TEAMSITE   + " TEXT,"
                 + KEY_TEAMEVENTS + " TEXT"
                 + ")";
         db.execSQL(CREATE_TEAMS_TABLE);
@@ -125,6 +131,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_EVENTKEY,    in.getEventKey());
             values.put(KEY_EVENTNAME,   in.getEventName());
+            values.put(KEY_EVENTSHORT,  in.getShortName());
             values.put(KEY_EVENTYEAR,   in.getEventYear());
             values.put(KEY_EVENTLOC,    in.getEventLocation());
             values.put(KEY_EVENTSTART,  in.getEventStart());
@@ -138,10 +145,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public Event getEvent(String key){
 
-        Cursor cursor = db.query(TABLE_EVENTS, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
+        Cursor cursor = db.query(TABLE_EVENTS, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTSHORT,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
                                  KEY_EVENTKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
-            Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),Integer.parseInt(cursor.getString(2)));
+            Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5),cursor.getString(6),Integer.parseInt(cursor.getString(3)));
             cursor.close();
             return event;
         }else{
@@ -162,10 +169,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Event event = new Event();
                 event.setEventKey(cursor.getString(0));
                 event.setEventName(cursor.getString(1));
-                event.setEventYear(Integer.parseInt(cursor.getString(2)));
-                event.setEventLocation(cursor.getString(3));
-                event.setEventStart(cursor.getString(4));
-                event.setEventEnd(cursor.getString(5));
+                event.setShortName(cursor.getString(2));
+                event.setEventYear(Integer.parseInt(cursor.getString(3)));
+                event.setEventLocation(cursor.getString(4));
+                event.setEventStart(cursor.getString(5));
+                event.setEventEnd(cursor.getString(6));
 
                 eventList.add(event);
             }while(cursor.moveToNext());
@@ -187,6 +195,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_EVENTKEY,    in.getEventKey());
         values.put(KEY_EVENTNAME,   in.getEventName());
+        values.put(KEY_EVENTSHORT,  in.getShortName());
         values.put(KEY_EVENTYEAR,   in.getEventYear());
         values.put(KEY_EVENTLOC,    in.getEventLocation());
         values.put(KEY_EVENTSTART,  in.getEventStart());
@@ -217,6 +226,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_TEAMKEY,     in.getTeamKey());
             values.put(KEY_TEAMNUMBER,  in.getTeamNumber());
+            values.put(KEY_TEAMNAME,    in.getTeamName());
+            values.put(KEY_TEAMSITE,    in.getTeamWebsite());
             values.put(KEY_TEAMEVENTS,  JSONManager.flattenToJsonArray(in.getTeamEvents()));
 
             //insert the row
@@ -226,10 +237,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
     public Team getTeam(String key){
-        Cursor cursor = db.query(TABLE_TEAMS, new String[] {KEY_TEAMKEY,KEY_TEAMNUMBER,KEY_TEAMEVENTS},
+        Cursor cursor = db.query(TABLE_TEAMS, new String[] {KEY_TEAMKEY,KEY_TEAMNUMBER,KEY_TEAMNAME,KEY_TEAMSITE,KEY_TEAMEVENTS},
                 KEY_TEAMKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
-            Team team = new Team(cursor.getString(0),Integer.parseInt(cursor.getString(1)), JSONManager.getAsArrayList(cursor.getString(2)));
+            Team team = new Team(cursor.getString(0),Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), JSONManager.getAsArrayList(cursor.getString(4)));
             cursor.close();
             return team;
         }else{
@@ -250,7 +261,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
                 team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
-                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(2)));
+                team.setTeamName(cursor.getString(2));
+                team.setTeamName(cursor.getString(3));
+                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(4)));
 
                 teamList.add(team);
             }while(cursor.moveToNext());
@@ -274,7 +287,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
                 team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
-                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(2)));
+                team.setTeamName(cursor.getString(2));
+                team.setTeamName(cursor.getString(3));
+                team.setTeamEvents(JSONManager.getAsArrayList(cursor.getString(4)));
 
                 teamList.add(team);
             }while(cursor.moveToNext());
@@ -299,6 +314,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TEAMKEY,     in.getTeamKey());
         values.put(KEY_TEAMNUMBER,  in.getTeamNumber());
+        values.put(KEY_TEAMNAME,    in.getTeamName());
+        values.put(KEY_TEAMSITE,    in.getTeamWebsite());
         values.put(KEY_TEAMEVENTS,  in.getTeamEvents().toString());
 
         return db.update(TABLE_TEAMS,values, KEY_TEAMKEY + " =?", new String[]{in.getTeamKey()});
