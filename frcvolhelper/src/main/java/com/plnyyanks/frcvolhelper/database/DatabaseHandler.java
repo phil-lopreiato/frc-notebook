@@ -21,7 +21,7 @@ import java.util.List;
  * Created by phil on 2/19/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION       = 4;
+    private static final int DATABASE_VERSION       = 5;
     private static final String DATABASE_NAME       = "VOL_NOTES",
 
                                 TABLE_EVENTS        = "events",
@@ -57,7 +57,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                     //KEY_EVENTKEY  = "eventKey",
                                     //KEY_MATCHKEY  = "matchKey",
                                     //KEY_TEAMKEY   = "teamKey",
-                                    KEY_NOTE        = "note";
+                                    KEY_NOTE        = "note",
+                                    KEY_NOTETIME    = "timestamp";
 
     private SQLiteDatabase db;
 
@@ -102,11 +103,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TEAMS_TABLE);
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
-                + KEY_NOTEID    + " INTEGER PRIMARY KEY,"
+                + KEY_NOTEID    + " INTEGER AUTOINCREMENT PRIMARY KEY,"
                 + KEY_EVENTKEY  + " TEXT,"
                 + KEY_MATCHKEY  + " TEXT,"
                 + KEY_TEAMKEY   + " TEXT,"
-                + KEY_NOTE      + " TEXT"
+                + KEY_NOTE      + " TEXT,"
+                + KEY_NOTETIME  + " TEXT"
                 + ")";
         db.execSQL(CREATE_NOTES_TABLE);
     }
@@ -325,14 +327,123 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //managing notes in SQL
-    public void addNote(Note in){
+    public long addNote(Note in){
+        //first, check if that event exists already and only insert if it doesn't
+        if(!noteExists(in.getId())){
 
+            ContentValues values = new ContentValues();
+            values.put(KEY_NOTEID,      in.getId());
+            values.put(KEY_EVENTKEY,    in.getEventKey());
+            values.put(KEY_MATCHKEY,    in.getMatchKey());
+            values.put(KEY_TEAMKEY,     in.getTeamKey());
+            values.put(KEY_NOTE, in.getNote());
+            values.put(KEY_NOTETIME,    in.getTimestamp());
+
+            //insert the row
+            return db.insert(TABLE_NOTES,null,values);
+        }else{
+            return updateNote(in);
+        }
     }
     public Note getNote(String eventKey, String matchKey, String teamKey){
         return null;
     }
-    public Note updateNote(String eventKey, String matchKey, String teamKey){
-        return null;
+    public ArrayList<Note> getAllNotes(){
+        ArrayList<Note> noteList = new ArrayList<Note>();
+
+        String selectQuery = "SELECT * FROM "+TABLE_NOTES;
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+                noteList.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return noteList;
+    }
+    public ArrayList<Note> getAllNotes(String teamKey){
+        ArrayList<Note> noteList = new ArrayList<Note>();
+
+        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                KEY_TEAMKEY + "=?",new String[] {teamKey},null,null,null,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+                noteList.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return noteList;
+    }
+    public ArrayList<Note> getAllNotes(String teamKey, String matchKey){
+        ArrayList<Note> noteList = new ArrayList<Note>();
+
+        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                KEY_TEAMKEY + "=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,matchKey},null,null,null,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+                noteList.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return noteList;
+    }
+    public boolean noteExists(short id){
+        Cursor cursor = db.query(TABLE_NOTES,new String[]{KEY_NOTEID},KEY_NOTEID + "=?",new String[]{Short.toString(id)},null,null,null,null);
+        if(cursor.moveToFirst())
+            return true;
+        else
+            return false;
+    }
+    public int updateNote(Note in){
+        ContentValues values = new ContentValues();
+        values.put(KEY_NOTEID,      in.getId());
+        values.put(KEY_EVENTKEY,    in.getEventKey());
+        values.put(KEY_MATCHKEY,    in.getMatchKey());
+        values.put(KEY_TEAMKEY,     in.getTeamKey());
+        values.put(KEY_NOTE,        in.getNote());
+        values.put(KEY_NOTETIME,    in.getTimestamp());
+
+        return db.update(TABLE_NOTES,values, KEY_NOTEID + " =?", new String[]{Short.toString(in.getId())});
+    }
+    public void deleteNote(Note in){
+        db.delete(TABLE_NOTES,KEY_NOTEID + "=?", new String[]{Short.toString(in.getId())});
     }
 
 }
