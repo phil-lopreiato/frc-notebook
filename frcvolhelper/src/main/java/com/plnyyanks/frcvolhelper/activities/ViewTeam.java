@@ -175,7 +175,9 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
-            eventList.removeAllViews();
+            if(generalNotes.size()>0)
+                eventList.removeAllViews();
+            
             for(Note note:generalNotes){
                 addNote(note,eventList,lparams);
             }

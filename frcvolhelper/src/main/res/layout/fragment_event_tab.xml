@@ -31,7 +31,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/general_notes">
-
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="No notes yet..."/>
         </LinearLayout>
 
         <RelativeLayout
@@ -57,13 +60,6 @@
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/team_notes">
-        </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="15dp" />
@@ -77,7 +73,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/match_notes">
-
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="No notes yet..."/>
         </LinearLayout>
         <View
             android:layout_width="wrap_content"
