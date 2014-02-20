@@ -292,8 +292,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return false;
     }
     public int updateTeam(Team in){
+
+        Team currentVals = getTeam(in.getTeamKey());
+        in.mergeEvents(currentVals.getTeamEvents());
+
         ContentValues values = new ContentValues();
-        values.put(KEY_TEAMKEY,    in.getTeamKey());
+        values.put(KEY_TEAMKEY,     in.getTeamKey());
         values.put(KEY_TEAMNUMBER,  in.getTeamNumber());
         values.put(KEY_TEAMEVENTS,  in.getTeamEvents().toString());
 

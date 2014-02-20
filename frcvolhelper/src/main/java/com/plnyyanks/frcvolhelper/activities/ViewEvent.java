@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -109,7 +110,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     }
 
-    public static class EventTeamListFragment extends Fragment{
+    public static class EventTeamListFragment extends Fragment implements View.OnClickListener {
 
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
@@ -129,10 +130,20 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 t.setText("• " + team.getTeamNumber());
                 t.setTextSize(20);
                 t.setTextColor(0xFF000000);
+                t.setTag(team.getTeamKey());
+                t.setOnClickListener(this);
                 eventList.addView(t);
             }
 
             return v;
+        }
+
+        @Override
+        public void onClick(View view) {
+            String teamKey = (String)view.getTag();
+           ViewTeam.setTeam(teamKey);
+            Intent intent = new Intent(context, ViewTeam.class);
+            startActivity(intent);
         }
     }
 

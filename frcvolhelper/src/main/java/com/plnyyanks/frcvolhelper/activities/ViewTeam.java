@@ -15,6 +15,9 @@ import com.plnyyanks.frcvolhelper.R;
 
 public class ViewTeam extends Activity {
 
+    protected static String teamKey;
+    private static int teamNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,9 @@ public class ViewTeam extends Activity {
             getFragmentManager().beginTransaction()
                     .commit();
         }
+
+        ActionBar bar = getActionBar();
+        bar.setTitle("Team "+teamNumber);
     }
 
 
@@ -45,6 +51,11 @@ public class ViewTeam extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void setTeam(String key){
+        teamKey = key;
+        teamNumber = Integer.parseInt(key.substring(3));
     }
 
 }

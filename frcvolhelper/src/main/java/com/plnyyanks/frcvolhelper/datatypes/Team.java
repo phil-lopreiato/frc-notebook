@@ -1,6 +1,10 @@
 package com.plnyyanks.frcvolhelper.datatypes;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by phil on 2/19/14.
@@ -65,6 +69,22 @@ public class Team implements Comparable<Team>{
         this.teamEvents = teamEvents;
     }
 
+    public void mergeEvents(ArrayList<String> moreEvents){
+        teamEvents.addAll(moreEvents);
+        Collections.sort(teamEvents);
+        String last = "";
+        for(int i=0;i<teamEvents.size();i++){
+            if(teamEvents.get(i).equals(last)){
+                last = teamEvents.get(i);
+                teamEvents.remove(i);
+            }else{
+                last = teamEvents.get(i);
+            }
+
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Team team) {
         return Integer.compare(teamNumber,team.teamNumber);
