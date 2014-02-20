@@ -279,7 +279,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Match> getAllMatches(String eventKey){
         ArrayList<Match> matchList = new ArrayList<Match>();
 
-        String selectQuery = "SELECT * FROM "+TABLE_EVENTS+" WHERE "+KEY_EVENTKEY+"="+eventKey;
+        String selectQuery = "SELECT * FROM "+TABLE_MATCHES+" WHERE "+KEY_MATCHKEY+" LIKE '%"+eventKey+"%'";
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
+import com.plnyyanks.frcvolhelper.datatypes.Match;
 import com.plnyyanks.frcvolhelper.datatypes.Team;
 
 import java.util.ArrayList;
@@ -160,6 +161,16 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_schedule, null);
+
+            LinearLayout matchList = (LinearLayout) v.findViewById(R.id.match_list);
+            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            ArrayList<Match> matches = StartActivity.db.getAllMatches(key);
+            for(Match m:matches){
+                TextView tv = new TextView(context);
+                tv.setText(m.getMatchKey());
+                tv.setTextColor(0xFF000000);
+                matchList.addView(tv);
+            }
             return v;
         }
     }
