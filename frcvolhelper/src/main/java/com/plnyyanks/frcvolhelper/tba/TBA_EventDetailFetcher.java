@@ -13,6 +13,7 @@ import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.activities.StartActivity;
 import com.plnyyanks.frcvolhelper.database.DatabaseHandler;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
+import com.plnyyanks.frcvolhelper.datatypes.Match;
 import com.plnyyanks.frcvolhelper.datatypes.Team;
 import com.plnyyanks.frcvolhelper.json.JSONManager;
 
@@ -49,6 +50,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
     private void loadIntoDatabase(String data){
         JsonObject eventObject = JSONManager.getAsJsonObject(data);
         JsonArray teams = eventObject.getAsJsonArray("teams");
+        JsonArray matches = eventObject.getAsJsonArray("matches");
 
         String eventKey = eventObject.get("key").getAsString();
 
@@ -58,7 +60,11 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
             if(addAttendingTeams(teams,eventKey) == -1){
                 Toast.makeText(activity, "Error writing teams to database",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
+                if(addMatches(matches,eventKey) != -1){
+                    Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(activity, "Error writing matches to database",Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -106,5 +112,12 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
         }
 
         return result;
+    }
+
+    private long addMatches(JsonArray data, String eventKey){
+        if(data.size()>0)
+            new TBA_MatchDetailFetcher().execute(new String[]{data.toString(),eventKey});
+
+        return 0;
     }
 }

@@ -35,7 +35,7 @@ public class JSONManager {
         return parser.parse(input).getAsJsonObject();
     }
 
-    public static ArrayList<String> getAsArrayList(String input){
+    public static ArrayList<String> getAsStringArrayList(String input){
         if(parser == null)
             parser = new JsonParser();
         Iterator<JsonElement> iterator = parser.parse(input).getAsJsonArray().iterator();
@@ -48,6 +48,18 @@ public class JSONManager {
         return output;
     }
 
+    public static ArrayList<JsonObject> getAsObjectArrayList(String input){
+        if(parser == null)
+            parser = new JsonParser();
+        Iterator<JsonElement> iterator = parser.parse(input).getAsJsonArray().iterator();
+        ArrayList<JsonObject> output = new ArrayList<JsonObject>();
+        JsonElement element;
+        while(iterator.hasNext()){
+            element = iterator.next();
+            output.add(element.getAsJsonObject());
+        }
+        return output;
+    }
     public static String flattenToJsonArray(ArrayList<String> input){
         if(input == null ||input.size()==0)
             return "[]";
