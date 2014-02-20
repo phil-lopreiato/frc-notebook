@@ -1,6 +1,8 @@
 package com.plnyyanks.frcvolhelper.tba;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -16,6 +18,14 @@ import java.util.Iterator;
  * Created by phil on 2/20/14.
  */
 public class TBA_MatchDetailFetcher extends AsyncTask<String,String,String>{
+
+    private Context context;
+    private String eventKey;
+
+    public TBA_MatchDetailFetcher(Context inContext,String eventKey){
+        this.context = inContext;
+        this.eventKey = eventKey;
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -58,5 +68,13 @@ public class TBA_MatchDetailFetcher extends AsyncTask<String,String,String>{
 
         }
         return "";
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
+        //we've finished. now toast the user
+        Toast.makeText(context, "Info downloaded for " + this.eventKey, Toast.LENGTH_SHORT).show();
     }
 }

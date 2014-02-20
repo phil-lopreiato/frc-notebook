@@ -61,7 +61,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
                 Toast.makeText(activity, "Error writing teams to database",Toast.LENGTH_SHORT).show();
             }else{
                 if(addMatches(matches,eventKey) != -1){
-                    Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
+                    //success. Will toast within the async task
                 }else{
                     Toast.makeText(activity, "Error writing matches to database",Toast.LENGTH_SHORT).show();
                 }
@@ -115,9 +115,11 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
     }
 
     private long addMatches(JsonArray data, String eventKey){
-        if(data.size()>0)
-            new TBA_MatchDetailFetcher().execute(new String[]{data.toString(),eventKey});
-
+        if(data.size()>0){
+            new TBA_MatchDetailFetcher(activity,eventKey).execute(new String[]{data.toString(),eventKey});
+        }else{
+            Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
+        }
         return 0;
     }
 }
