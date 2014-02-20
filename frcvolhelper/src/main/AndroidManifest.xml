@@ -18,15 +18,18 @@
         </activity>
         <activity
             android:name="com.plnyyanks.frcvolhelper.activities.EventDownloadActivity"
-            android:label="@string/title_activity_event_download" >
+            android:label="@string/title_activity_event_download"
+            android:parentActivityName=".activities.StartActivity">
         </activity>
         <activity
             android:name="com.plnyyanks.frcvolhelper.activities.ViewEvent"
-            android:label="@string/title_activity_view_event" >
+            android:label="@string/title_activity_view_event"
+            android:parentActivityName=".activities.StartActivity">
         </activity>
         <activity
             android:name=".activities.ViewTeam"
-            android:label="@string/title_activity_view_team" >
+            android:label="@string/title_activity_view_team"
+            android:parentActivityName=".activities.ViewEvent">
         </activity>
     </application>
 

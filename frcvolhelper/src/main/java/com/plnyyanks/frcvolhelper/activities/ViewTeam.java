@@ -177,7 +177,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
             if(generalNotes.size()>0)
                 eventList.removeAllViews();
-            
+
             for(Note note:generalNotes){
                 addNote(note,eventList,lparams);
             }
@@ -200,7 +200,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                     noteEditField.setText(oldNote.getNote());
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Note on Team "+teamNumber);
+                    builder.setTitle("Note on Team " + teamNumber);
                     builder.setView(noteEditField);
                     builder.setMessage("Edit your note.");
                     builder.setPositiveButton("Update",
