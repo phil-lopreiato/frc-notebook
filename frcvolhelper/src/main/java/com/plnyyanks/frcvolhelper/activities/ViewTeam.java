@@ -2,9 +2,11 @@ package com.plnyyanks.frcvolhelper.activities;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,7 +117,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
     public static class EventFragment extends Fragment{
 
         private static String eventKey;
-        private View thisView;
+        private static View thisView;
 
         public EventFragment(String key){
             super();
@@ -165,7 +167,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             return v;
         }
 
-        private void fetchNotes(){
+        protected static void fetchNotes(){
             Log.d(Constants.LOG_TAG,"Fetching notes, team: "+teamKey+" event: "+eventKey);
             ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey);
 
@@ -173,20 +175,61 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
+            eventList.removeAllViews();
             for(Note note:generalNotes){
                 addNote(note,eventList,lparams);
             }
 
         }
 
-        private void addNote(Note note,LinearLayout layout,LinearLayout.LayoutParams params){
-            TextView tv=new TextView(context);
+        private static void addNote(Note note,LinearLayout layout,LinearLayout.LayoutParams params){
+            final TextView tv=new TextView(context);
             tv.setLayoutParams(params);
             tv.setText("• " + note.getNote());
             tv.setTextSize(20);
-            tv.setClickable(true);
+            tv.setLongClickable(true);
             tv.setTag(note.getId());
+            tv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    final Note oldNote = StartActivity.db.getNote((Short) tv.getTag());
+                    final EditText noteEditField = new EditText(context);
+                    //noteEditField.setId(999);
+                    noteEditField.setText(oldNote.getNote());
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Note on Team "+teamNumber);
+                    builder.setView(noteEditField);
+                    builder.setMessage("Edit your note.");
+                    builder.setPositiveButton("Update",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    oldNote.setNote(noteEditField.getText().toString());
+                                    StartActivity.db.updateNote(oldNote);
+                                    fetchNotes();
+                                    dialog.cancel();
+                                }
+                            });
+
+                    builder.setNeutralButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    builder.setNegativeButton("Delete",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    StartActivity.db.deleteNote(oldNote);
+                                    fetchNotes();
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.create().show();
+                    return false;
+                }
+            });
             layout.addView(tv);
         }
 
