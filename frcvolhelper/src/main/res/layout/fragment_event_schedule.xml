@@ -7,6 +7,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/match_list">
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap a Header to View Matches"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#69696969" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"/>
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Qualification Matches"
+    android:textSize="25dp"
+    android:id="@+id/quals_header"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/qual_matches">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No matches yet"/>
+        </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="20dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#69696969" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Elimination Matches"
+        android:textSize="25dp"
+        android:id="@+id/elims_header"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/elim_matches">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No matches yet"/>
+    </LinearLayout>
 </LinearLayout>
 </ScrollView>

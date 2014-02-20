@@ -160,7 +160,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_schedule, null);
 
-            LinearLayout matchList = (LinearLayout) v.findViewById(R.id.match_list);
+            final LinearLayout qualList = (LinearLayout) v.findViewById(R.id.qual_matches);
+            final LinearLayout elimList = (LinearLayout) v.findViewById(R.id.elim_matches);
             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             ArrayList<Match>    allMatches = StartActivity.db.getAllMatches(key),
                                 qualMatches,qfMatches,sfMatches,fMatches;
@@ -170,18 +171,59 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             sfMatches = event.getSemiFinals();
             fMatches = event.getFinals();
 
-            allMatches = new ArrayList<Match>();
-            allMatches.addAll(qualMatches);
-            allMatches.addAll(qfMatches);
-            allMatches.addAll(sfMatches);
-            allMatches.addAll(fMatches);
+            ArrayList<Match> elimMatches = new ArrayList<Match>();
+            elimMatches.addAll(qfMatches);
+            elimMatches.addAll(sfMatches);
+            elimMatches.addAll(fMatches);
 
-            for(Match m:allMatches){
+            if(qualMatches.size()>0){
+                qualList.removeAllViews();
+                qualList.setVisibility(View.GONE);
+                TextView qualHeader = (TextView)v.findViewById(R.id.quals_header);
+                qualHeader.setText("Qualification Matches ("+qualMatches.size()+")");
+                qualHeader.setClickable(true);
+                qualHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(qualList.getVisibility() == View.GONE){
+                            qualList.setVisibility(View.VISIBLE);
+                        }else{
+                            qualList.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+            for(Match m:qualMatches){
                 TextView tv = new TextView(context);
                 tv.setText(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
-                matchList.addView(tv);
+                qualList.addView(tv);
             }
+
+            if(elimMatches.size()>0){
+                elimList.removeAllViews();
+                elimList.setVisibility(View.GONE);
+                TextView elimHeader = (TextView)v.findViewById(R.id.elims_header);
+                elimHeader.setText("Elimination Matches ("+elimMatches.size()+")");
+                elimHeader.setClickable(true);
+                elimHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(elimList.getVisibility() == View.GONE){
+                            elimList.setVisibility(View.VISIBLE);
+                        }else{
+                            elimList.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+            for(Match m:elimMatches){
+                TextView tv = new TextView(context);
+                tv.setText(m.getMatchKey());
+                tv.setTextColor(0xFF000000);
+                elimList.addView(tv);
+            }
+
             return v;
         }
     }
