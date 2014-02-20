@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
@@ -21,7 +25,8 @@ import java.util.ArrayList;
 public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     protected static String teamKey;
-    private static int teamNumber;
+    protected static int teamNumber;
+    protected static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,8 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             getFragmentManager().beginTransaction()
                     .commit();
         }
+
+        context = this;
 
         ActionBar bar = getActionBar();
         bar.setTitle("Team "+teamNumber);
@@ -55,6 +62,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             eventTab.setTabListener(this);
             bar.addTab(eventTab);
         }
+
     }
 
 
@@ -103,7 +111,12 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         private String eventKey;
 
         public EventFragment(String key){
+            super();
             eventKey = key;
+        }
+
+        public EventFragment(){
+
         }
 
         public void onCreate(Bundle savedInstanceState){
@@ -113,6 +126,13 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_tab, null);
+            Button addNote = (Button)v.findViewById(R.id.submit_general_note);
+            addNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context,"Clicky!",Toast.LENGTH_SHORT).show();
+                }
+            });
             return v;
         }
     }
