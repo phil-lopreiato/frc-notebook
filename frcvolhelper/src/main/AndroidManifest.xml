@@ -21,8 +21,12 @@
             android:label="@string/title_activity_event_download" >
         </activity>
         <activity
-            android:name=".activities.ViewEvent"
+            android:name="com.plnyyanks.frcvolhelper.activities.ViewEvent"
             android:label="@string/title_activity_view_event" >
+        </activity>
+        <activity
+            android:name=".activities.ViewTeam"
+            android:label="@string/title_activity_view_team" >
         </activity>
     </application>
 

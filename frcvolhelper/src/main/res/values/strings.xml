@@ -11,5 +11,6 @@
     <string name="title_activity_event_download">EventDownloadActivity</string>
     <string name="title_activity_view_event">ViewEvent</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_view_team">ViewTeam</string>
 
 </resources>
