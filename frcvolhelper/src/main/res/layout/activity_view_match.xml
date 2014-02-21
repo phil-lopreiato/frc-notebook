@@ -22,4 +22,66 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Red Alliance"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/red_header"
+                    android:textColor="#FFFF0000"
+                    android:layout_centerHorizontal="true" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/red_header"
+                    android:gravity="right"
+                    android:id="@+id/red_alliance">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No teams yet"/>
+                </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:Blue="wrap_content"
+                android:text="Blue Alliance"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/blue_header"
+                android:textColor="#FF0000FF"
+                android:layout_centerHorizontal="true" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/blue_header"
+                android:gravity="left"
+                android:id="@+id/blue_allaince">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No teams yet"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>

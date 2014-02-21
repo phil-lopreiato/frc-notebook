@@ -24,6 +24,8 @@ public class ViewMatch extends Activity {
             getFragmentManager().beginTransaction()
                     .commit();
         }
+
+        
     }
 
 
