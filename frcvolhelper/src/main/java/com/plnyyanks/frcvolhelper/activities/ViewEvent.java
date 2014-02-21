@@ -195,8 +195,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             }
             for(Match m:qualMatches){
                 TextView tv = new TextView(context);
+                tv.setLayoutParams(lparams);
                 tv.setText(m.getMatchKey());
+                tv.setTag(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
+                tv.setOnClickListener(new MatchClickHandler());
                 qualList.addView(tv);
             }
 
@@ -219,12 +222,26 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             }
             for(Match m:elimMatches){
                 TextView tv = new TextView(context);
+                tv.setLayoutParams(lparams);
                 tv.setText(m.getMatchKey());
+                tv.setTag(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
+                tv.setOnClickListener(new MatchClickHandler());
                 elimList.addView(tv);
             }
 
             return v;
+        }
+
+        class MatchClickHandler implements View.OnClickListener{
+
+            @Override
+            public void onClick(View view) {
+                ViewMatch.setMatchKey((String)view.getTag());
+
+                Intent intent = new Intent(context, ViewMatch.class);
+                startActivity(intent);
+            }
         }
     }
 
