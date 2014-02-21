@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.plnyyanks.frcvolhelper" >
+    package="com.plnyyanks.frcnotebook" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.plnyyanks.frcvolhelper.activities.StartActivity"
+            android:name=".activities.StartActivity"
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,24 +17,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.plnyyanks.frcvolhelper.activities.EventDownloadActivity"
+            android:name=".activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download"
-            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
         </activity>
         <activity
-            android:name="com.plnyyanks.frcvolhelper.activities.ViewEvent"
+            android:name=".activities.ViewEvent"
             android:label="@string/title_activity_view_event"
-            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
         </activity>
         <activity
-            android:name="com.plnyyanks.frcvolhelper.activities.ViewTeam"
+            android:name=".activities.ViewTeam"
             android:label="@string/title_activity_view_team"
-            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.ViewEvent" >
+            android:parentActivityName=".activities.ViewEvent" >
         </activity>
         <activity
-            android:name="com.plnyyanks.frcvolhelper.activities.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.plnyyanks.frcvolhelper.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
         </activity>
         <activity
             android:name=".activities.ViewMatch"

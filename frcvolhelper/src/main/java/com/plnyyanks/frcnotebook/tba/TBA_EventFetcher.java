@@ -1,4 +1,4 @@
-package com.plnyyanks.frcvolhelper.tba;
+package com.plnyyanks.frcnotebook.tba;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.plnyyanks.frcvolhelper.R;
-import com.plnyyanks.frcvolhelper.json.JSONManager;
+import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.util.Iterator;
 

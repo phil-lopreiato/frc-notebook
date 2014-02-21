@@ -1,24 +1,16 @@
-package com.plnyyanks.frcvolhelper.tba;
+package com.plnyyanks.frcnotebook.tba;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.plnyyanks.frcvolhelper.Constants;
-import com.plnyyanks.frcvolhelper.activities.StartActivity;
-import com.plnyyanks.frcvolhelper.database.DatabaseHandler;
-import com.plnyyanks.frcvolhelper.datatypes.Event;
-import com.plnyyanks.frcvolhelper.datatypes.Match;
-import com.plnyyanks.frcvolhelper.datatypes.Team;
-import com.plnyyanks.frcvolhelper.json.JSONManager;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.Team;
+import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.util.Iterator;
 

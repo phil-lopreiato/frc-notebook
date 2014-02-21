@@ -1,4 +1,4 @@
-package com.plnyyanks.frcvolhelper.tba;
+package com.plnyyanks.frcnotebook.tba;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,11 +7,10 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.plnyyanks.frcvolhelper.activities.StartActivity;
-import com.plnyyanks.frcvolhelper.datatypes.Match;
-import com.plnyyanks.frcvolhelper.json.JSONManager;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.datatypes.Match;
+import com.plnyyanks.frcnotebook.json.JSONManager;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**

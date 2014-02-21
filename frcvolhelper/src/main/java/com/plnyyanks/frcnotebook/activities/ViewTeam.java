@@ -1,4 +1,4 @@
-package com.plnyyanks.frcvolhelper.activities;
+package com.plnyyanks.frcnotebook.activities;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -9,26 +9,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
-import com.plnyyanks.frcvolhelper.Constants;
-import com.plnyyanks.frcvolhelper.R;
-import com.plnyyanks.frcvolhelper.datatypes.Event;
-import com.plnyyanks.frcvolhelper.datatypes.Note;
-import com.plnyyanks.frcvolhelper.datatypes.Team;
+import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.datatypes.Team;
 
 import java.util.ArrayList;
 

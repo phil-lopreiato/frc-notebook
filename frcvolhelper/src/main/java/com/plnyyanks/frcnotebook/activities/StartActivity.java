@@ -1,20 +1,18 @@
-package com.plnyyanks.frcvolhelper.activities;
+package com.plnyyanks.frcnotebook.activities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.plnyyanks.frcvolhelper.R;
-import com.plnyyanks.frcvolhelper.database.DatabaseHandler;
-import com.plnyyanks.frcvolhelper.datatypes.Event;
-import com.plnyyanks.frcvolhelper.tba.TBA_API;
+import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.DatabaseHandler;
+import com.plnyyanks.frcnotebook.datatypes.Event;
 
 import java.util.List;
 

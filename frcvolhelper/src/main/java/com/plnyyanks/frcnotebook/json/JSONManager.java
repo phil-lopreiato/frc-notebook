@@ -1,6 +1,4 @@
-package com.plnyyanks.frcvolhelper.json;
-
-import android.util.Log;
+package com.plnyyanks.frcnotebook.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -8,12 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
-import com.plnyyanks.frcvolhelper.Constants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by phil on 2/18/14.

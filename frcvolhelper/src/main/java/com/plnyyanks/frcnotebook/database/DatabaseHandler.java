@@ -1,4 +1,4 @@
-package com.plnyyanks.frcvolhelper.database;
+package com.plnyyanks.frcnotebook.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.plnyyanks.frcvolhelper.Constants;
-import com.plnyyanks.frcvolhelper.datatypes.Event;
-import com.plnyyanks.frcvolhelper.datatypes.Match;
-import com.plnyyanks.frcvolhelper.datatypes.Note;
-import com.plnyyanks.frcvolhelper.datatypes.Team;
-import com.plnyyanks.frcvolhelper.json.JSONManager;
+import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.Match;
+import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.datatypes.Team;
+import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.util.ArrayList;
 import java.util.List;

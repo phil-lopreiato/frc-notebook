@@ -1,8 +1,8 @@
-package com.plnyyanks.frcvolhelper.tba;
+package com.plnyyanks.frcnotebook.tba;
 
 import android.util.Log;
 
-import com.plnyyanks.frcvolhelper.Constants;
+import com.plnyyanks.frcnotebook.Constants;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

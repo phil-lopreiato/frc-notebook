@@ -1,20 +1,13 @@
-package com.plnyyanks.frcvolhelper.activities;
+package com.plnyyanks.frcnotebook.activities;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.LinearLayout;
 
-import com.plnyyanks.frcvolhelper.R;
-import com.plnyyanks.frcvolhelper.tba.TBA_API;
+import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.tba.TBA_API;
 
 public class EventDownloadActivity extends Activity {
 

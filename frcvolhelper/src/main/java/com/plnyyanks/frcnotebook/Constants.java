@@ -1,8 +1,6 @@
-package com.plnyyanks.frcvolhelper;
+package com.plnyyanks.frcnotebook;
 
 import android.widget.LinearLayout;
-
-import com.plnyyanks.frcvolhelper.database.DatabaseHandler;
 
 /**
  * Created by phil on 2/18/14.

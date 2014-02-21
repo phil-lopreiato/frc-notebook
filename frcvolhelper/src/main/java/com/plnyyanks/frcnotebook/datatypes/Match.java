@@ -1,14 +1,11 @@
-package com.plnyyanks.frcvolhelper.datatypes;
+package com.plnyyanks.frcnotebook.datatypes;
 
 import android.annotation.TargetApi;
 import android.os.Build;
 
 import com.google.gson.JsonArray;
-import com.plnyyanks.frcvolhelper.activities.StartActivity;
-import com.plnyyanks.frcvolhelper.json.JSONManager;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.json.JSONManager;
 
 /**
  * Created by phil on 2/19/14.
