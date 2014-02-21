@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,7 @@ import java.util.Iterator;
 
 public class ViewMatch extends Activity {
 
-    private static String matchKey,eventKey;
+    private static String matchKey,eventKey,nextKey,previousKey;
     private static Event parentEvent;
     private static Match match;
     static Context context;
@@ -83,6 +84,15 @@ public class ViewMatch extends Activity {
                 blueList.addView(makeTextView(team.getAsString(),Constants.lparams));
             }
         }
+
+        if(!StartActivity.db.matchExists(nextKey)){
+            Button nextButton = (Button)findViewById(R.id.next_match);
+            nextButton.setVisibility(View.GONE);
+        }
+        if(!StartActivity.db.matchExists(previousKey)){
+            Button prevButton = (Button)findViewById(R.id.prev_match);
+            prevButton.setVisibility(View.GONE);
+        }
     }
 
     private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){
@@ -105,7 +115,10 @@ public class ViewMatch extends Activity {
         match = StartActivity.db.getMatch(matchKey);
         parentEvent = match.getParentEvent();
         eventKey = parentEvent.getEventKey();
-        Log.d(Constants.LOG_TAG,"Set View Match Vars, matchKey:"+matchKey+", eventKey:"+eventKey);
+
+        nextKey = matchKey.replaceFirst("\\d+$",Integer.toString(match.getMatchNumber() + 1));
+        previousKey = matchKey.replaceFirst("\\d+$",Integer.toString(match.getMatchNumber()-1));
+        Log.d(Constants.LOG_TAG,"Set View Match Vars, matchKey:"+matchKey+", eventKey:"+eventKey+", next: "+nextKey+", prev: "+previousKey);
     }
 
     @Override
@@ -126,6 +139,17 @@ public class ViewMatch extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void previousMatch(View view) {
+        setMatchKey(previousKey);
+        Intent intent = new Intent(this, ViewMatch.class);
+        startActivity(intent);
+    }
+    public void nextMatch(View view) {
+        setMatchKey(nextKey);
+        Intent intent = new Intent(this, ViewMatch.class);
+        startActivity(intent);
     }
 
     class TeamClickListener implements View.OnClickListener{
