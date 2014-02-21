@@ -25,7 +25,6 @@ public class ViewMatch extends Activity {
                     .commit();
         }
 
-        
     }
 
 
