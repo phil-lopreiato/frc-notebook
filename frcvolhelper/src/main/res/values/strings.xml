@@ -7,7 +7,7 @@
     <string name="download_event_title">Select an Event to Download</string>
     <string name="select_event_title">Select an Event</string>
     <string name="event_content_layout">event_list_layout</string>
-    <string name="title_activity_start">Select an Event</string>
+    <string name="title_activity_start">FRC Notebook</string>
     <string name="title_activity_event_download">Download Event Info</string>
     <string name="title_activity_view_event">View Event</string>
     <string name="title_activity_view_team">View Team</string>
