@@ -78,7 +78,8 @@ public class ViewMatch extends Activity {
         TextView tv;
         tv = new TextView(this);
         tv.setLayoutParams(lparams);
-        tv.setText(teamKey);
+        tv.setTextSize(20);
+        tv.setText(teamKey.substring(3));
         tv.setTag(teamKey);
         return tv;
     }
