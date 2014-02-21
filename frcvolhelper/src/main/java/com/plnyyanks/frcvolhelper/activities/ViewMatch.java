@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcvolhelper.R;
+import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
 
 import java.util.Iterator;
@@ -34,9 +35,14 @@ public class ViewMatch extends Activity {
                     .commit();
         }
 
-        if(matchKey == null) return;
-
         Match match = StartActivity.db.getMatch(matchKey);
+        Event parentEvent = match.getParentEvent();
+
+        ActionBar bar = getActionBar();
+        bar.setTitle(parentEvent.getEventName()+" - "+parentEvent.getEventYear());
+        bar.setSubtitle(match.getMatchKey());
+
+        if(matchKey == null) return;
 
         TextView matchTitle = (TextView) findViewById(R.id.match_title);
         matchTitle.setText(match.getMatchType()+ " "+match.getMatchNumber());

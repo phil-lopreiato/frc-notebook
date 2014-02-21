@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 
 import com.google.gson.JsonArray;
+import com.plnyyanks.frcvolhelper.activities.StartActivity;
 import com.plnyyanks.frcvolhelper.json.JSONManager;
 
 import java.util.ArrayList;
@@ -108,6 +109,10 @@ public class Match implements Comparable<Match>{
 
     public void setRedScore(int redScore) {
         this.redScore = redScore;
+    }
+
+    public Event getParentEvent(){
+        return StartActivity.db.getEvent(matchKey.split("_")[0]);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
