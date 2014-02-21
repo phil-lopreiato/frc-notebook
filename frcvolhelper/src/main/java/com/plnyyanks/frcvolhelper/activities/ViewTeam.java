@@ -146,7 +146,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                     Note newNote = new Note();
                     newNote.setTeamKey(teamKey);
                     newNote.setEventKey(eventKey);
-                    newNote.setMatchKey(eventKey);
+                    newNote.setMatchKey("all");
                     String noteText = ((EditText)v.findViewById(R.id.new_general_note)).getText().toString();
                     newNote.setNote(noteText);
 
@@ -171,19 +171,25 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         }
 
         protected static void fetchNotes(){
-            Log.d(Constants.LOG_TAG,"Fetching notes, team: "+teamKey+" event: "+eventKey);
-            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey);
+            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey,"all");
+            ArrayList<Note> matchNotes = StartActivity.db.getAllMatchNotes(teamKey,eventKey);
 
-            LinearLayout eventList = (LinearLayout) thisView.findViewById(R.id.general_notes);
+            LinearLayout generalList = (LinearLayout) thisView.findViewById(R.id.general_notes);
+            LinearLayout matchNotesList = (LinearLayout)thisView.findViewById(R.id.match_notes);
 
-            JsonElement element;
             if(generalNotes.size()>0)
-                eventList.removeAllViews();
+                generalList.removeAllViews();
 
             for(Note note:generalNotes){
-                addNote(note,eventList,Constants.lparams);
+                addNote(note,generalList,Constants.lparams);
             }
 
+            if(matchNotes.size()>0)
+                matchNotesList.removeAllViews();
+
+            for(Note note:matchNotes){
+                addNote(note,matchNotesList,Constants.lparams);
+            }
         }
 
         private static void addNote(Note note,LinearLayout layout,LinearLayout.LayoutParams params){

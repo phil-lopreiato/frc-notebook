@@ -566,6 +566,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(Constants.LOG_TAG," FOUND "+noteList.size()+ " NOTES");
         return noteList;
     }
+    public ArrayList<Note> getAllMatchNotes(String teamKey,String eventKey){
+        Log.d(Constants.LOG_TAG, "FETCHING MATCH NOTES FOR: " + teamKey + " " + eventKey);
+        ArrayList<Note> noteList = new ArrayList<Note>();
+
+        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"!=?",new String[] {teamKey,eventKey,"all"},null,null,null,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+                noteList.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        Log.d(Constants.LOG_TAG," FOUND "+noteList.size()+ " NOTES");
+        return noteList;
+    }
     public boolean noteExists(short id){
         Cursor cursor = db.query(TABLE_NOTES,new String[]{KEY_NOTEID},KEY_NOTEID + "=?",new String[]{Short.toString(id)},null,null,null,null);
         if(cursor.moveToFirst())
