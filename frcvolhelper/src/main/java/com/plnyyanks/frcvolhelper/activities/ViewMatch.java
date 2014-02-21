@@ -36,11 +36,15 @@ public class ViewMatch extends Activity {
 
         if(matchKey == null) return;
 
+        Match match = StartActivity.db.getMatch(matchKey);
+
+        TextView matchTitle = (TextView) findViewById(R.id.match_title);
+        matchTitle.setText(match.getMatchType()+ " "+match.getMatchNumber());
+
         LinearLayout redList = (LinearLayout) findViewById(R.id.red_alliance);
         LinearLayout blueList = (LinearLayout) findViewById(R.id.blue_allaince);
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        Match match = StartActivity.db.getMatch(matchKey);
         JsonArray   redTeams  = match.getRedAllianceTeams(),
                     blueTeams = match.getBlueAllianceTeams();
 
