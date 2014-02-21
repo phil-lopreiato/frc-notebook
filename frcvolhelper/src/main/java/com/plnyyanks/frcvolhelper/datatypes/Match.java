@@ -3,6 +3,9 @@ package com.plnyyanks.frcvolhelper.datatypes;
 import android.annotation.TargetApi;
 import android.os.Build;
 
+import com.google.gson.JsonArray;
+import com.plnyyanks.frcvolhelper.json.JSONManager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -11,13 +14,13 @@ import java.util.Collections;
  */
 public class Match implements Comparable<Match>{
     private String  matchKey,
-                    matchType;
+                    matchType,
+                    redAlliance,
+                    blueAlliance;
     private int     matchNumber;
 
     private int setNumber;
-    private int blueAlliance[];
     private int blueScore;
-    private int redAlliance[];
     private int redScore;
 
 
@@ -25,7 +28,7 @@ public class Match implements Comparable<Match>{
 
     }
 
-    public Match(String matchKey, String matchType, int matchNumber, int setNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore) {
+    public Match(String matchKey, String matchType, int matchNumber, int setNumber, String blueAlliance, String redAlliance, int blueScore, int redScore) {
         this.matchKey = matchKey;
         this.matchType = matchType;
         this.matchNumber = matchNumber;
@@ -67,20 +70,28 @@ public class Match implements Comparable<Match>{
         this.setNumber = setNumber;
     }
 
-    public int[] getBlueAlliance() {
+    public String getBlueAlliance() {
         return blueAlliance;
     }
 
-    public void setBlueAlliance(int[] blueAlliance) {
+    public void setBlueAlliance(String blueAlliance) {
         this.blueAlliance = blueAlliance;
     }
 
-    public int[] getRedAlliance() {
+    public String getRedAlliance() {
         return redAlliance;
     }
 
-    public void setRedAlliance(int[] redAlliance) {
+    public void setRedAlliance(String redAlliance) {
         this.redAlliance = redAlliance;
+    }
+
+    public JsonArray getRedAllianceTeams(){
+        return JSONManager.getasJsonArray(redAlliance);
+    }
+
+    public JsonArray getBlueAllianceTeams(){
+        return JSONManager.getasJsonArray(blueAlliance);
     }
 
     public int getBlueScore() {

@@ -61,9 +61,8 @@ public class TBA_MatchDetailFetcher extends AsyncTask<String,String,String>{
             match.setRedScore(Integer.parseInt(red.get("score").getAsString()));
             match.setBlueScore(Integer.parseInt(blue.get("score").getAsString()));
 
-            match.setRedAlliance(new int[]{Integer.parseInt(redTeams.get(0).getAsString().substring(3)),Integer.parseInt(redTeams.get(1).getAsString().substring(3)),Integer.parseInt(redTeams.get(2).getAsString().substring(3))});
-            match.setBlueAlliance(new int[]{Integer.parseInt(blueTeams.get(0).getAsString().substring(3)), Integer.parseInt(blueTeams.get(1).getAsString().substring(3)), Integer.parseInt(blueTeams.get(2).getAsString().substring(3))});
-
+            match.setRedAlliance(redTeams.toString());
+            match.setBlueAlliance(blueTeams.toString());
             StartActivity.db.addMatch(match);
 
         }

@@ -36,12 +36,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                     KEY_MATCHTYPE   = "type",
                                     KEY_MATCHNO     = "matchNumber",
                                     KEY_MATCHSET    = "matchSet",
-                                    KEY_BLUE1       = "blue1",
-                                    KEY_BLUE2       = "blue2",
-                                    KEY_BLUE3       = "blue3",
-                                    KEY_RED1        = "red1",
-                                    KEY_RED2        = "red2",
-                                    KEY_RED3        = "red3",
+                                    KEY_REDALLIANCE = "redAlliance",
+                                    KEY_BLUEALLIANCE= "blueAlliance",
                                     KEY_BLUESCORE   = "blueScore",
                                     KEY_REDSCORE    = "redScore",
 
@@ -81,18 +77,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_EVENTS_TABLE);
 
         String CREATE_MATCHES_TABLE = "CREATE TABLE " + TABLE_MATCHES + "("
-                + KEY_MATCHKEY  + " TEXT PRIMARY KEY,"
-                + KEY_MATCHTYPE + " TEXT,"
-                + KEY_MATCHNO   + " INTEGER,"
-                + KEY_MATCHSET  + " INTEGER,"
-                + KEY_BLUE1     + " INTEGER,"
-                + KEY_BLUE2     + " INTEGER,"
-                + KEY_BLUE3     + " INTEGER,"
-                + KEY_RED1      + " INTEGER,"
-                + KEY_RED2      + " INTEGER,"
-                + KEY_RED3      + " INTEGER,"
-                + KEY_BLUESCORE + " INTEGER,"
-                + KEY_REDSCORE  + " INTEGER"
+                + KEY_MATCHKEY      + " TEXT PRIMARY KEY,"
+                + KEY_MATCHTYPE     + " TEXT,"
+                + KEY_MATCHNO       + " INTEGER,"
+                + KEY_MATCHSET      + " INTEGER,"
+                + KEY_BLUEALLIANCE  + " TEXT,"
+                + KEY_REDALLIANCE   + " TEXT,"
+                + KEY_BLUESCORE     + " INTEGER,"
+                + KEY_REDSCORE      + " INTEGER"
                 + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
 
@@ -217,20 +209,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //first, check if that event exists already and only insert if it doesn't
         if(!matchExists(in.getMatchKey())){
 
-            int[]   blueAlliance = in.getBlueAlliance(),
-                    redAlliance  = in.getRedAlliance();
-
             ContentValues values = new ContentValues();
             values.put(KEY_MATCHKEY,    in.getMatchKey());
             values.put(KEY_MATCHTYPE,   in.getMatchType());
             values.put(KEY_MATCHNO,     in.getMatchNumber());
             values.put(KEY_MATCHSET,    in.getSetNumber());
-            values.put(KEY_BLUE1,       blueAlliance[0]);
-            values.put(KEY_BLUE2,       blueAlliance[1]);
-            values.put(KEY_BLUE3,       blueAlliance[2]);
-            values.put(KEY_RED1,        redAlliance[0]);
-            values.put(KEY_RED2,        redAlliance[1]);
-            values.put(KEY_RED3,        redAlliance[2]);
+            values.put(KEY_BLUEALLIANCE,in.getBlueAlliance());
+            values.put(KEY_REDALLIANCE, in.getRedAlliance());
             values.put(KEY_BLUESCORE,   in.getBlueScore());
             values.put(KEY_REDSCORE,    in.getRedScore());
 
@@ -242,13 +227,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public Match getMatch(String key){
 
-        Cursor cursor = db.query(TABLE_MATCHES, new String[] {KEY_MATCHKEY,KEY_MATCHTYPE,KEY_MATCHNO,KEY_MATCHSET,KEY_BLUE1,KEY_BLUE2,KEY_BLUE3,KEY_RED1,KEY_RED2,KEY_RED3,KEY_BLUESCORE,KEY_REDSCORE},
+        Cursor cursor = db.query(TABLE_MATCHES, new String[] {KEY_MATCHKEY,KEY_MATCHTYPE,KEY_MATCHNO,KEY_MATCHSET,KEY_BLUEALLIANCE,KEY_REDALLIANCE,KEY_BLUESCORE,KEY_REDSCORE},
                 KEY_MATCHKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
-            //(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
-            int[] blueAlliance  = {Integer.parseInt(cursor.getString(4)),Integer.parseInt(cursor.getString(5)),Integer.parseInt(cursor.getString(6))};
-            int[] redAllaince   = {Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8)),Integer.parseInt(cursor.getString(9))};
-            Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),blueAlliance, redAllaince,Integer.parseInt(cursor.getString(10)),Integer.parseInt(cursor.getString(11)));
+            //(String matchKey, String matchType, int matchNumber, String blueAlliance, String redAlliance, int blueScore, int redScore)
+            Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
             cursor.close();
             return match;
         }else{
@@ -259,7 +242,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Match> getAllMatches(){
         ArrayList<Match> matchList = new ArrayList<Match>();
 
-        String selectQuery = "SELECT * FROM "+TABLE_EVENTS;
+        String selectQuery = "SELECT * FROM "+TABLE_MATCHES;
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
@@ -267,10 +250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                int[] blueAlliance  = {Integer.parseInt(cursor.getString(4)),Integer.parseInt(cursor.getString(5)),Integer.parseInt(cursor.getString(6))};
-                int[] redAllaince   = {Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8)),Integer.parseInt(cursor.getString(9))};
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),blueAlliance, redAllaince,Integer.parseInt(cursor.getString(10)),Integer.parseInt(cursor.getString(11)));
-
+                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -290,10 +270,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                int[] blueAlliance  = {Integer.parseInt(cursor.getString(4)),Integer.parseInt(cursor.getString(5)),Integer.parseInt(cursor.getString(6))};
-                int[] redAllaince   = {Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8)),Integer.parseInt(cursor.getString(9))};
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),blueAlliance, redAllaince,Integer.parseInt(cursor.getString(10)),Integer.parseInt(cursor.getString(11)));
-
+                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -305,7 +282,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Match> getAllMatches(String eventKey, String teamKey){
         ArrayList<Match> matchList = new ArrayList<Match>();
 
-        String selectQuery = "SELECT * FROM "+TABLE_EVENTS+" WHERE "+KEY_EVENTKEY+"="+eventKey+" AND "+KEY_TEAMKEY+"="+teamKey;
+        String selectQuery = "SELECT * FROM "+TABLE_MATCHES+" WHERE "+KEY_MATCHKEY+" LIKE '%"+eventKey+"%' AND "+KEY_TEAMKEY+"="+teamKey;
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
@@ -313,10 +290,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                int[] blueAlliance  = {Integer.parseInt(cursor.getString(4)),Integer.parseInt(cursor.getString(5)),Integer.parseInt(cursor.getString(6))};
-                int[] redAllaince   = {Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8)),Integer.parseInt(cursor.getString(9))};
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),blueAlliance, redAllaince,Integer.parseInt(cursor.getString(10)),Integer.parseInt(cursor.getString(11)));
-
+                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -334,20 +308,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public int updateMatch(Match in){
 
-        int[]   blueAlliance = in.getBlueAlliance(),
-                redAlliance  = in.getRedAlliance();
-
         ContentValues values = new ContentValues();
         values.put(KEY_MATCHKEY,    in.getMatchKey());
         values.put(KEY_MATCHTYPE,   in.getMatchType());
         values.put(KEY_MATCHNO,     in.getMatchNumber());
         values.put(KEY_MATCHSET,    in.getSetNumber());
-        values.put(KEY_BLUE1,       blueAlliance[0]);
-        values.put(KEY_BLUE2,       blueAlliance[1]);
-        values.put(KEY_BLUE3,       blueAlliance[2]);
-        values.put(KEY_RED1,        redAlliance[0]);
-        values.put(KEY_RED2,        redAlliance[1]);
-        values.put(KEY_RED3,        redAlliance[2]);
+        values.put(KEY_BLUEALLIANCE,in.getBlueAlliance());
+        values.put(KEY_REDALLIANCE, in.getRedAlliance());
         values.put(KEY_BLUESCORE,   in.getBlueScore());
         values.put(KEY_REDSCORE,    in.getRedScore());
 
