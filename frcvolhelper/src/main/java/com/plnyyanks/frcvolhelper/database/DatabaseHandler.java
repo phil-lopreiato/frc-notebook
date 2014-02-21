@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
 import com.plnyyanks.frcvolhelper.datatypes.Note;
@@ -431,9 +433,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //managing notes in SQL
     public long addNote(Note in){
-        //first, check if that event exists already and only insert if it doesn't
-        if(!noteExists(in.getId())){
-
+            Log.d(Constants.LOG_TAG, "ADDING NOTE FOR: " + in.getTeamKey() + " " + in.getEventKey()+ " "+in.getMatchKey());
             ContentValues values = new ContentValues();
             values.put(KEY_EVENTKEY,    in.getEventKey());
             values.put(KEY_MATCHKEY,    in.getMatchKey());
@@ -443,9 +443,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             //insert the row
             return db.insert(TABLE_NOTES,null,values);
-        }else{
-            return updateNote(in);
-        }
     }
     public Note getNote(short id){
         Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
@@ -518,6 +515,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey, String eventKey){
+        Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
@@ -539,7 +537,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        Log.d(Constants.LOG_TAG," FOUND "+noteList.size()+ " NOTES");
+        return noteList;
+    }
+    public ArrayList<Note> getAllNotes(String teamKey, String eventKey, String matchKey){
+        Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey+ " "+matchKey);
+        ArrayList<Note> noteList = new ArrayList<Note>();
 
+        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,eventKey,matchKey},null,null,null,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+
+                noteList.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        Log.d(Constants.LOG_TAG," FOUND "+noteList.size()+ " NOTES");
         return noteList;
     }
     public boolean noteExists(short id){

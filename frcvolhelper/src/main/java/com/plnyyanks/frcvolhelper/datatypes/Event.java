@@ -114,10 +114,10 @@ public class Event {
     }
 
     public void sortMatches(ArrayList<Match> allMatches){
-        quals = getQuals();
-        quarterFinals = getQuarterFinals();
-        semiFinals = getSemiFinals();
-        finals = getFinals();
+        quals = new ArrayList<Match>();
+        quarterFinals = new ArrayList<Match>();
+        semiFinals = new ArrayList<Match>();
+        finals = new ArrayList<Match>();
 
         String matchKey;
         for(Match m:allMatches){

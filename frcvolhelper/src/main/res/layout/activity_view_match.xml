@@ -82,4 +82,34 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Team Notes"
+            android:id="@+id/team_notes"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="@dimen/activity_half_vertical_margin"/>
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/team_notes"
+            android:layout_centerInParent="true">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:id="@+id/team_notes_list">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Team Selected"/>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 </LinearLayout>

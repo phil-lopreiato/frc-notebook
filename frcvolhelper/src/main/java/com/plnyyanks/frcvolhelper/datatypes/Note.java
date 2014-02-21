@@ -15,7 +15,7 @@ public class Note {
         timestamp = System.currentTimeMillis();
     }
 
-    public Note(short id, String eventKey, String matchKey, String teamKey, String note) {
+    public Note(String eventKey, String matchKey, String teamKey, String note) {
         this.id = id;
         this.eventKey = eventKey;
         this.matchKey = matchKey;

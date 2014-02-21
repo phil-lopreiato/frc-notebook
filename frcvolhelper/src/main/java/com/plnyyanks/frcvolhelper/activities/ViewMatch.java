@@ -2,28 +2,42 @@ package com.plnyyanks.frcvolhelper.activities;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
+import com.plnyyanks.frcvolhelper.datatypes.Note;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ViewMatch extends Activity {
 
-    private static String matchKey;
+    private static String matchKey,eventKey;
+    private static Event parentEvent;
+    private static Match match;
+    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +49,10 @@ public class ViewMatch extends Activity {
                     .commit();
         }
 
-        Match match = StartActivity.db.getMatch(matchKey);
-        Event parentEvent = match.getParentEvent();
-
+        context = this;
         ActionBar bar = getActionBar();
         bar.setTitle(parentEvent.getEventName()+" - "+parentEvent.getEventYear());
-        bar.setSubtitle(match.getMatchKey());
+        bar.setSubtitle(eventKey);
 
         if(matchKey == null) return;
 
@@ -49,7 +61,6 @@ public class ViewMatch extends Activity {
 
         LinearLayout redList = (LinearLayout) findViewById(R.id.red_alliance);
         LinearLayout blueList = (LinearLayout) findViewById(R.id.blue_allaince);
-        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         JsonArray   redTeams  = match.getRedAllianceTeams(),
                     blueTeams = match.getBlueAllianceTeams();
@@ -60,16 +71,16 @@ public class ViewMatch extends Activity {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                redList.addView(makeTextView(team.getAsString(),lparams));
+                redList.addView(makeTextView(team.getAsString(),Constants.lparams));
             }
         }
         if(blueTeams.size() >0){
             blueList.removeAllViews();
-            Iterator<JsonElement> iterator = redTeams.iterator();
+            Iterator<JsonElement> iterator = blueTeams.iterator();
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                blueList.addView(makeTextView(team.getAsString(),lparams));
+                blueList.addView(makeTextView(team.getAsString(),Constants.lparams));
             }
         }
     }
@@ -77,15 +88,24 @@ public class ViewMatch extends Activity {
     private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){
         TextView tv;
         tv = new TextView(this);
-        tv.setLayoutParams(lparams);
+        tv.setLayoutParams(Constants.lparams);
         tv.setTextSize(20);
         tv.setText(teamKey.substring(3));
         tv.setTag(teamKey);
+        tv.setOnClickListener(new TeamClickListener(teamKey,eventKey));
+        ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey,eventKey);
+        if(notes.size() >0){
+            tv.setTypeface(null, Typeface.BOLD);
+        }
         return tv;
     }
 
     public static void setMatchKey(String key){
         matchKey = key;
+        match = StartActivity.db.getMatch(matchKey);
+        parentEvent = match.getParentEvent();
+        eventKey = parentEvent.getEventKey();
+        Log.d(Constants.LOG_TAG,"Set View Match Vars, matchKey:"+matchKey+", eventKey:"+eventKey);
     }
 
     @Override
@@ -106,6 +126,89 @@ public class ViewMatch extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    class TeamClickListener implements View.OnClickListener{
+
+        String teamKey,eventKey;
+
+        public TeamClickListener(String teamKey, String eventKey){
+            this.teamKey = teamKey;
+            this.eventKey = eventKey;
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            TextView noteHeader = (TextView)findViewById(R.id.team_notes);
+            noteHeader.setText("Team "+teamKey.substring(3)+" Notes");
+            fetchNotes();
+
+        }
+
+        private void fetchNotes(){
+            ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey,eventKey);
+            LinearLayout notesList = (LinearLayout)findViewById(R.id.team_notes_list);
+            notesList.removeAllViews();
+            if(notes.size() == 0){
+                TextView t = new TextView(context);
+                t.setLayoutParams(Constants.lparams);
+                t.setText("No Notes for This Team");
+                notesList.addView(t);
+            }else{
+                for(Note n:notes){
+                    TextView t = new TextView(context);
+                    t.setLayoutParams(Constants.lparams);
+                    t.setText("• " + n.getNote());
+                    t.setTextSize(18);
+                    notesList.addView(t);
+                }
+            }
+            Button addNote = new Button(context);
+            addNote.setText("Add Note");
+            addNote.setLayoutParams(Constants.lparams);
+            addNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final EditText noteEditField = new EditText(context);
+                    noteEditField.setText("");
+                    noteEditField.setHint("Enter your note");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Note on Team " + teamKey.substring(3));
+                    builder.setView(noteEditField);
+                    builder.setPositiveButton("Add",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String resultText;
+                                    Note note = new Note(eventKey,matchKey,teamKey,noteEditField.getText().toString());
+                                    if(StartActivity.db.addNote(note) != -1){
+                                        resultText = "Note added sucessfully";
+                                        fetchNotes();
+                                    }else{
+                                        resultText = "Error adding note to database";
+                                    }
+                                    Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                }
+                            });
+
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.create().show();
+
+                }
+            });
+            addView(addNote);
+        }
+
+        private void addView(View view){
+            LinearLayout notesList = (LinearLayout)findViewById(R.id.team_notes_list);
+            notesList.addView(view);
+        }
     }
 
 }

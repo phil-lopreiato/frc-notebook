@@ -17,6 +17,7 @@ import android.os.Build;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.plnyyanks.frcvolhelper.Constants;
 import com.plnyyanks.frcvolhelper.R;
 import com.plnyyanks.frcvolhelper.datatypes.Event;
 import com.plnyyanks.frcvolhelper.datatypes.Match;
@@ -45,7 +46,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             getFragmentManager().beginTransaction().commit();
         }
 
-        context = getApplicationContext();
+        context = this;
 
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -151,7 +152,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     }
 
     public static class EventScheduleFragment extends Fragment{
-
+        View view;
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
         }
@@ -159,13 +160,25 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_schedule, null);
+            view = v;
+            loadMatchList();
+            return v;
+        }
 
-            final LinearLayout qualList = (LinearLayout) v.findViewById(R.id.qual_matches);
-            final LinearLayout elimList = (LinearLayout) v.findViewById(R.id.elim_matches);
-            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        @Override
+        public void onResume() {
+            super.onResume();
+            loadMatchList();
+        }
+
+        private void loadMatchList(){
+            final LinearLayout qualList = (LinearLayout) view.findViewById(R.id.qual_matches);
+            final LinearLayout elimList = (LinearLayout) view.findViewById(R.id.elim_matches);
+
             ArrayList<Match>    allMatches = StartActivity.db.getAllMatches(key),
-                                qualMatches,qfMatches,sfMatches,fMatches;
+                    qualMatches,qfMatches,sfMatches,fMatches;
             event.sortMatches(allMatches);
+            qualMatches = new ArrayList<Match>();
             qualMatches = event.getQuals();
             qfMatches = event.getQuarterFinals();
             sfMatches = event.getSemiFinals();
@@ -179,7 +192,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             if(qualMatches.size()>0){
                 qualList.removeAllViews();
                 qualList.setVisibility(View.GONE);
-                TextView qualHeader = (TextView)v.findViewById(R.id.quals_header);
+                TextView qualHeader = (TextView)view.findViewById(R.id.quals_header);
                 qualHeader.setText("Qualification Matches ("+qualMatches.size()+")");
                 qualHeader.setClickable(true);
                 qualHeader.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +208,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             }
             for(Match m:qualMatches){
                 TextView tv = new TextView(context);
-                tv.setLayoutParams(lparams);
+                tv.setLayoutParams(Constants.lparams);
                 tv.setText(m.getMatchKey());
                 tv.setTag(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
@@ -206,7 +219,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             if(elimMatches.size()>0){
                 elimList.removeAllViews();
                 elimList.setVisibility(View.GONE);
-                TextView elimHeader = (TextView)v.findViewById(R.id.elims_header);
+                TextView elimHeader = (TextView)view.findViewById(R.id.elims_header);
                 elimHeader.setText("Elimination Matches ("+elimMatches.size()+")");
                 elimHeader.setClickable(true);
                 elimHeader.setOnClickListener(new View.OnClickListener() {
@@ -222,15 +235,13 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             }
             for(Match m:elimMatches){
                 TextView tv = new TextView(context);
-                tv.setLayoutParams(lparams);
+                tv.setLayoutParams(Constants.lparams);
                 tv.setText(m.getMatchKey());
                 tv.setTag(m.getMatchKey());
                 tv.setTextColor(0xFF000000);
                 tv.setOnClickListener(new MatchClickHandler());
                 elimList.addView(tv);
             }
-
-            return v;
         }
 
         class MatchClickHandler implements View.OnClickListener{
