@@ -2,11 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.plnyyanks.frcnotebook" >
 
+    <uses-sdk   android:targetSdkVersion="19"
+                android:minSdkVersion="14" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:debuggable="false"
+        android:versionCode="1"
+        android:versionName="1.0"
+        >
         <activity
             android:name=".activities.StartActivity"
             android:label="@string/title_activity_start" >

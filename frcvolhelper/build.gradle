@@ -10,11 +10,23 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file("../../../keystore.jks")
+            storePassword System.console().readLine("\n\$ Enter keystore password: ")
+            keyAlias "frc-notebook"
+            keyPassword System.console().readLine("\n\$ Enter key password: ")
+        }
+    }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
