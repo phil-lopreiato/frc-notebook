@@ -1,0 +1,24 @@
+<resources>
+        <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_year">Competition Season</string>
+    <string-array name="pref_year_items">
+        <item>2014</item>
+        <item>2013</item>
+        <item>2012</item>
+    </string-array>
+
+    <string name="pref_title_data_source">Match Data Source</string>
+    <string-array name="pref_data_source_items">
+        <item>The Blue Alliance</item>
+    </string-array>
+    <string-array name="pref_data_source_values">
+        <item>TBA</item>
+    </string-array>
+
+</resources>

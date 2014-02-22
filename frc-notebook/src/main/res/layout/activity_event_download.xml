@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <TextView
+        android:text="@string/download_event_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:id="@+id/download_event_header"
+        android:layout_centerHorizontal="true"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_loading_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/download_event_header"/>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_list_to_download"
+        android:layout_below="@id/event_loading_progress">
+
+    </ListView>
+
+
+</RelativeLayout>
