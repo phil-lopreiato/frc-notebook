@@ -64,6 +64,9 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("competition_season"));
         bindPreferenceSummaryToValue(findPreference("data_source"));
+
+        addPreferencesFromResource(R.xml.pref_appearance);
+        bindPreferenceSummaryToValue(findPreference("theme"));
     }
 
     /** {@inheritDoc} */
@@ -171,6 +174,21 @@ public class SettingsActivity extends PreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("competition_season"));
             bindPreferenceSummaryToValue(findPreference("data_source"));
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AppearancePreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_appearance);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("theme"));
         }
     }
 

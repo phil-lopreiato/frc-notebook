@@ -11,7 +11,9 @@ public final class R {
     public static final class array {
         public static final int pref_data_source_items=0x7f050000;
         public static final int pref_data_source_values=0x7f050001;
-        public static final int pref_year_items=0x7f050002;
+        public static final int pref_theme_items=0x7f050002;
+        public static final int pref_theme_values=0x7f050003;
+        public static final int pref_year_items=0x7f050004;
     }
     public static final class attr {
     }
@@ -86,24 +88,28 @@ public final class R {
         public static final int event_content_layout=0x7f070004;
         public static final int hello_world=0x7f070005;
         public static final int new_general_note=0x7f070006;
-        public static final int pref_header_general=0x7f070007;
-        public static final int pref_title_data_source=0x7f070008;
-        public static final int pref_title_year=0x7f070009;
-        public static final int select_event_title=0x7f07000a;
-        public static final int title_activity_event_download=0x7f07000b;
-        public static final int title_activity_settings=0x7f07000c;
-        public static final int title_activity_start=0x7f07000d;
-        public static final int title_activity_view_event=0x7f07000e;
-        public static final int title_activity_view_match=0x7f07000f;
-        public static final int title_activity_view_team=0x7f070010;
+        public static final int pref_header_appearance=0x7f070007;
+        public static final int pref_header_general=0x7f070008;
+        public static final int pref_title_data_source=0x7f070009;
+        public static final int pref_title_theme=0x7f07000a;
+        public static final int pref_title_year=0x7f07000b;
+        public static final int select_event_title=0x7f07000c;
+        public static final int title_activity_event_download=0x7f07000d;
+        public static final int title_activity_settings=0x7f07000e;
+        public static final int title_activity_start=0x7f07000f;
+        public static final int title_activity_view_event=0x7f070010;
+        public static final int title_activity_view_match=0x7f070011;
+        public static final int title_activity_view_team=0x7f070012;
     }
     public static final class style {
+        public static final int theme_dark=0x7f080000;
         /**  Customize your theme here. 
          */
-        public static final int AppTheme=0x7f080000;
+        public static final int theme_light=0x7f080001;
     }
     public static final class xml {
-        public static final int pref_general=0x7f040000;
-        public static final int pref_headers=0x7f040001;
+        public static final int pref_appearance=0x7f040000;
+        public static final int pref_general=0x7f040001;
+        public static final int pref_headers=0x7f040002;
     }
 }
