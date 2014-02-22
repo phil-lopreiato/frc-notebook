@@ -71,8 +71,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
             tv.setClickable(true);
             tv.setTag(element.getAsJsonObject().get("key").toString());
             tv.setOnClickListener(new EventClickListener());
-            eventList.addView(tv);
-            meow*/
+            eventList.addView(tv);moo*/
             events[i] = eventName;
             keys[i] = element.getAsJsonObject().get("key").getAsString();
         }
