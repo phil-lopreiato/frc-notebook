@@ -3,7 +3,9 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +23,12 @@ public class StartActivity extends Activity{
 
     public static Context startActivityContext;
     public static DatabaseHandler db;
+    public static SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityContext = this;
+        setTheme(getThemeFromPrefs());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
@@ -32,7 +37,6 @@ public class StartActivity extends Activity{
                     .commit();
         }
 
-        startActivityContext = this;
         getdb();
 
         new ShowLocalEvents().execute(this);
@@ -40,6 +44,7 @@ public class StartActivity extends Activity{
 
     @Override
     protected void onResume() {
+        setTheme(getThemeFromPrefs());
         super.onResume();
         new ShowLocalEvents().execute(this);
     }
@@ -83,4 +88,14 @@ public class StartActivity extends Activity{
             db.close();
     }
 
+    public static int getThemeFromPrefs(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(startActivityContext);
+
+        String theme = prefs.getString("theme","theme_light");
+        int themeId = R.style.theme_light;
+        if(theme.equals("theme_light")) themeId = R.style.theme_light;
+        if(theme.equals("theme_dark")) themeId = R.style.theme_dark;
+        return themeId;
+    }
 }

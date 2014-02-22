@@ -38,6 +38,7 @@ public class ViewMatch extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(StartActivity.getThemeFromPrefs());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_match);
 

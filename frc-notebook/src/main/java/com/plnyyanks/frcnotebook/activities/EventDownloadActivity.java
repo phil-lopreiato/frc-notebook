@@ -19,6 +19,7 @@ public class EventDownloadActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(StartActivity.getThemeFromPrefs());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_download);
 

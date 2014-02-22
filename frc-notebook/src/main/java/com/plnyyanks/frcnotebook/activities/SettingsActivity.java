@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
 
@@ -34,7 +35,14 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
+    private static Context context;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(StartActivity.getThemeFromPrefs());
+        super.onCreate(savedInstanceState);
+        context = this;
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -132,6 +140,7 @@ public class SettingsActivity extends PreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+
             return true;
         }
     };
