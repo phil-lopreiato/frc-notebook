@@ -22,6 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.util.ArrayList;
@@ -64,14 +65,6 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
             element = iterator.next();
             eventName = element.getAsJsonObject().get("name").getAsString();
             eventName += " - "+year;
-            /*TextView tv=new TextView(listActivity);
-            tv.setLayoutParams(Constants.lparams);
-            tv.setText("• " + eventName.substring(1, eventName.length() - 1)+ " - "+year);
-            tv.setTextSize(20);
-            tv.setClickable(true);
-            tv.setTag(element.getAsJsonObject().get("key").toString());
-            tv.setOnClickListener(new EventClickListener());
-            eventList.addView(tv);moo*/
             events[i] = eventName;
             keys[i] = element.getAsJsonObject().get("key").getAsString();
         }
@@ -120,29 +113,5 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
                 }
             }
         };
-    }
-
-    class EventListArrayAdapter extends ArrayAdapter<String>{
-        private final Context context;
-        private final String values[], keys[];
-
-        public EventListArrayAdapter(Context context,String[] values,String[] keys){
-            super(context,android.R.layout.simple_list_item_1,values);
-            this.context = context;
-            this.values = values;
-            this.keys = keys;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            /*LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(android.R.layout.simple_list_item_1,parent,false);
-            TextView mainLine = (TextView) rowView.findViewById(android.R.layout.simple_list_item_1); */
-            return super.getView(position, convertView, parent);
-        }
-
-        public String getEventKey(int position){
-            return keys[position];
-        }
     }
 }

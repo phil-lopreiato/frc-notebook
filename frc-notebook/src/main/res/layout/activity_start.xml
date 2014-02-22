@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,32 +11,13 @@
 
     <TextView
         android:text="@string/select_event_title"
+        android:id="@+id/select_event_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="35dp" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="20dp" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/event_list"
-            ></LinearLayout>
-
-    </ScrollView>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="20dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -44,6 +25,16 @@
         android:text="Download Info For An Event"
         android:id="@+id/button"
         android:layout_centerHorizontal="true"
-        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:onClick="openDownloader"/>
-</LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button"
+        android:id="@+id/event_list"
+        android:layout_below="@id/select_event_header">
+
+        </ListView>
+
+</RelativeLayout>
