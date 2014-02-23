@@ -32,6 +32,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         List<Event> storedEvents = StartActivity.db.getAllEvents();
 
         final ListView eventList = (ListView) parentActivity.findViewById(R.id.event_list);
+        eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         String[] events = new String[storedEvents.size()],
                  keys = new String[storedEvents.size()];
         Event e;
@@ -49,6 +50,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                 EventListArrayAdapter adapter = new EventListArrayAdapter(parentActivity,finalEvents,finalKeys);
                 eventList.setAdapter(adapter);
                 eventList.setOnItemClickListener(new ClickListener(finalKeys));
+                eventList.setOnLongClickListener(new LongClickListener());
             }
         });
 
@@ -73,6 +75,19 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
             ViewEvent.setEvent(eventKey);
             Intent intent = new Intent(parentActivity, ViewEvent.class);
             parentActivity.startActivity(intent);
+        }
+    }
+
+    private class LongClickListener implements ListView.OnItemLongClickListener, View.OnLongClickListener {
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            return false;
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return false;
         }
     }
 }

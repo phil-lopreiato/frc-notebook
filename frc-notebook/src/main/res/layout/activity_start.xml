@@ -9,20 +9,19 @@
     android:orientation="vertical"
     tools:context="com.plnyyanks.frcnotebook.activities.StartActivity$PlaceholderFragment">
 
-    <TextView
+    <TextView style="@style/activity_header"
         android:text="@string/select_event_title"
         android:id="@+id/select_event_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="35dp" />
+        android:layout_centerHorizontal="true"/>
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Download Info For An Event"
+        android:text="@string/download_event_button"
         android:id="@+id/button"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"

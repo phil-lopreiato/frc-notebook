@@ -6,12 +6,10 @@
     tools:context="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
     tools:ignore="MergeRootFrame" >
 
-    <TextView
+    <TextView style="@style/activity_header"
         android:text="@string/download_event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textStyle="bold"
         android:id="@+id/download_event_header"
         android:layout_centerHorizontal="true"/>
 

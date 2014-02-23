@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Team;
@@ -28,7 +29,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     private static String key;
     private static Event event;
-    protected static Context context;
+    protected static Activity activity;
 
     public static void setEvent(String eventKey){
         key = eventKey;
@@ -45,7 +46,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             getFragmentManager().beginTransaction().commit();
         }
 
-        context = this;
+        activity = this;
 
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -94,7 +95,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         switch(tab.getPosition()){
             case 0:
             default:
-                f = new EventTeamListFragment(); break;
+                f = new EventTeamListFragment(key); break;
             case 1:
                 f = new EventScheduleFragment(); break;
         }
@@ -113,7 +114,14 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     }
 
-    public static class EventTeamListFragment extends Fragment implements View.OnClickListener {
+    public static class EventTeamListFragment extends Fragment {
+
+        private String eventKey;
+
+        public EventTeamListFragment(String key){
+            super();
+            eventKey = key;
+        }
 
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
@@ -122,31 +130,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_team_list, null);
-
-            LinearLayout eventList = (LinearLayout) v.findViewById(R.id.team_list);
-            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            ArrayList<Team> teams = StartActivity.db.getAllTeamAtEvent(key);
-            Collections.sort(teams);
-            for(Team team:teams){
-                TextView t = new TextView(context);
-                t.setText("• " + team.getTeamNumber());
-                t.setTextSize(20);
-                t.setTextColor(0xFF000000);
-                t.setTag(team.getTeamKey());
-                t.setOnClickListener(this);
-                eventList.addView(t);
-            }
-
+            new GetTeamsAttending(activity).execute(eventKey);
             return v;
-        }
-
-        @Override
-        public void onClick(View view) {
-            String teamKey = (String)view.getTag();
-            ViewTeam.setTeam(teamKey);
-            Intent intent = new Intent(context, ViewTeam.class);
-            startActivity(intent);
         }
     }
 
@@ -206,7 +191,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 });
             }
             for(Match m:qualMatches){
-                TextView tv = new TextView(context);
+                TextView tv = new TextView(activity);
                 tv.setLayoutParams(Constants.lparams);
                 tv.setText(m.getMatchKey());
                 tv.setTag(m.getMatchKey());
@@ -233,7 +218,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 });
             }
             for(Match m:elimMatches){
-                TextView tv = new TextView(context);
+                TextView tv = new TextView(activity);
                 tv.setLayoutParams(Constants.lparams);
                 tv.setText(m.getMatchKey());
                 tv.setTag(m.getMatchKey());
@@ -249,7 +234,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             public void onClick(View view) {
                 ViewMatch.setMatchKey((String)view.getTag());
 
-                Intent intent = new Intent(context, ViewMatch.class);
+                Intent intent = new Intent(activity, ViewMatch.class);
                 startActivity(intent);
             }
         }

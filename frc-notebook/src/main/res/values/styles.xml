@@ -7,4 +7,8 @@
 
     <style name="theme_dark" parent="android:Theme.Holo"></style>
 
+    <style name="activity_header" parent="android:TextAppearance.DeviceDefault.Large">
+        <item name="android:textSize">35sp</item>
+    </style>
+
 </resources>
