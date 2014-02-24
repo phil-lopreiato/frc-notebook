@@ -10,7 +10,9 @@
   </component>
   <component name="AndroidLayoutPreviewToolWindow">
     <option name="state">
-      <GlobalState />
+      <GlobalState>
+        <option name="visible" value="false" />
+      </GlobalState>
     </option>
   </component>
   <component name="AndroidLayouts">
@@ -23,14 +25,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfb7ebcb-5dfc-4fec-9ad8-0083a2920735" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/GetMatchInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/build/dex/debug/classes.dex" afterPath="$PROJECT_DIR$/frc-notebook/build/dex/debug/classes.dex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/build/source/r/debug/com/plnyyanks/frcnotebook/R.java" afterPath="$PROJECT_DIR$/frc-notebook/build/source/r/debug/com/plnyyanks/frcnotebook/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewMatch.java" afterPath="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewMatch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_match.xml" afterPath="$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_match.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml" afterPath="$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/frc-notebook/src/main/res/values/styles.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="FRC Notebook.iws" />
@@ -98,35 +94,23 @@
       <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="40" selection-start="1582" selection-end="1582" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="810">
+            <state line="28" column="49" selection-start="1183" selection-end="1183" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="855">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_view_match.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_match.xml">
+      <file leaf-file-name="fragment_event_tab.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="45" selection-start="4908" selection-end="4908" vertical-scroll-proportion="1.026178" vertical-offset="1242" max-vertical-offset="2625">
+            <state line="16" column="13" selection-start="772" selection-end="772" vertical-scroll-proportion="0.3345656" vertical-offset="59" max-vertical-offset="1215">
               <folding>
-                <element signature="e#568#601#0" expanded="true" />
-                <element signature="e#717#750#0" expanded="true" />
-                <element signature="e#980#1013#0" expanded="true" />
-                <element signature="e#1292#1325#0" expanded="true" />
-                <element signature="e#1532#1554#0" expanded="true" />
-                <element signature="e#1934#1953#0" expanded="true" />
-                <element signature="e#2689#2707#0" expanded="true" />
-                <element signature="e#2956#2989#0" expanded="true" />
-                <element signature="e#3196#3219#0" expanded="true" />
-                <element signature="e#3527#3547#0" expanded="true" />
-                <element signature="e#4211#4229#0" expanded="true" />
-                <element signature="e#4473#4500#0" expanded="true" />
-                <element signature="e#4669#4707#0" expanded="true" />
-                <element signature="e#5321#5347#0" expanded="true" />
-                <element signature="e#5516#5541#0" expanded="true" />
-                <element signature="e#5624#5657#0" expanded="true" />
-                <element signature="e#6046#6076#0" expanded="true" />
-                <element signature="e#6422#6449#0" expanded="true" />
+                <element signature="e#726#756#0" expanded="true" />
+                <element signature="e#1225#1243#0" expanded="true" />
+                <element signature="e#1645#1671#0" expanded="true" />
+                <element signature="e#2111#2136#0" expanded="true" />
+                <element signature="e#2577#2605#0" expanded="true" />
+                <element signature="e#2967#2985#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -135,66 +119,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="styles.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/values/styles.xml">
+      <file leaf-file-name="ViewTeam.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewTeam.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="42" selection-start="535" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewMatch.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewMatch.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="5" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.0" vertical-offset="601" max-vertical-offset="1200">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetMatchInfo.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/GetMatchInfo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="25" selection-start="3722" selection-end="3722" vertical-scroll-proportion="0.0" vertical-offset="1136" max-vertical-offset="2985">
+            <state line="38" column="55" selection-start="1196" selection-end="1196" vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="2280">
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5553#7447#0" expanded="true" />
-                <element signature="e#6137#7037#0" expanded="true" />
-                <element signature="e#7006#7007#0" expanded="true" />
-                <element signature="e#7432#7433#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShowLocalEvents.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/ShowLocalEvents.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="58" selection-start="1008" selection-end="1214" vertical-scroll-proportion="0.0" vertical-offset="1" max-vertical-offset="1185">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExapandableListAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/adapters/ExapandableListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1168" selection-end="1168" vertical-scroll-proportion="0.0" vertical-offset="191" max-vertical-offset="1350">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#ExapandableListAdapter#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getChild#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getChildId#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getChildrenCount#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getGroup#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getGroupCount#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#onGroupCollapsed#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#onGroupExpanded#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getGroupId#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#getGroupView#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#hasStableIds#0;class#ExapandableListAdapter#0" expanded="false" />
-                <element signature="method#isChildSelectable#0;class#ExapandableListAdapter#0" expanded="false" />
+                <element signature="method#onCreate#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#onCreateOptionsMenu#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#onOptionsItemSelected#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#setTeam#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#onTabSelected#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#onTabUnselected#0;class#ViewTeam#0" expanded="false" />
+                <element signature="method#onTabReselected#0;class#ViewTeam#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -902,17 +838,19 @@
         <option value="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/datatypes/Match.java" />
         <option value="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewMatch.java" />
         <option value="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/GetEventMatches.java" />
-        <option value="$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/frc-notebook/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/GetMatchInfo.java" />
         <option value="$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_match.xml" />
+        <option value="$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
-    <option name="width" value="1922" />
-    <option name="height" value="1081" />
+    <option name="y" value="27" />
+    <option name="width" value="1368" />
+    <option name="height" value="742" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1566,13 +1504,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1922" height="1081" extended-state="6" />
+    <frame x="-1" y="27" width="1368" height="742" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32942432" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46747354" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1583,14 +1521,14 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49436393" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17927383" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1794,16 +1732,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml">
-      <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1395">
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_start.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="49" selection-start="667" selection-end="667" vertical-scroll-proportion="0.31413612" vertical-offset="0" max-vertical-offset="675">
@@ -1830,21 +1758,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="77" column="38" selection-start="2750" selection-end="2909" vertical-scroll-proportion="0.6494157" vertical-offset="376" max-vertical-offset="1440">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewTeam.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="55" selection-start="1196" selection-end="1196" vertical-scroll-proportion="-0.1669449" vertical-offset="265" max-vertical-offset="2280">
-          <folding>
-            <element signature="method#onCreate#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#setTeam#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#onTabSelected#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#onTabUnselected#0;class#ViewTeam#0" expanded="false" />
-            <element signature="method#onTabReselected#0;class#ViewTeam#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1887,16 +1800,6 @@
             <element signature="class#EventTeamListFragment#0;class#ViewEvent#0" expanded="false" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_team.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="573">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_event.xml">
@@ -2036,23 +1939,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="40" selection-start="1582" selection-end="1582" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="810">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewMatch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="5" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.0" vertical-offset="601" max-vertical-offset="1200">
+        <state line="68" column="5" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.024691358" vertical-offset="601" max-vertical-offset="1200">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/adapters/ExapandableListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1168" selection-end="1168" vertical-scroll-proportion="0.0" vertical-offset="191" max-vertical-offset="1350">
+        <state line="38" column="0" selection-start="1168" selection-end="1168" vertical-scroll-proportion="0.5097002" vertical-offset="191" max-vertical-offset="1350">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#ExapandableListAdapter#0;class#ExapandableListAdapter#0" expanded="false" />
@@ -2073,21 +1969,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="42" selection-start="535" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+        <state line="14" column="42" selection-start="535" selection-end="535" vertical-scroll-proportion="0.37037036" vertical-offset="0" max-vertical-offset="567">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/ShowLocalEvents.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="58" selection-start="1008" selection-end="1214" vertical-scroll-proportion="0.0" vertical-offset="1" max-vertical-offset="1185">
-          <folding />
+        <state line="35" column="58" selection-start="1008" selection-end="1214" vertical-scroll-proportion="0.4744268" vertical-offset="1" max-vertical-offset="1185">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1614#2023#0" expanded="false" />
+            <element signature="e#2012#2013#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/background/GetMatchInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="25" selection-start="3722" selection-end="3722" vertical-scroll-proportion="0.0" vertical-offset="1136" max-vertical-offset="2985">
+        <state line="103" column="25" selection-start="3722" selection-end="3722" vertical-scroll-proportion="0.72134036" vertical-offset="1136" max-vertical-offset="2985">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5553#7447#0" expanded="true" />
@@ -2100,7 +2000,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_match.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="45" selection-start="4908" selection-end="4908" vertical-scroll-proportion="1.026178" vertical-offset="1242" max-vertical-offset="2625">
+        <state line="102" column="37" selection-start="4215" selection-end="4215" vertical-scroll-proportion="0.55452865" vertical-offset="1230" max-vertical-offset="2625">
           <folding>
             <element signature="e#568#601#0" expanded="true" />
             <element signature="e#717#750#0" expanded="true" />
@@ -2112,7 +2012,6 @@
             <element signature="e#2956#2989#0" expanded="true" />
             <element signature="e#3196#3219#0" expanded="true" />
             <element signature="e#3527#3547#0" expanded="true" />
-            <element signature="e#4211#4229#0" expanded="true" />
             <element signature="e#4473#4500#0" expanded="true" />
             <element signature="e#4669#4707#0" expanded="true" />
             <element signature="e#5321#5347#0" expanded="true" />
@@ -2120,6 +2019,55 @@
             <element signature="e#5624#5657#0" expanded="true" />
             <element signature="e#6046#6076#0" expanded="true" />
             <element signature="e#6422#6449#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/activity_view_team.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="573">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/java/com/plnyyanks/frcnotebook/activities/ViewTeam.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="55" selection-start="1196" selection-end="1196" vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="2280">
+          <folding>
+            <element signature="method#onCreate#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#setTeam#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#onTabSelected#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#onTabUnselected#0;class#ViewTeam#0" expanded="false" />
+            <element signature="method#onTabReselected#0;class#ViewTeam#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="49" selection-start="1183" selection-end="1183" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="855">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frc-notebook/src/main/res/layout/fragment_event_tab.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="13" selection-start="772" selection-end="772" vertical-scroll-proportion="0.3345656" vertical-offset="59" max-vertical-offset="1215">
+          <folding>
+            <element signature="e#726#756#0" expanded="true" />
+            <element signature="e#1225#1243#0" expanded="true" />
+            <element signature="e#1645#1671#0" expanded="true" />
+            <element signature="e#2111#2136#0" expanded="true" />
+            <element signature="e#2577#2605#0" expanded="true" />
+            <element signature="e#2967#2985#0" expanded="true" />
           </folding>
         </state>
       </provider>
