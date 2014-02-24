@@ -19,6 +19,7 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetEventMatches;
 import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Team;
@@ -39,7 +40,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(StartActivity.getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
 
@@ -67,6 +68,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         bar.addTab(scheduleTab);
     }
 
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(ViewEvent.class);
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -154,80 +160,6 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public void onResume() {
             super.onResume();
-            //loadMatchList();
-        }
-
-        private void loadMatchList(){
-            /*final LinearLayout qualList = (LinearLayout) view.findViewById(R.id.qual_matches);
-            final LinearLayout elimList = (LinearLayout) view.findViewById(R.id.elim_matches);
-
-            ArrayList<Match>    allMatches = StartActivity.db.getAllMatches(key),
-                    qualMatches,qfMatches,sfMatches,fMatches;
-            event.sortMatches(allMatches);
-            qualMatches = new ArrayList<Match>();
-            qualMatches = event.getQuals();
-            qfMatches = event.getQuarterFinals();
-            sfMatches = event.getSemiFinals();
-            fMatches = event.getFinals();
-
-            ArrayList<Match> elimMatches = new ArrayList<Match>();
-            elimMatches.addAll(qfMatches);
-            elimMatches.addAll(sfMatches);
-            elimMatches.addAll(fMatches);
-
-            if(qualMatches.size()>0){
-                qualList.removeAllViews();
-                qualList.setVisibility(View.GONE);
-                TextView qualHeader = (TextView)view.findViewById(R.id.quals_header);
-                qualHeader.setText("Qualification Matches ("+qualMatches.size()+")");
-                qualHeader.setClickable(true);
-                qualHeader.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(qualList.getVisibility() == View.GONE){
-                            qualList.setVisibility(View.VISIBLE);
-                        }else{
-                            qualList.setVisibility(View.GONE);
-                        }
-                    }
-                });
-            }
-            for(Match m:qualMatches){
-                TextView tv = new TextView(activity);
-                tv.setLayoutParams(Constants.lparams);
-                tv.setText(m.getMatchKey());
-                tv.setTag(m.getMatchKey());
-                tv.setTextColor(0xFF000000);
-                tv.setOnClickListener(new MatchClickHandler());
-                qualList.addView(tv);
-            }
-
-            if(elimMatches.size()>0){
-                elimList.removeAllViews();
-                elimList.setVisibility(View.GONE);
-                TextView elimHeader = (TextView)view.findViewById(R.id.elims_header);
-                elimHeader.setText("Elimination Matches ("+elimMatches.size()+")");
-                elimHeader.setClickable(true);
-                elimHeader.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(elimList.getVisibility() == View.GONE){
-                            elimList.setVisibility(View.VISIBLE);
-                        }else{
-                            elimList.setVisibility(View.GONE);
-                        }
-                    }
-                });
-            }
-            for(Match m:elimMatches){
-                TextView tv = new TextView(activity);
-                tv.setLayoutParams(Constants.lparams);
-                tv.setText(m.getMatchKey());
-                tv.setTag(m.getMatchKey());
-                tv.setTextColor(0xFF000000);
-                tv.setOnClickListener(new MatchClickHandler());
-                elimList.addView(tv);
-            }*/
         }
 
         class MatchClickHandler implements View.OnClickListener{

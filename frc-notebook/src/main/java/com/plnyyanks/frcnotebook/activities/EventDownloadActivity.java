@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.tba.TBA_EventFetcher;
 
 public class EventDownloadActivity extends Activity {
@@ -19,7 +20,7 @@ public class EventDownloadActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(StartActivity.getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_download);
 
@@ -37,6 +38,7 @@ public class EventDownloadActivity extends Activity {
 
     @Override
     protected void onResume() {
+        StartActivity.checkThemeChanged(EventDownloadActivity.class);
         super.onResume();
 
         if(prefs == null)

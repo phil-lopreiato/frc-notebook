@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
@@ -38,7 +39,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(StartActivity.getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_team);
 
@@ -72,6 +73,12 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             bar.addTab(eventTab);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(ViewTeam.class);
+        super.onResume();
     }
 
     @Override

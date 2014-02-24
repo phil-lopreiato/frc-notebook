@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
 import com.plnyyanks.frcnotebook.database.DatabaseHandler;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 
 import java.util.List;
@@ -23,19 +24,19 @@ public class StartActivity extends Activity{
 
     public static Context startActivityContext;
     public static DatabaseHandler db;
-    public static SharedPreferences prefs;
+    private static int currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         startActivityContext = this;
-        setTheme(getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .commit();
-        }
+        }*/
 
         getdb();
 
@@ -44,7 +45,7 @@ public class StartActivity extends Activity{
 
     @Override
     protected void onResume() {
-        setTheme(getThemeFromPrefs());
+        checkThemeChanged(StartActivity.class);
         super.onResume();
         new ShowLocalEvents().execute(this);
     }
@@ -88,14 +89,13 @@ public class StartActivity extends Activity{
             db.close();
     }
 
-    public static int getThemeFromPrefs(){
-        if(prefs==null)
-            prefs = PreferenceManager.getDefaultSharedPreferences(startActivityContext);
-
-        String theme = prefs.getString("theme","theme_light");
-        int themeId = R.style.theme_light;
-        if(theme.equals("theme_light")) themeId = R.style.theme_light;
-        if(theme.equals("theme_dark")) themeId = R.style.theme_dark;
-        return themeId;
+    public static void checkThemeChanged(Class<?> cls){
+        if(currentTheme != PreferenceHandler.getTheme()){
+            currentTheme = PreferenceHandler.getTheme();
+            Intent intent = new Intent(startActivityContext, cls);
+            startActivityContext.startActivity(intent);
+        }else{
+            currentTheme = PreferenceHandler.getTheme();
+        }
     }
 }

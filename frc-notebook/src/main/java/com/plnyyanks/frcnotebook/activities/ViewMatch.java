@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetMatchInfo;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
@@ -38,7 +39,7 @@ public class ViewMatch extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(StartActivity.getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_match);
 
@@ -55,6 +56,12 @@ public class ViewMatch extends Activity {
         if(matchKey == null) return;
 
         new GetMatchInfo(this).execute(previousKey,matchKey,nextKey,eventKey);
+    }
+
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(ViewMatch.class);
+        super.onResume();
     }
 
     public static void setMatchKey(String key){

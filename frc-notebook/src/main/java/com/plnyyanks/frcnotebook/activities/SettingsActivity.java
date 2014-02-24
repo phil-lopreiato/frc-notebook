@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(StartActivity.getThemeFromPrefs());
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         context = this;
     }
@@ -49,6 +50,12 @@ public class SettingsActivity extends PreferenceActivity {
         super.onPostCreate(savedInstanceState);
 
         setupSimplePreferencesScreen();
+    }
+
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(SettingsActivity.class);
+        super.onResume();
     }
 
     /**
