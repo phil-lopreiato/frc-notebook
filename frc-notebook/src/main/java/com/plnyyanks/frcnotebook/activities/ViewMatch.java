@@ -3,7 +3,6 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -34,7 +33,7 @@ public class ViewMatch extends Activity {
     private static String matchKey,eventKey,nextKey,previousKey;
     private static Event parentEvent;
     private static Match match;
-    static Context context;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class ViewMatch extends Activity {
                     .commit();
         }
 
-        context = this;
+        activity = this;
         ActionBar bar = getActionBar();
         bar.setTitle(parentEvent.getEventName()+" - "+parentEvent.getEventYear());
         bar.setSubtitle(eventKey);
@@ -172,29 +171,29 @@ public class ViewMatch extends Activity {
             LinearLayout notesList = (LinearLayout)findViewById(R.id.team_notes_list);
             notesList.removeAllViews();
             if(notes.size() == 0){
-                TextView t = new TextView(context);
+                TextView t = new TextView(activity);
                 t.setLayoutParams(Constants.lparams);
                 t.setText("No Notes for This Team");
                 notesList.addView(t);
             }else{
                 for(Note n:notes){
-                    TextView t = new TextView(context);
+                    TextView t = new TextView(activity);
                     t.setLayoutParams(Constants.lparams);
                     t.setText("• " + n.getNote());
                     t.setTextSize(18);
                     notesList.addView(t);
                 }
             }
-            Button addNote = new Button(context);
+            Button addNote = new Button(activity);
             addNote.setText("Add Note");
             addNote.setLayoutParams(Constants.lparams);
             addNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final EditText noteEditField = new EditText(context);
+                    final EditText noteEditField = new EditText(activity);
                     noteEditField.setText("");
                     noteEditField.setHint("Enter your note");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle("Note on Team " + teamKey.substring(3));
                     builder.setView(noteEditField);
                     builder.setPositiveButton("Add",
@@ -208,7 +207,7 @@ public class ViewMatch extends Activity {
                                     }else{
                                         resultText = "Error adding note to database";
                                     }
-                                    Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, resultText, Toast.LENGTH_SHORT).show();
                                     dialog.cancel();
                                 }
                             });

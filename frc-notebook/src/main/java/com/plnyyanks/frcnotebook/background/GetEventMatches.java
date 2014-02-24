@@ -40,6 +40,10 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
                 ExpandableListView matchList = (ExpandableListView) activity.findViewById(R.id.match_list);
                 ExapandableListAdapter adapter = new ExapandableListAdapter(activity,groups);
                 matchList.setAdapter(adapter);
+
+                //hide the progress bar
+                ProgressBar prog = (ProgressBar) activity.findViewById(R.id.matches_loading_progress);
+                prog.setVisibility(View.GONE);
             }
         });
         return null;
