@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.background.GetEventMatches;
 import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
@@ -145,18 +146,19 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_schedule, null);
             view = v;
-            loadMatchList();
+            //loadMatchList();
+            new GetEventMatches(activity).execute(key);
             return v;
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            loadMatchList();
+            //loadMatchList();
         }
 
         private void loadMatchList(){
-            final LinearLayout qualList = (LinearLayout) view.findViewById(R.id.qual_matches);
+            /*final LinearLayout qualList = (LinearLayout) view.findViewById(R.id.qual_matches);
             final LinearLayout elimList = (LinearLayout) view.findViewById(R.id.elim_matches);
 
             ArrayList<Match>    allMatches = StartActivity.db.getAllMatches(key),
@@ -225,7 +227,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 tv.setTextColor(0xFF000000);
                 tv.setOnClickListener(new MatchClickHandler());
                 elimList.addView(tv);
-            }
+            }*/
         }
 
         class MatchClickHandler implements View.OnClickListener{

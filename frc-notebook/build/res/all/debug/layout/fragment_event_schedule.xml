@@ -15,4 +15,4 @@
         android:layout_height="wrap_content" >
     </ExpandableListView>
 
-</RelativeLayout>
+</RelativeLayout><!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/layout/fragment_event_schedule.xml -->

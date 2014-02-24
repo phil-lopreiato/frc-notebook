@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings_activity_settings.xml -->
+    <eat-comment />
+
+    <string-array name="pref_data_source_items">
+        <item>The Blue Alliance</item>
+    </string-array>
+    <string-array name="pref_data_source_values">
+        <item>TBA</item>
+    </string-array>
+    <string-array name="pref_theme_items">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>theme_light</item>
+        <item>theme_dark</item>
+    </string-array>
+    <string-array name="pref_year_items">
+        <item>2014</item>
+        <item>2013</item>
+        <item>2012</item>
+    </string-array>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/dimens.xml -->
+    <eat-comment />
+
+    <dimen name="activity_half_vertical_margin">8dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="action_delete">Delete</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_general_note_button">Add Note</string>
+    <string name="app_name">FRC Notebook</string>
+    <string name="download_event_button">Download Info For An Event</string>
+    <string name="download_event_title">Select an Event</string>
+    <string name="elim_match_header">Elimination Matches</string>
+    <string name="event_content_layout">event_list_layout</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_general_note">New General Note</string>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings_activity_settings.xml -->
+    <eat-comment />
+
+    <string name="pref_header_appearance">Appearance</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_data_source">Match Data Source</string>
+    <string name="pref_title_theme">Application Theme</string>
+    <string name="pref_title_year">Competition Season</string>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="qual_match_header">Qualification Matches</string>
+    <string name="select_event_title">Select an Event</string>
+    <string name="teams_attending_header">Teams Attending</string>
+    <string name="title_activity_event_download">Download Event Info</string>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings_activity_settings.xml -->
+    <eat-comment />
+
+    <string name="title_activity_settings">Settings</string>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="title_activity_start">FRC Notebook</string>
+    <string name="title_activity_view_event">View Event</string>
+    <string name="title_activity_view_match">View Match</string>
+    <string name="title_activity_view_team">View Team</string>
+    <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/styles.xml -->
+    <eat-comment />
+
+    <style name="activity_header" parent="android:TextAppearance.DeviceDefault.Large">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="theme_dark" parent="android:Theme.Holo" />
+
+    <style name="theme_light" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+</resources>

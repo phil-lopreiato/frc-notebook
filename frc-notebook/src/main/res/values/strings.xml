@@ -22,6 +22,10 @@
     <string name="title_activity_view_team">View Team</string>
     <string name="teams_attending_header">Teams Attending</string>
 
+    <!-- Match List -->
+    <string name="qual_match_header">Qualification Matches</string>
+    <string name="elim_match_header">Elimination Matches</string>
+
     <string name="new_general_note">New General Note</string>
     <string name="add_general_note_button">Add Note</string>
     <string name="title_activity_view_match">View Match</string>
