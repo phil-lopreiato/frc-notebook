@@ -12,7 +12,7 @@
     <ListPreference
         android:key="data_source"
         android:title="@string/pref_title_data_source"
-        android:defaultValue="TBA"
+        android:defaultValue="TBAv1"
         android:entries="@array/pref_data_source_items"
         android:entryValues="@array/pref_data_source_values"/>
 </PreferenceCategory>
