@@ -83,7 +83,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         ListGroup elimGroup = new ListGroup(("Elimination Matches ("+elimMatches.size()+")"));
         for (Match m : elimMatches) {
             elimGroup.children.add(m.getMatchType()+" "+m.getSetNumber()+" Match "+m.getMatchNumber());
-            qualGroup.children_keys.add(m.getMatchKey());
+            elimGroup.children_keys.add(m.getMatchKey());
         }
         groups.append(1,elimGroup);
     }
