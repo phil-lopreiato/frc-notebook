@@ -9,6 +9,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewEvent" >
 
+    <ProgressBar style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/matches_loading_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
     <ExpandableListView
         android:id="@+id/match_list"
         android:layout_width="match_parent"

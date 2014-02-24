@@ -11,4 +11,8 @@
         <item name="android:textSize">35sp</item>
     </style>
 
+    <style name="text_super_large" parent="android:TextAppearance.DeviceDefault.Large">
+        <item name="android:textSize">25sp</item>
+    </style>
+
 </resources>

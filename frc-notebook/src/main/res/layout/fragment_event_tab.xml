@@ -55,7 +55,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_general_note_button"
+                android:text="@string/add_note_button"
                 android:id="@+id/submit_general_note"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>

@@ -19,16 +19,31 @@
 
     <!-- Team List -->
     <string name="title_activity_view_event">View Event</string>
-    <string name="title_activity_view_team">View Team</string>
     <string name="teams_attending_header">Teams Attending</string>
+
+    <!-- View Team -->
+    <string name="title_activity_view_team">View Team</string>
+    <string name="new_general_note">New General Note</string>
+    <string name="add_note_button">Add Note</string>
 
     <!-- Match List -->
     <string name="qual_match_header">Qualification Matches</string>
     <string name="elim_match_header">Elimination Matches</string>
 
-    <string name="new_general_note">New General Note</string>
-    <string name="add_general_note_button">Add Note</string>
+    <!-- View Match -->
     <string name="title_activity_view_match">View Match</string>
+    <string name="match_title_placeholder">Match Title</string>
+    <string name="red_alliance">Red Alliance</string>
+    <string name="blue_alliance">Blue Alliance</string>
+    <string name="red_score">Red Score</string>
+    <string name="blue_score">Blue Score</string>
+    <string name="no_teams">No teams yet</string>
+    <string name="team_notes_header">Team Notes</string>
+    <string name="no_team_selected">No Team Selected</string>
+    <string name="prevous_match_button">Previous Match</string>
+    <string name="next_match_button">Next Match</string>
+
+
     <string name="hello_world">Hello world!</string>
 
 </resources>

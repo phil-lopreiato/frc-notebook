@@ -196,35 +196,55 @@ Dark
                 </string>
                 <string name="teams_attending_header" >Teams Attending
                 </string>
+                <string name="match_title_placeholder" >Match Title
+                </string>
+                <string name="blue_alliance" >Blue Alliance
+                </string>
                 <string name="event_content_layout" >event_list_layout
+                </string>
+                <string name="prevous_match_button" >Previous Match
+                </string>
+                <string name="next_match_button" >Next Match
                 </string>
                 <string name="title_activity_view_team" >View Team
                 </string>
-                <string name="add_general_note_button" >Add Note
+                <string name="blue_score" >Blue Score
                 </string>
                 <string name="elim_match_header" >Elimination Matches
                 </string>
                 <string name="title_activity_view_event" >View Event
                 </string>
-                <string name="qual_match_header" >Qualification Matches
+                <string name="no_teams" >No teams yet
                 </string>
                 <string name="download_event_button" >Download Info For An Event
                 </string>
-                <string name="select_event_title" >Select an Event
-                </string>
-                <string name="title_activity_start" >FRC Notebook
-                </string>
-                <string name="title_activity_event_download" >Download Event Info
-                </string>
-                <string name="app_name" >FRC Notebook
+                <string name="qual_match_header" >Qualification Matches
                 </string>
                 <string name="download_event_title" >Select an Event
                 </string>
+                <string name="app_name" >FRC Notebook
+                </string>
+                <string name="title_activity_event_download" >Download Event Info
+                </string>
+                <string name="title_activity_start" >FRC Notebook
+                </string>
+                <string name="select_event_title" >Select an Event
+                </string>
+                <string name="red_alliance" >Red Alliance
+                </string>
+                <string name="no_team_selected" >No Team Selected
+                </string>
                 <string name="title_activity_view_match" >View Match
+                </string>
+                <string name="add_note_button" >Add Note
                 </string>
                 <string name="hello_world" >Hello world!
                 </string>
+                <string name="red_score" >Red Score
+                </string>
                 <string name="action_delete" >Delete
+                </string>
+                <string name="team_notes_header" >Team Notes
                 </string>
             </file>
             <file
@@ -243,6 +263,14 @@ Dark
                     parent="android:TextAppearance.DeviceDefault.Large" >
                     <item name="android:textSize">
 35sp
+                    </item>
+                </style>
+
+                <style
+                    name="text_super_large"
+                    parent="android:TextAppearance.DeviceDefault.Large" >
+                    <item name="android:textSize">
+25sp
                     </item>
                 </style>
 
