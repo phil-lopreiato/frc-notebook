@@ -18,7 +18,7 @@
         <item>The Blue Alliance</item>
     </string-array>
     <string-array name="pref_data_source_values">
-        <item>TBA</item>
+        <item>TBAv1</item>
     </string-array>
 
     <!-- Appearance -->

@@ -43,10 +43,13 @@
     <string name="download_event_title">Select an Event</string>
     <string name="elim_match_header">Elimination Matches</string>
     <string name="event_content_layout">event_list_layout</string>
+    <string name="general_notes_header">General Notes</string>
     <string name="hello_world">Hello world!</string>
+    <string name="match_notes_header">Match Notes</string>
     <string name="match_title_placeholder">Match Title</string>
     <string name="new_general_note">New General Note</string>
     <string name="next_match_button">Next Match</string>
+    <string name="no_notes">No notes yet...</string>
     <string name="no_team_selected">No Team Selected</string>
     <string name="no_teams">No teams yet</string>
     <!-- From: file:/home/phil/Documents/Code/frc-notebook/frc-notebook/src/main/res/values/strings_activity_settings.xml -->
