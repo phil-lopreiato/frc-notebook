@@ -30,6 +30,7 @@ public class Match implements Comparable<Match>{
         this.matchKey = matchKey;
         this.matchType = matchType;
         this.matchNumber = matchNumber;
+        this.setNumber = setNumber;
         this.blueAlliance = blueAlliance;
         this.redAlliance = redAlliance;
         this.blueScore = blueScore;

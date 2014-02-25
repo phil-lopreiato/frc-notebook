@@ -6,4 +6,8 @@
         android:fragment="com.plnyyanks.frcnotebook.activities.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
+    <header
+        android:fragment="com.plnyyanks.frcnotebook.activities.SettingsActivity$AppearancePreferenceFragment"
+        android:title="@string/pref_header_appearance" />
+
 </preference-headers>

@@ -18,7 +18,21 @@
         <item>The Blue Alliance</item>
     </string-array>
     <string-array name="pref_data_source_values">
-        <item>TBA</item>
+        <item>TBAv1</item>
     </string-array>
+
+    <!-- Appearance -->
+    <string name="pref_header_appearance">Appearance</string>
+
+    <string name="pref_title_theme">Application Theme</string>
+    <string-array name="pref_theme_items">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>theme_light</item>
+        <item>theme_dark</item>
+    </string-array>
+
 
 </resources>

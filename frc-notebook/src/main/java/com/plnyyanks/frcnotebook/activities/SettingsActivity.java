@@ -10,8 +10,10 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;
 
@@ -34,13 +36,34 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
+    private static Context context;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceHandler.getTheme());
+        super.onCreate(savedInstanceState);
+        context = this;
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         setupSimplePreferencesScreen();
+    }
+
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(SettingsActivity.class);
+        super.onResume();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return  GeneralPreferenceFragment.class.getName().equals(fragmentName) ||
+                AppearancePreferenceFragment.class.getName().equals(fragmentName)||
+                super.isValidFragment(fragmentName);
     }
 
     /**
@@ -64,6 +87,9 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("competition_season"));
         bindPreferenceSummaryToValue(findPreference("data_source"));
+
+        addPreferencesFromResource(R.xml.pref_appearance);
+        bindPreferenceSummaryToValue(findPreference("theme"));
     }
 
     /** {@inheritDoc} */
@@ -89,7 +115,7 @@ public class SettingsActivity extends PreferenceActivity {
      * "simplified" settings UI should be shown.
      */
     private static boolean isSimplePreferences(Context context) {
-        return ALWAYS_SIMPLE_PREFS
+       return ALWAYS_SIMPLE_PREFS
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
                 || !isXLargeTablet(context);
     }
@@ -129,6 +155,7 @@ public class SettingsActivity extends PreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+
             return true;
         }
     };
@@ -171,6 +198,21 @@ public class SettingsActivity extends PreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("competition_season"));
             bindPreferenceSummaryToValue(findPreference("data_source"));
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AppearancePreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_appearance);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("theme"));
         }
     }
 

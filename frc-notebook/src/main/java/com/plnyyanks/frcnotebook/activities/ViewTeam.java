@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
@@ -33,10 +35,11 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     protected static String teamKey;
     protected static int teamNumber;
-    protected static Context context;
+    protected static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_team);
 
@@ -45,7 +48,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
                     .commit();
         }
 
-        context = this;
+        activity = this;
 
         ActionBar bar = getActionBar();
         bar.setTitle("Team "+teamNumber);
@@ -70,6 +73,12 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             bar.addTab(eventTab);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(ViewTeam.class);
+        super.onResume();
     }
 
     @Override
@@ -136,109 +145,8 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.fragment_event_tab, null);
             thisView = v;
-            Button addNote = (Button)v.findViewById(R.id.submit_general_note);
-            addNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Note newNote = new Note();
-                    newNote.setTeamKey(teamKey);
-                    newNote.setEventKey(eventKey);
-                    newNote.setMatchKey("all");
-                    String noteText = ((EditText)v.findViewById(R.id.new_general_note)).getText().toString();
-                    newNote.setNote(noteText);
-
-                    String resultToast;
-                    if(StartActivity.db.addNote(newNote) != -1){
-                        resultToast = "Note added sucessfully";
-                    }else{
-                        resultToast = "Error adding note to database";
-                    }
-                    Toast.makeText(context,resultToast,Toast.LENGTH_SHORT).show();
-                    LinearLayout eventList = (LinearLayout) thisView.findViewById(R.id.general_notes);
-
-                    LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
-                    addNote(newNote,eventList,lparams);
-                    EditText addBox = (EditText)v.findViewById(R.id.new_general_note);
-                    addBox.setText("");
-                }
-            });
-            fetchNotes();
+            new GetNotesForTeam(activity).execute(teamKey,eventKey);
             return v;
         }
-
-        protected static void fetchNotes(){
-            ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey,"all");
-            ArrayList<Note> matchNotes = StartActivity.db.getAllMatchNotes(teamKey,eventKey);
-
-            LinearLayout generalList = (LinearLayout) thisView.findViewById(R.id.general_notes);
-            LinearLayout matchNotesList = (LinearLayout)thisView.findViewById(R.id.match_notes);
-
-            if(generalNotes.size()>0)
-                generalList.removeAllViews();
-
-            for(Note note:generalNotes){
-                addNote(note,generalList,Constants.lparams);
-            }
-
-            if(matchNotes.size()>0)
-                matchNotesList.removeAllViews();
-
-            for(Note note:matchNotes){
-                addNote(note,matchNotesList,Constants.lparams);
-            }
-        }
-
-        private static void addNote(Note note,LinearLayout layout,LinearLayout.LayoutParams params){
-            final TextView tv=new TextView(context);
-            tv.setLayoutParams(params);
-            tv.setText("• " + note.getNote());
-            tv.setTextSize(20);
-            tv.setLongClickable(true);
-            tv.setTag(note.getId());
-            tv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    final Note oldNote = StartActivity.db.getNote((Short) tv.getTag());
-                    final EditText noteEditField = new EditText(context);
-                    //noteEditField.setId(999);
-                    noteEditField.setText(oldNote.getNote());
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Note on Team " + teamNumber);
-                    builder.setView(noteEditField);
-                    builder.setMessage("Edit your note.");
-                    builder.setPositiveButton("Update",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    oldNote.setNote(noteEditField.getText().toString());
-                                    StartActivity.db.updateNote(oldNote);
-                                    fetchNotes();
-                                    dialog.cancel();
-                                }
-                            });
-
-                    builder.setNeutralButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    builder.setNegativeButton("Delete",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    StartActivity.db.deleteNote(oldNote);
-                                    fetchNotes();
-                                    dialog.cancel();
-                                }
-                            });
-                    builder.create().show();
-                    return false;
-                }
-            });
-            layout.addView(tv);
-        }
-
     }
 }

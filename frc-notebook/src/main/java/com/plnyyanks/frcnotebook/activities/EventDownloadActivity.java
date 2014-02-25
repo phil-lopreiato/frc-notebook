@@ -1,19 +1,26 @@
 package com.plnyyanks.frcnotebook.activities;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.tba.TBA_API;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
+import com.plnyyanks.frcnotebook.tba.TBA_EventFetcher;
 
 public class EventDownloadActivity extends Activity {
 
+    SharedPreferences prefs;
+    String currentYear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_download);
 
@@ -22,9 +29,27 @@ public class EventDownloadActivity extends Activity {
                     .commit();
         }
 
-        TBA_API.getEventsForSeason(this);
+        if(prefs == null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        currentYear = prefs.getString("competition_season","2014");
+
+        new TBA_EventFetcher().execute(this);
     }
 
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(EventDownloadActivity.class);
+        super.onResume();
+
+        if(prefs == null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(!currentYear.equals(prefs.getString("competition_season","2014"))){
+            ListView eventList = (ListView) findViewById(R.id.event_list);
+
+            currentYear = prefs.getString("competition_season","2014");
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

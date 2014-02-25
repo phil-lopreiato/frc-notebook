@@ -6,28 +6,27 @@
     tools:context="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
     tools:ignore="MergeRootFrame" >
 
-    <TextView
+    <TextView style="@style/activity_header"
         android:text="@string/download_event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textStyle="bold"
         android:id="@+id/download_event_header"
         android:layout_centerHorizontal="true"/>
-    <ProgressBar
+
+    <ProgressBar style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:id="@+id/event_loading_progress"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_below="@id/download_event_header"/>
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/event_list_to_download"
-        android:layout_below="@id/event_loading_progress">
+        android:layout_below="@id/download_event_header">
 
     </ListView>
-
 
 </RelativeLayout>

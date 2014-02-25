@@ -1,5 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<PreferenceCategory
+    android:title="@string/pref_header_general"
+    android:key="pref_general">
     <ListPreference
         android:key="competition_season"
         android:title="@string/pref_title_year"
@@ -10,8 +12,8 @@
     <ListPreference
         android:key="data_source"
         android:title="@string/pref_title_data_source"
-        android:defaultValue="TBA"
+        android:defaultValue="TBAv1"
         android:entries="@array/pref_data_source_items"
         android:entryValues="@array/pref_data_source_values"/>
-
+</PreferenceCategory>
 </PreferenceScreen>

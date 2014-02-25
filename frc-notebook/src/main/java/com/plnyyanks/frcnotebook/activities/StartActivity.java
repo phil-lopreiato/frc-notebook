@@ -3,7 +3,9 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,56 +13,41 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
 import com.plnyyanks.frcnotebook.database.DatabaseHandler;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 
 import java.util.List;
 
-public class StartActivity extends Activity implements View.OnClickListener {
+public class StartActivity extends Activity{
 
     public static Context startActivityContext;
     public static DatabaseHandler db;
+    private static int currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityContext = this;
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .commit();
-        }
+        }*/
 
-        startActivityContext = this;
         getdb();
 
-        showEventsFromDatabase();
+        new ShowLocalEvents().execute(this);
     }
 
     @Override
     protected void onResume() {
+        checkThemeChanged(StartActivity.class);
         super.onResume();
-        showEventsFromDatabase();
-    }
-
-    private void showEventsFromDatabase(){
-        getdb();
-        List<Event> storedEvents = db.getAllEvents();
-
-        LinearLayout eventList = (LinearLayout) findViewById(R.id.event_list);
-        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        eventList.removeAllViews();
-        for(Event e:storedEvents){
-            TextView tv=new TextView(this);
-            tv.setLayoutParams(lparams);
-            tv.setText("• " + e.getEventName()+ " - "+e.getEventYear());
-            tv.setTextSize(20);
-            tv.setTag(e.getEventKey());
-            tv.setOnClickListener(this);
-            eventList.addView(tv);
-        }
-
+        new ShowLocalEvents().execute(this);
     }
 
     public void openDownloader(View view){
@@ -102,12 +89,13 @@ public class StartActivity extends Activity implements View.OnClickListener {
             db.close();
     }
 
-
-    @Override
-    public void onClick(View view) {
-        String eventKey = (String)view.getTag();
-        ViewEvent.setEvent(eventKey);
-        Intent intent = new Intent(this, ViewEvent.class);
-        startActivity(intent);
+    public static void checkThemeChanged(Class<?> cls){
+        if(currentTheme != PreferenceHandler.getTheme()){
+            currentTheme = PreferenceHandler.getTheme();
+            Intent intent = new Intent(startActivityContext, cls);
+            startActivityContext.startActivity(intent);
+        }else{
+            currentTheme = PreferenceHandler.getTheme();
+        }
     }
 }

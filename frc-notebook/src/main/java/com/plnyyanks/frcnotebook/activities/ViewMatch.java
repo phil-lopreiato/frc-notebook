@@ -3,7 +3,6 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -22,6 +21,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.background.GetMatchInfo;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
@@ -34,10 +35,11 @@ public class ViewMatch extends Activity {
     private static String matchKey,eventKey,nextKey,previousKey;
     private static Event parentEvent;
     private static Match match;
-    static Context context;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_match);
 
@@ -46,64 +48,20 @@ public class ViewMatch extends Activity {
                     .commit();
         }
 
-        context = this;
+        activity = this;
         ActionBar bar = getActionBar();
         bar.setTitle(parentEvent.getEventName()+" - "+parentEvent.getEventYear());
         bar.setSubtitle(eventKey);
 
         if(matchKey == null) return;
 
-        TextView matchTitle = (TextView) findViewById(R.id.match_title);
-        matchTitle.setText(match.getMatchType()+ " "+match.getMatchNumber());
-
-        LinearLayout redList = (LinearLayout) findViewById(R.id.red_alliance);
-        LinearLayout blueList = (LinearLayout) findViewById(R.id.blue_allaince);
-
-        JsonArray   redTeams  = match.getRedAllianceTeams(),
-                    blueTeams = match.getBlueAllianceTeams();
-
-        if(redTeams.size() >0){
-            redList.removeAllViews();
-            Iterator<JsonElement> iterator = redTeams.iterator();
-            JsonElement team;
-            while(iterator.hasNext()){
-                team = iterator.next();
-                redList.addView(makeTextView(team.getAsString(),Constants.lparams));
-            }
-        }
-        if(blueTeams.size() >0){
-            blueList.removeAllViews();
-            Iterator<JsonElement> iterator = blueTeams.iterator();
-            JsonElement team;
-            while(iterator.hasNext()){
-                team = iterator.next();
-                blueList.addView(makeTextView(team.getAsString(),Constants.lparams));
-            }
-        }
-
-        if(!StartActivity.db.matchExists(nextKey)){
-            Button nextButton = (Button)findViewById(R.id.next_match);
-            nextButton.setVisibility(View.GONE);
-        }
-        if(!StartActivity.db.matchExists(previousKey)){
-            Button prevButton = (Button)findViewById(R.id.prev_match);
-            prevButton.setVisibility(View.GONE);
-        }
+        new GetMatchInfo(this).execute(previousKey,matchKey,nextKey,eventKey);
     }
 
-    private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){
-        TextView tv;
-        tv = new TextView(this);
-        tv.setLayoutParams(Constants.lparams);
-        tv.setTextSize(20);
-        tv.setText(teamKey.substring(3));
-        tv.setTag(teamKey);
-        tv.setOnClickListener(new TeamClickListener(teamKey,eventKey));
-        ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey,eventKey);
-        if(notes.size() >0){
-            tv.setTypeface(null, Typeface.BOLD);
-        }
-        return tv;
+    @Override
+    protected void onResume() {
+        StartActivity.checkThemeChanged(ViewMatch.class);
+        super.onResume();
     }
 
     public static void setMatchKey(String key){
@@ -146,89 +104,6 @@ public class ViewMatch extends Activity {
         setMatchKey(nextKey);
         Intent intent = new Intent(this, ViewMatch.class);
         startActivity(intent);
-    }
-
-    class TeamClickListener implements View.OnClickListener{
-
-        String teamKey,eventKey;
-
-        public TeamClickListener(String teamKey, String eventKey){
-            this.teamKey = teamKey;
-            this.eventKey = eventKey;
-        }
-
-        @Override
-        public void onClick(View view) {
-
-            TextView noteHeader = (TextView)findViewById(R.id.team_notes);
-            noteHeader.setText("Team "+teamKey.substring(3)+" Notes");
-            fetchNotes();
-
-        }
-
-        private void fetchNotes(){
-            ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey,eventKey);
-            LinearLayout notesList = (LinearLayout)findViewById(R.id.team_notes_list);
-            notesList.removeAllViews();
-            if(notes.size() == 0){
-                TextView t = new TextView(context);
-                t.setLayoutParams(Constants.lparams);
-                t.setText("No Notes for This Team");
-                notesList.addView(t);
-            }else{
-                for(Note n:notes){
-                    TextView t = new TextView(context);
-                    t.setLayoutParams(Constants.lparams);
-                    t.setText("• " + n.getNote());
-                    t.setTextSize(18);
-                    notesList.addView(t);
-                }
-            }
-            Button addNote = new Button(context);
-            addNote.setText("Add Note");
-            addNote.setLayoutParams(Constants.lparams);
-            addNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final EditText noteEditField = new EditText(context);
-                    noteEditField.setText("");
-                    noteEditField.setHint("Enter your note");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Note on Team " + teamKey.substring(3));
-                    builder.setView(noteEditField);
-                    builder.setPositiveButton("Add",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    String resultText;
-                                    Note note = new Note(eventKey,matchKey,teamKey,noteEditField.getText().toString());
-                                    if(StartActivity.db.addNote(note) != -1){
-                                        resultText = "Note added sucessfully";
-                                        fetchNotes();
-                                    }else{
-                                        resultText = "Error adding note to database";
-                                    }
-                                    Toast.makeText(context, resultText, Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
-                                }
-                            });
-
-                    builder.setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    builder.create().show();
-
-                }
-            });
-            addView(addNote);
-        }
-
-        private void addView(View view){
-            LinearLayout notesList = (LinearLayout)findViewById(R.id.team_notes_list);
-            notesList.addView(view);
-        }
     }
 
 }
