@@ -58,6 +58,14 @@ public class SettingsActivity extends PreferenceActivity {
         super.onResume();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return  GeneralPreferenceFragment.class.getName().equals(fragmentName) ||
+                AppearancePreferenceFragment.class.getName().equals(fragmentName)||
+                super.isValidFragment(fragmentName);
+    }
+
     /**
      * Shows the simplified settings UI if the device configuration if the
      * device configuration dictates that a simplified, single-pane UI should be
@@ -107,7 +115,7 @@ public class SettingsActivity extends PreferenceActivity {
      * "simplified" settings UI should be shown.
      */
     private static boolean isSimplePreferences(Context context) {
-        return ALWAYS_SIMPLE_PREFS
+       return ALWAYS_SIMPLE_PREFS
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
                 || !isXLargeTablet(context);
     }
