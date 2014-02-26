@@ -340,7 +340,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         private void confirmAndDelete(final int notePosition){
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Confirm Deletion");
-            builder.setMessage("Are you sure you want to delete this notw?");
+            builder.setMessage("Are you sure you want to delete this note?");
             builder.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
