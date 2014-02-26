@@ -670,7 +670,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_NOTES,values, KEY_NOTEID + " =?", new String[]{Short.toString(in.getId())});
     }
     public void deleteNote(Note in){
-        db.delete(TABLE_NOTES,KEY_NOTEID + "=?", new String[]{Short.toString(in.getId())});
+        deleteNote(Short.toString(in.getId()));
+    }
+    public void deleteNote(String id){
+        db.delete(TABLE_NOTES,KEY_NOTEID + "=?", new String[]{id});
     }
     public void deleteNotesFromEvent(String eventKey){
         db.delete(TABLE_NOTES,KEY_EVENTKEY+"=?",new String[]{eventKey});

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
@@ -23,9 +25,11 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
  */
 public class NotesExpandableListAdapter extends ExapandableListAdapter {
 
+    private SparseArray<ListGroup> groups;
 
     public NotesExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
         super(act, groups);
+        this.groups = groups;
     }
 
     @Override
@@ -69,6 +73,22 @@ public class NotesExpandableListAdapter extends ExapandableListAdapter {
                 builder.create().show();
             }
         });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                view.setSelected(true);
+                GetNotesForTeam.selectedNote = groups.get(groupPosition).children_keys.get(childPosition);
+                Log.d(Constants.LOG_TAG,"Note selected, id:"+GetNotesForTeam.selectedNote);
+                GetNotesForTeam.mActionMode = activity.startActionMode(GetNotesForTeam.mActionModeCallback);
+                GetNotesForTeam.updateListData();
+                return false;
+            }
+        });
+        if(convertView.isSelected()){
+            convertView.setBackgroundResource(android.R.color.holo_blue_light);
+        }else{
+            convertView.setBackgroundResource(android.R.color.transparent);
+        }
         return convertView;
     }
 
@@ -91,5 +111,30 @@ public class NotesExpandableListAdapter extends ExapandableListAdapter {
         }
 
 
+    }
+
+    public void removeNote(short id){
+        SparseArray<ListGroup> groups = GetNotesForTeam.getListData();
+        int index = groups.get(0).children_keys.indexOf(Short.toString(id));
+        if(index == -1){
+            //if not found in general notes (groups[0], then check match notes)
+            index = groups.get(1).children_keys.indexOf(Short.toString(id));
+            if(index == -1){
+                Log.w(Constants.LOG_TAG, "Tried to delete nonexistant note with id:" + id);
+                return;
+            }else{
+                //delete from match notes
+                groups.get(1).children.remove(index);
+                groups.get(1).children_keys.remove(index);
+                groups.get(1).updateTitle("Match Notes ("+groups.get(1).children.size()+")");
+                Log.i(Constants.LOG_TAG,"Delete match note with id:"+id);
+            }
+        }else{
+           //delete from general notes
+            groups.get(0).children.remove(index);
+            groups.get(0).children_keys.remove(index);
+            groups.get(0).updateTitle("General Notes ("+groups.get(0).children.size()+")");
+            Log.i(Constants.LOG_TAG,"Delete general note with id:"+id);
+        }
     }
 }
