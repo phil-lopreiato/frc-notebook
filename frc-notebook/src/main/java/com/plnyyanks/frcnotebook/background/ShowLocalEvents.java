@@ -22,6 +22,7 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewEvent;
+import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Note;
@@ -120,25 +121,8 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         }
     }
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        // called when the action mode is created; startActionMode() was called
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.context_main, menu);
-            return true;
-        }
-
-        // the following method is called each time
-        // the action mode is shown. Always called after
-        // onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // called when the user selects a contextual menu item
+    private ActionMode.Callback mActionModeCallback = new ActionBarCallback() {
+        @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_delete:
@@ -150,6 +134,16 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                 default:
                     return false;
             }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            Log.d(Constants.LOG_TAG,"Destroy CAB");
+            mActionMode = null;
+            eventList.setOnItemClickListener(new ClickListener());
+            eventList.requestFocusFromTouch();
+            eventList.clearChoices();
+            adapter.notifyDataSetChanged();
         }
 
         private void confirmAndDelete(final int item){
@@ -176,17 +170,6 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                     });
             builder.create().show();
         }
-
-        // called when the user exits the action mode
-        public void onDestroyActionMode(ActionMode mode) {
-            Log.d(Constants.LOG_TAG,"Destroy CAB");
-            mActionMode = null;
-            eventList.setOnItemClickListener(new ClickListener());
-            eventList.requestFocusFromTouch();
-            eventList.clearChoices();
-            adapter.notifyDataSetChanged();
-        }
     };
-
 }
 
