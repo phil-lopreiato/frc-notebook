@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -41,6 +43,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
               thisMatchKey,
               nextMatchKey,
               eventKey;
+    private EventListArrayAdapter adapter;
 
     public GetMatchInfo(Activity activity) {
         this.activity = activity;
@@ -163,7 +166,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                 ids   = new String[noteList.size()];
                 for(int i=0;i<noteList.size();i++){
                     n = noteList.get(i);
-                    notes[i] = Note.buildMatchNoteTitle(n,false);
+                    notes[i] = Note.buildMatchNoteTitle(n,false, true);
                     ids[i] = Short.toString(n.getId());
                 }
             }
@@ -174,14 +177,12 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    EventListArrayAdapter adapter = new EventListArrayAdapter(activity,finalNotes,finalIds);
+                    adapter = new EventListArrayAdapter(activity,finalNotes,finalIds);
                     eventList.setAdapter(adapter);
-                    //eventList.setOnItemClickListener(new ClickListener(finalKeys));
+                    eventList.setOnItemClickListener(new NoteClickListener());
                     //eventList.setOnLongClickListener(new LongClickListener());
                 }
             });
-
-            //divider
 
             Button addNote = (Button)activity.findViewById(R.id.add_note_button);
             addNote.setVisibility(View.VISIBLE);
@@ -229,6 +230,54 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         private void addView(View view){
             LinearLayout notesList = (LinearLayout)activity.findViewById(R.id.team_notes_list);
             notesList.addView(view);
+        }
+    }
+
+    private class NoteClickListener implements AdapterView.OnItemClickListener {
+
+        public NoteClickListener() {
+            super();
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            final Note oldNote = StartActivity.db.getNote(Short.parseShort(adapter.keys[i]));
+            final EditText noteEditField = new EditText(activity);
+            //noteEditField.setId(999);
+            noteEditField.setText(oldNote.getNote());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Note on Team " + GetNotesForTeam.getTeamNumber());
+            builder.setView(noteEditField);
+            builder.setMessage("Edit your note.");
+            builder.setPositiveButton("Update",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            oldNote.setNote(noteEditField.getText().toString());
+                            StartActivity.db.updateNote(oldNote);
+                            updateNoteInList(oldNote);
+                            adapter.notifyDataSetChanged();
+                            dialog.cancel();
+                        }
+                    });
+
+            builder.setNeutralButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            builder.create().show();
+        }
+
+        private void updateNoteInList(Note newNote) {
+            int index = Arrays.asList(adapter.keys).indexOf(Short.toString(newNote.getId()));
+            if(index == -1){
+                //not found. quit
+                return;
+            }else{
+                adapter.values[index] = newNote.getNote();
+            }
         }
     }
 }

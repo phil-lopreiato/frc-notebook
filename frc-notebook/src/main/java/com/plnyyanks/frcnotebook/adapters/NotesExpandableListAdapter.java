@@ -83,7 +83,7 @@ public class NotesExpandableListAdapter extends ExapandableListAdapter {
                 return;
             }else{
                 //update in match notes group
-                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all")));
+                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all"),true));
             }
         }else{
             //update in general notes group

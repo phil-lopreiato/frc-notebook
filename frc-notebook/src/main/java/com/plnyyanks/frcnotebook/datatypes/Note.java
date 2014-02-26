@@ -92,15 +92,15 @@ public class Note {
         return output;
     }
 
-    public static String buildMatchNoteTitle(Note note, boolean displayEvent){
+    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch){
         String output = "";
-        if(displayEvent){
+        if(displayEvent && !note.getEventKey().equals("all")){
             //on all notes tab. Include event title
             Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
             output += parentEvent.getShortName()+" ";
         }
 
-        if(!note.getMatchKey().equals("all")){
+        if(displayMatch && !note.getMatchKey().equals("all")){
             Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
             output += parentMatch.getTitle()+": ";
         }

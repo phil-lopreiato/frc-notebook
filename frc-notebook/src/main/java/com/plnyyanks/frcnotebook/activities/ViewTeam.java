@@ -110,7 +110,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        eventName = tab.getText().toString();
+        eventName = tab.getTag().toString();
        getFragmentManager().beginTransaction().replace(R.id.team_view, new EventFragment((String) tab.getTag())).commit();
     }
 

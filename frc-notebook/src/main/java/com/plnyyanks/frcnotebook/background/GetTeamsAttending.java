@@ -36,7 +36,6 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        final ListView teamListView = (ListView) activity.findViewById(R.id.team_list);
         String eventKey = strings[0];
 
         ArrayList<Team> teamList = StartActivity.db.getAllTeamAtEvent(eventKey);
@@ -57,6 +56,7 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
             @Override
             public void run() {
                 EventListArrayAdapter adapter = new EventListArrayAdapter(activity,finalTeams,finalKeys);
+                ListView teamListView = (ListView) activity.findViewById(R.id.team_list);
                 teamListView.setAdapter(adapter);
                 teamListView.setOnItemClickListener(new ClickListener(finalKeys));
 

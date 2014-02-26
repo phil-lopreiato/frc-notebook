@@ -113,7 +113,7 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
         ListGroup matchNoteGroup = new ListGroup(("Match Notes ("+matchNotes.size()+")"));
         for (Note n : matchNotes) {
-            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventTitle.equals("all")));
+            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventTitle.equals("all"),true));
             matchNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(1,matchNoteGroup);

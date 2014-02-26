@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
  */
 public class EventListArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
-    private final String values[], keys[];
+    public String values[], keys[];
 
     public EventListArrayAdapter(Context context,String[] values,String[] keys){
         super(context,android.R.layout.simple_list_item_1,values);
