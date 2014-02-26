@@ -74,7 +74,12 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                 blueTeams = match.getBlueAllianceTeams();
 
         if(redTeams.size() >0){
-            redList.removeAllViews();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    redList.removeAllViews();
+                }
+            });
             Iterator<JsonElement> iterator = redTeams.iterator();
             JsonElement team;
             while(iterator.hasNext()){
@@ -89,7 +94,12 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             }
         }
         if(blueTeams.size() >0){
-            blueList.removeAllViews();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    blueList.removeAllViews();
+                }
+            });
             Iterator<JsonElement> iterator = blueTeams.iterator();
             JsonElement team;
             while(iterator.hasNext()){

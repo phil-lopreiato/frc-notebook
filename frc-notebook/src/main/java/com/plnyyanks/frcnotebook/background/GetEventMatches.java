@@ -23,13 +23,17 @@ import java.util.ArrayList;
  */
 public class GetEventMatches extends AsyncTask <String,String,String>{
 
-    private Activity activity;
+    private static Activity activity;
     // more efficient than HashMap for mapping integers to objects
     SparseArray<ListGroup> groups = new SparseArray<ListGroup>();
 
-    public GetEventMatches(Activity activity){
+    public GetEventMatches(Activity activityIn){
         super();
-        this.activity = activity;
+        activity = activityIn;
+    }
+
+    public static void setActivity(Activity activityIn) {
+        activity = activityIn;
     }
 
     @Override
@@ -39,6 +43,8 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
             @Override
             public void run() {
                 ExpandableListView matchList = (ExpandableListView) activity.findViewById(R.id.match_list);
+                if(matchList==null)
+                    return;
                 MatchListExpandableListAdapter adapter = new MatchListExpandableListAdapter(activity,groups);
                 matchList.setAdapter(adapter);
 
