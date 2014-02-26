@@ -143,8 +143,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_note_button"
-        android:layout_above="@id/prev_match"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:id="@+id/add_note_button"
         android:visibility="gone" />
@@ -161,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/team_notes"
-        android:layout_above="@id/add_note_button"
+        android:layout_above="@id/prev_match"
         android:layout_centerHorizontal="true"
         android:id="@+id/team_notes_list"></ListView>
 
