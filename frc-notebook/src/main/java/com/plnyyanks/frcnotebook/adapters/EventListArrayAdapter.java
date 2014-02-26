@@ -1,9 +1,13 @@
 package com.plnyyanks.frcnotebook.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.background.GetMatchInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +35,17 @@ public class EventListArrayAdapter extends ArrayAdapter<String> {
         if(index >= 0){
             values.remove(index);
             keys.remove(index);
+        }
+    }
+
+    public void removeKey(String key){
+        int index = keys.indexOf(key);
+        if(index != -1){
+            keys.remove(index);
+            keys.remove(index);
+            Log.d(Constants.LOG_TAG,"Deleted note with id:"+key);
+        }else{
+            Log.w(Constants.LOG_TAG,"Tried to delete nonexistant note with id:"+key);
         }
     }
 
