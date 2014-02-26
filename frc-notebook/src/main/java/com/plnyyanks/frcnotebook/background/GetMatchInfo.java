@@ -226,11 +226,6 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             nothingSelected.setVisibility(View.GONE);
 
         }
-
-        private void addView(View view){
-            LinearLayout notesList = (LinearLayout)activity.findViewById(R.id.team_notes_list);
-            notesList.addView(view);
-        }
     }
 
     private class NoteClickListener implements AdapterView.OnItemClickListener {
