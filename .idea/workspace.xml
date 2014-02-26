@@ -22,14 +22,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.plnyyanks.frcnotebook" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfb7ebcb-5dfc-4fec-9ad8-0083a2920735" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/build/dex/debug/classes.dex" afterPath="$PROJECT_DIR$/frc-notebook/build/dex/debug/classes.dex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/frc-notebook/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/build/source/buildConfig/debug/com/plnyyanks/frcnotebook/BuildConfig.java" afterPath="$PROJECT_DIR$/frc-notebook/build/source/buildConfig/debug/com/plnyyanks/frcnotebook/BuildConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frc-notebook/build.gradle" afterPath="$PROJECT_DIR$/frc-notebook/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradlew" afterPath="$PROJECT_DIR$/gradlew" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="bfb7ebcb-5dfc-4fec-9ad8-0083a2920735" name="Default" comment="" />
     <ignored path="FRC Notebook.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -1384,7 +1377,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1368" height="742" extended-state="6" />
+    <frame x="-1" y="27" width="1368" height="742" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
