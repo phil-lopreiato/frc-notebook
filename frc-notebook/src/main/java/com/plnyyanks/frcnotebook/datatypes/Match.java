@@ -113,6 +113,14 @@ public class Match implements Comparable<Match>{
         return StartActivity.db.getEvent(matchKey.split("_")[0]);
     }
 
+    public String getTitle(){
+        if(matchKey.contains("_qm")){
+            return matchType+" "+matchNumber;
+        }else{
+            return matchType+" "+setNumber+" Match "+matchNumber;
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Match match) {

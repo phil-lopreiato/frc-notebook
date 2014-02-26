@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:orientation="vertical"
     android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
@@ -12,11 +12,12 @@
     <TextView
         android:id="@+id/matchlist_item"
         android:layout_width="wrap_content"
-        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center_vertical"
         android:paddingLeft="5dip"
-        android:singleLine="true">
+        android:text="@string/hello_world">
     </TextView>
 
 </LinearLayout>

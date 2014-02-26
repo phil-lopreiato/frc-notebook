@@ -16,4 +16,8 @@ public class ListGroup {
         this.string = string;
     }
 
+    public void updateTitle(String string){
+        this.string = string;
+    }
+
 }

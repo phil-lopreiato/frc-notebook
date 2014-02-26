@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class ViewTeam extends Activity implements ActionBar.TabListener {
 
-    protected static String teamKey;
+    protected static String teamKey, eventName;
     protected static int teamNumber;
     protected static Activity activity;
 
@@ -110,6 +110,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        eventName = tab.getText().toString();
        getFragmentManager().beginTransaction().replace(R.id.team_view, new EventFragment((String) tab.getTag())).commit();
     }
 
@@ -145,7 +146,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.fragment_event_tab, null);
             thisView = v;
-            new GetNotesForTeam(activity).execute(teamKey,eventKey);
+            new GetNotesForTeam(activity).execute(teamKey,eventKey,eventName);
             return v;
         }
     }

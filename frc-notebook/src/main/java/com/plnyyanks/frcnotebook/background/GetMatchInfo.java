@@ -51,7 +51,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
 
         Match match = StartActivity.db.getMatch(thisMatchKey);
         TextView matchTitle = (TextView) activity.findViewById(R.id.match_title);
-        String titleString = match.getMatchType()+(match.getMatchType().equals("Quals")?" ":(" "+match.getSetNumber()+ " Match ")+match.getMatchNumber());
+        String titleString = match.getMatchType()+(match.getMatchType().equals("Quals")?" ":(" "+match.getSetNumber()+ " Match "))+match.getMatchNumber();
         matchTitle.setText(titleString);
 
 

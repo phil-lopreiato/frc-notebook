@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
@@ -18,7 +17,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 /**
  * Created by phil on 2/23/14.
  */
-public class ExapandableListAdapter extends BaseExpandableListAdapter {
+public abstract class ExapandableListAdapter extends BaseExpandableListAdapter {
 
     private final SparseArray<ListGroup> groups;
     public LayoutInflater inflater;
@@ -42,27 +41,6 @@ public class ExapandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return 0;
-    }
-
-    @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String children = (String) getChild(groupPosition, childPosition);
-        TextView text = null;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.matchlist_item, null);
-        }
-        text = (TextView) convertView.findViewById(R.id.matchlist_item);
-        text.setText(children);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewMatch.setMatchKey((String)getChildKey(groupPosition,childPosition));
-
-                Intent intent = new Intent(activity, ViewMatch.class);
-                activity.startActivity(intent);
-            }
-        });
-        return convertView;
     }
 
     @Override
@@ -99,7 +77,7 @@ public class ExapandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.matchlist_group, null);
+            convertView = inflater.inflate(R.layout.expandablelist_group, null);
         }
         ListGroup group = (ListGroup) getGroup(groupPosition);
         ((CheckedTextView) convertView).setText(group.string);

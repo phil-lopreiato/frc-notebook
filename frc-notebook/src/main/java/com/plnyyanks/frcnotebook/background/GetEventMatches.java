@@ -11,6 +11,7 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.adapters.ExapandableListAdapter;
+import com.plnyyanks.frcnotebook.adapters.MatchListExpandableListAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Match;
@@ -38,7 +39,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
             @Override
             public void run() {
                 ExpandableListView matchList = (ExpandableListView) activity.findViewById(R.id.match_list);
-                ExapandableListAdapter adapter = new ExapandableListAdapter(activity,groups);
+                MatchListExpandableListAdapter adapter = new MatchListExpandableListAdapter(activity,groups);
                 matchList.setAdapter(adapter);
 
                 //hide the progress bar
@@ -49,7 +50,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         return null;
     }
 
-    public void createData(String key) {
+    private void createData(String key) {
         /*for (int j = 0; j < 5; j++) {
             ListGroup group = new ListGroup("Test " + j);
             for (int i = 0; i < 5; i++) {

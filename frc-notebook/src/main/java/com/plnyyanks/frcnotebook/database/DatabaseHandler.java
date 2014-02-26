@@ -432,7 +432,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //managing notes in SQL
-    public long addNote(Note in){
+    public short addNote(Note in){
             Log.d(Constants.LOG_TAG, "ADDING NOTE FOR: " + in.getTeamKey() + " " + in.getEventKey()+ " "+in.getMatchKey());
             ContentValues values = new ContentValues();
             values.put(KEY_EVENTKEY,    in.getEventKey());
@@ -442,7 +442,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(KEY_NOTETIME,    in.getTimestamp());
 
             //insert the row
-            return db.insert(TABLE_NOTES,null,values);
+            if(db.insert(TABLE_NOTES,null,values)==-1){
+                //error, return -1
+                return -1;
+            }else{
+                //else, return the note's ID
+                Cursor cursor = db.rawQuery("SELECT MAX("+KEY_NOTEID+") FROM "+TABLE_NOTES,null);
+                if(cursor.moveToFirst()){
+                    Log.d(Constants.LOG_TAG,"LARGEST ID FETCHED: "+cursor.getShort(0));
+                    return cursor.getShort(0);
+                }else{
+                    Log.d(Constants.LOG_TAG,"NO RECORD FOUND");
+                    return -1;
+                }
+            }
     }
     public Note getNote(short id){
         Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
@@ -544,9 +557,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey+ " "+matchKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
-        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
-                KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,eventKey,matchKey},null,null,null,null);
-
+        Cursor cursor;
+        if(!eventKey.equals("all")){
+            //regular event. Proceed normally
+            cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                    KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,eventKey,matchKey},null,null,null,null);
+        }else{
+            //looking for all events worth of notes
+            cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                    KEY_TEAMKEY + "=? AND "+KEY_MATCHKEY+"=?",new String[] {teamKey,matchKey},null,null,null,null);
+        }
         //loop through rows
         if(cursor.moveToFirst()){
             do{
@@ -570,9 +590,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(Constants.LOG_TAG, "FETCHING MATCH NOTES FOR: " + teamKey + " " + eventKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
-        Cursor cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
-                KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"!=?",new String[] {teamKey,eventKey,"all"},null,null,null,null);
-
+        Cursor cursor;
+        if(!eventKey.equals("all")){
+            cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                    KEY_TEAMKEY + "=? AND "+KEY_EVENTKEY+"=? AND "+KEY_MATCHKEY+"!=?",new String[] {teamKey,eventKey,"all"},null,null,null,null);
+        }else{
+            cursor = db.query(TABLE_NOTES, new String[] {KEY_NOTEID,KEY_EVENTKEY,KEY_MATCHKEY,KEY_TEAMKEY,KEY_NOTE,KEY_NOTETIME},
+                    KEY_TEAMKEY + "=? AND "+KEY_MATCHKEY+"!=?",new String[] {teamKey,"all"},null,null,null,null);
+        }
         //loop through rows
         if(cursor.moveToFirst()){
             do{

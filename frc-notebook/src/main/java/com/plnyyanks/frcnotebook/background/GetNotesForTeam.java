@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,11 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.adapters.ExapandableListAdapter;
+import com.plnyyanks.frcnotebook.adapters.NotesExpandableListAdapter;
+import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.ListGroup;
+import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
@@ -25,7 +33,9 @@ import java.util.ArrayList;
 public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     private Activity activity;
-    private String teamKey,teamNumber,eventKey;
+    private static String teamKey,teamNumber,eventKey, eventTitle;
+    private static SparseArray<ListGroup> groups = new SparseArray<ListGroup>();
+    private static NotesExpandableListAdapter adapter;
 
     public GetNotesForTeam(Activity activity) {
         super();
@@ -37,13 +47,14 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
         teamKey = strings[0];
         eventKey = strings[1];
         teamNumber = teamKey.substring(3);
+        eventTitle = strings[2];
 
         Button addNote = (Button)activity.findViewById(R.id.submit_general_note);
         if(addNote!=null){
             addNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Note newNote = new Note();
+                    final Note newNote = new Note();
                     newNote.setTeamKey(teamKey);
                     newNote.setEventKey(eventKey);
                     newNote.setMatchKey("all");
@@ -51,105 +62,107 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
                     newNote.setNote(noteText);
 
                     String resultToast;
-                    if(StartActivity.db.addNote(newNote) != -1){
+                    short dbResult = StartActivity.db.addNote(newNote);
+                    if(dbResult != -1){
                         resultToast = "Note added sucessfully";
+                        ExpandableListView noteList = (ExpandableListView)activity.findViewById(R.id.note_list);
+                        newNote.setId(dbResult);
+                        ListGroup group = groups.get(0);
+                        group.children.add(newNote.getNote());
+                        group.children_keys.add(Integer.toString(newNote.getId()));
+                        group.updateTitle("General Notes ("+group.children.size()+")");
+                        updateListData();
                     }else{
                         resultToast = "Error adding note to database";
                     }
                     Toast.makeText(activity, resultToast, Toast.LENGTH_SHORT).show();
-                    LinearLayout eventList = (LinearLayout) activity.findViewById(R.id.general_notes);
 
-                    LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);JsonElement element;
-                    addNote(newNote,eventList,lparams);
                     EditText addBox = (EditText)activity.findViewById(R.id.new_general_note);
                     addBox.setText("");
                 }
             });
         }
-        fetchNotes();
+
+        createData();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ExpandableListView matchList = (ExpandableListView) activity.findViewById(R.id.note_list);
+                adapter = new NotesExpandableListAdapter(activity,groups);
+                matchList.setAdapter(adapter);
+
+                //hide the progress bar
+                ProgressBar prog = (ProgressBar) activity.findViewById(R.id.notes_loading_progress);
+                prog.setVisibility(View.GONE);
+            }
+        });
 
         return null;
     }
 
-    protected void fetchNotes(){
+    private void createData() {
         final ArrayList<Note> generalNotes = StartActivity.db.getAllNotes(teamKey,eventKey,"all");
         final ArrayList<Note> matchNotes = StartActivity.db.getAllMatchNotes(teamKey,eventKey);
 
-        final LinearLayout generalList = (LinearLayout) activity.findViewById(R.id.general_notes);
-        final LinearLayout matchNotesList = (LinearLayout)activity.findViewById(R.id.match_notes);
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(generalNotes.size()>0)
-                    generalList.removeAllViews();
-                if(matchNotes.size()>0)
-                    matchNotesList.removeAllViews();
-            }
-        });
-
-        for(Note note:generalNotes){
-            addNote(note,generalList, Constants.lparams);
+       ListGroup generalNoteGroup = new ListGroup("General Notes ("+generalNotes.size()+")");
+        for (Note n : generalNotes) {
+            generalNoteGroup.children.add(buildGeneralNoteTitle(n));
+            generalNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
-        for(Note note:matchNotes){
-            addNote(note,matchNotesList,Constants.lparams);
+        groups.append(0,generalNoteGroup);
+
+        ListGroup matchNoteGroup = new ListGroup(("Match Notes ("+matchNotes.size()+")"));
+        for (Note n : matchNotes) {
+            matchNoteGroup.children.add(buildMatchNoteTitle(n));
+            matchNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
+        groups.append(1,matchNoteGroup);
     }
 
-    private void addNote(Note note,final LinearLayout layout,LinearLayout.LayoutParams params){
-        final TextView tv=new TextView(activity);
-        tv.setLayoutParams(params);
-        tv.setText("• " + note.getNote());
-        tv.setTextSize(20);
-        tv.setLongClickable(true);
-        tv.setTag(note.getId());
-        tv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                final Note oldNote = StartActivity.db.getNote((Short) tv.getTag());
-                final EditText noteEditField = new EditText(activity);
-                //noteEditField.setId(999);
-                noteEditField.setText(oldNote.getNote());
+    public static String buildGeneralNoteTitle(Note note){
+        String output = "";
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Note on Team " + teamNumber);
-                builder.setView(noteEditField);
-                builder.setMessage("Edit your note.");
-                builder.setPositiveButton("Update",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                oldNote.setNote(noteEditField.getText().toString());
-                                StartActivity.db.updateNote(oldNote);
-                                fetchNotes();
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNeutralButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNegativeButton("Delete",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                StartActivity.db.deleteNote(oldNote);
-                                fetchNotes();
-                                dialog.cancel();
-                            }
-                        });
-                builder.create().show();
-                return false;
+        if(eventKey.equals("all")){
+            //on all notes tab. Include event title
+            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
+            if(parentEvent!=null){
+                //note is associated with an event
+                output += parentEvent.getShortName()+": ";
             }
-        });
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layout.addView(tv);
-            }
-        });
+        }
+        output += note.getNote();
+        return output;
+    }
+
+    public static String buildMatchNoteTitle(Note note){
+        String output = "";
+        if(eventKey.equals("all")){
+            //on all notes tab. Include event title
+            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
+            output += parentEvent.getShortName()+" ";
+        }
+        Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
+        output += parentMatch.getTitle()+": "+note.getNote();
+        return output;
+    }
+
+    public static void updateListData(){
+        adapter.notifyDataSetChanged();
+    }
+
+    public static SparseArray<ListGroup> getListData() {
+        return groups;
+    }
+
+    public static String getTeamKey() {
+        return teamKey;
+    }
+
+    public static String getTeamNumber() {
+        return teamNumber;
+    }
+
+    public static String getEventKey() {
+        return eventKey;
     }
 }

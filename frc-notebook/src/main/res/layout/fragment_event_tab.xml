@@ -1,76 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants">
+
+    <ProgressBar style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:id="@+id/view_event_scroll"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:descendantFocusability="beforeDescendants">
-    <LinearLayout
+        android:id="@+id/notes_loading_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView style="@android:style/TextAppearance.DeviceDefault.Large"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/general_notes_header"/>
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="10dp"/>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/general_notes">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_notes"/>
-        </LinearLayout>
+        android:text="@string/add_note_button"
+        android:id="@+id/submit_general_note"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/new_general_note"
-                android:hint="@string/new_general_note"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/submit_general_note"
-                android:maxLines="4"
-               />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_note_button"
-                android:id="@+id/submit_general_note"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_general_note"
+        android:hint="@string/new_general_note"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/submit_general_note"
+        android:maxLines="4" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="15dp" />
-        <TextView style="@android:style/TextAppearance.DeviceDefault.Large"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/match_notes_header"/>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/match_notes">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_notes"/>
-        </LinearLayout>
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="10dp"/>
+    <ExpandableListView
+        android:id="@+id/note_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/activity_half_vertical_margin"
+        android:layout_above="@id/submit_general_note"></ExpandableListView>
 
-    </LinearLayout>
-    </ScrollView>
+</RelativeLayout>
