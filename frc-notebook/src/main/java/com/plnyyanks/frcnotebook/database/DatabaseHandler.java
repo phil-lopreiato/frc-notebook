@@ -203,7 +203,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_EVENTS,values, KEY_EVENTKEY + " =?", new String[]{in.getEventKey()});
     }
     public void deleteEvent(Event in){
-        db.delete(TABLE_EVENTS,KEY_EVENTKEY + "=?", new String[]{in.getEventKey()});
+        deleteEvent(in.getEventKey());
+    }
+    public void deleteEvent(String eventKey){
+        db.delete(TABLE_EVENTS,KEY_EVENTKEY+"=?",new String[]{eventKey});
+        deleteMatchesAtEvent(eventKey);
+        deleteEventFromTeams(eventKey);
+        deleteNotesFromEvent(eventKey);
     }
 
     //managing Matches in SQL
@@ -325,6 +331,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteMatch(Match in){
         db.delete(TABLE_MATCHES,KEY_MATCHKEY + "=?", new String[]{in.getMatchKey()});
     }
+    public void deleteMatchesAtEvent(String eventKey){
+        db.delete(TABLE_MATCHES,KEY_MATCHKEY+" LIKE '%"+eventKey+"%'",null);
+    }
 
     //managing teams in SQL
     public long addTeam(Team in){
@@ -414,9 +423,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return false;
     }
     public int updateTeam(Team in){
+        return updateTeam(in,true);
+    }
+    public int updateTeam(Team in, boolean mergeEvents){
 
         Team currentVals = getTeam(in.getTeamKey());
-        in.mergeEvents(currentVals.getTeamEvents());
+        if(mergeEvents)
+            in.mergeEvents(currentVals.getTeamEvents());
 
         ContentValues values = new ContentValues();
         values.put(KEY_TEAMKEY,     in.getTeamKey());
@@ -429,6 +442,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public void deleteTeam(Team in){
         db.delete(TABLE_TEAMS,KEY_TEAMKEY + "=?", new String[]{in.getTeamKey()});
+    }
+    public void deleteEventFromTeams(String eventKey){
+        String selectQuery = "SELECT * FROM "+TABLE_TEAMS+" WHERE "+KEY_TEAMEVENTS + " LIKE '%"+eventKey+"%'";
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                Team team = new Team();
+                team.setTeamKey(cursor.getString(0));
+                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamName(cursor.getString(2));
+                team.setTeamName(cursor.getString(3));
+                team.setTeamEvents(JSONManager.getAsStringArrayList(cursor.getString(4)));
+
+                team.removeEvent(eventKey);
+                updateTeam(team,false);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
     }
 
     //managing notes in SQL
@@ -637,6 +671,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public void deleteNote(Note in){
         db.delete(TABLE_NOTES,KEY_NOTEID + "=?", new String[]{Short.toString(in.getId())});
+    }
+    public void deleteNotesFromEvent(String eventKey){
+        db.delete(TABLE_NOTES,KEY_EVENTKEY+"=?",new String[]{eventKey});
     }
 
 }

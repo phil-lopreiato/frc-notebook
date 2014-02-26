@@ -25,7 +25,8 @@
         android:id="@+id/button"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:onClick="openDownloader"/>
+        android:onClick="openDownloader"
+        android:visibility="gone"/>
 
     <ListView
         android:layout_width="wrap_content"

@@ -236,7 +236,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            final Note oldNote = StartActivity.db.getNote(Short.parseShort(adapter.keys[i]));
+            final Note oldNote = StartActivity.db.getNote(Short.parseShort(adapter.keys.get(i)));
             final EditText noteEditField = new EditText(activity);
             //noteEditField.setId(999);
             noteEditField.setText(oldNote.getNote());
@@ -271,7 +271,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                 //not found. quit
                 return;
             }else{
-                adapter.values[index] = newNote.getNote();
+                adapter.values.set(index, newNote.getNote());
             }
         }
     }

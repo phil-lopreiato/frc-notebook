@@ -74,6 +74,9 @@ public class StartActivity extends Activity{
             startActivity(intent);
             return true;
         }
+        if(id == R.id.action_download_event){
+            openDownloader(null);
+        }
         return super.onOptionsItemSelected(item);
     }
 

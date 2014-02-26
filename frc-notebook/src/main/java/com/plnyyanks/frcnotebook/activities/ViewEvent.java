@@ -102,7 +102,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         switch(tab.getPosition()){
             case 0:
             default:
-                f = new EventTeamListFragment(key); break;
+                EventTeamListFragment.setEventKey(key);
+                f = new EventTeamListFragment(); break;
             case 1:
                 f = new EventScheduleFragment(); break;
         }
@@ -123,15 +124,18 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     public static class EventTeamListFragment extends Fragment {
 
-        private String eventKey;
+        private static String eventKey;
 
-        public EventTeamListFragment(String key){
+        public EventTeamListFragment(){
             super();
-            eventKey = key;
         }
 
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
+        }
+
+        public static void setEventKey(String eventKey) {
+            EventTeamListFragment.eventKey = eventKey;
         }
 
         @Override

@@ -106,6 +106,13 @@ public class Team implements Comparable<Team>{
         }
     }
 
+    public void removeEvent(String eventKey){
+        int index = teamEvents.indexOf(eventKey);
+        if(index != -1){
+            teamEvents.remove(index);
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Team team) {
