@@ -46,6 +46,7 @@
     <string name="no_teams">No teams yet</string>
     <string name="team_notes_header">Team Notes</string>
     <string name="no_team_selected">No Team Selected</string>
+    <string name="no_team_notes">No notes for this team</string>
     <string name="prevous_match_button">Previous Match</string>
     <string name="next_match_button">Next Match</string>
 

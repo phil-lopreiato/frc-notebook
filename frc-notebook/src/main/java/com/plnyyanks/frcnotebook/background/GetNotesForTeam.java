@@ -106,44 +106,17 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
        ListGroup generalNoteGroup = new ListGroup("General Notes ("+generalNotes.size()+")");
         for (Note n : generalNotes) {
-            generalNoteGroup.children.add(buildGeneralNoteTitle(n));
+            generalNoteGroup.children.add(Note.buildGeneralNoteTitle(n, eventTitle.equals("all")));
             generalNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(0,generalNoteGroup);
 
         ListGroup matchNoteGroup = new ListGroup(("Match Notes ("+matchNotes.size()+")"));
         for (Note n : matchNotes) {
-            matchNoteGroup.children.add(buildMatchNoteTitle(n));
+            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventTitle.equals("all")));
             matchNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(1,matchNoteGroup);
-    }
-
-    public static String buildGeneralNoteTitle(Note note){
-        String output = "";
-
-        if(eventKey.equals("all")){
-            //on all notes tab. Include event title
-            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
-            if(parentEvent!=null){
-                //note is associated with an event
-                output += parentEvent.getShortName()+": ";
-            }
-        }
-        output += note.getNote();
-        return output;
-    }
-
-    public static String buildMatchNoteTitle(Note note){
-        String output = "";
-        if(eventKey.equals("all")){
-            //on all notes tab. Include event title
-            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
-            output += parentEvent.getShortName()+" ";
-        }
-        Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
-        output += parentMatch.getTitle()+": "+note.getNote();
-        return output;
     }
 
     public static void updateListData(){
@@ -164,5 +137,9 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     public static String getEventKey() {
         return eventKey;
+    }
+
+    public static String getEventTitle(){
+        return eventTitle;
     }
 }

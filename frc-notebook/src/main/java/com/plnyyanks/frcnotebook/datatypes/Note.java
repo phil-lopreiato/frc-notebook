@@ -1,5 +1,10 @@
 package com.plnyyanks.frcnotebook.datatypes;
 
+import android.util.Log;
+
+import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+
 /**
  * Created by phil on 2/19/14.
  */
@@ -70,5 +75,36 @@ public class Note {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public static String buildGeneralNoteTitle(Note note,boolean displayEvent){
+        String output = "";
+
+        if(displayEvent){
+            //on all notes tab. Include event title
+            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
+            if(parentEvent!=null){
+                //note is associated with an event
+                output += parentEvent.getShortName()+": ";
+            }
+        }
+        output += note.getNote();
+        return output;
+    }
+
+    public static String buildMatchNoteTitle(Note note, boolean displayEvent){
+        String output = "";
+        if(displayEvent){
+            //on all notes tab. Include event title
+            Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
+            output += parentEvent.getShortName()+" ";
+        }
+
+        if(!note.getMatchKey().equals("all")){
+            Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
+            output += parentMatch.getTitle()+": ";
+        }
+        output +=note.getNote();
+        return output;
     }
 }

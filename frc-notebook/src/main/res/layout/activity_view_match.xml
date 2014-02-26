@@ -149,25 +149,20 @@
         android:id="@+id/add_note_button"
         android:visibility="gone" />
 
-    <ScrollView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_team_selected"
+        android:id="@+id/no_team_selected"
+        android:layout_below="@id/team_notes"
+        android:layout_centerHorizontal="true"/>
+
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/team_notes"
         android:layout_above="@id/add_note_button"
-        android:id="@+id/team_note_container"
-        android:layout_centerInParent="true">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/team_notes_list">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_team_selected" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/team_notes_list"></ListView>
 
 </RelativeLayout>

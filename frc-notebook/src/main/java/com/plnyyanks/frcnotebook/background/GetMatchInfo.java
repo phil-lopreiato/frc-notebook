@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
@@ -61,8 +64,8 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         TextView blueHeader = (TextView)activity.findViewById(R.id.blue_score);
         blueHeader.setText(Integer.toString(match.getBlueScore())+" Points");
 
-        LinearLayout redList = (LinearLayout) activity.findViewById(R.id.red_alliance);
-        LinearLayout blueList = (LinearLayout) activity.findViewById(R.id.blue_allaince);
+        final LinearLayout redList = (LinearLayout) activity.findViewById(R.id.red_alliance);
+        final LinearLayout blueList = (LinearLayout) activity.findViewById(R.id.blue_allaince);
 
         JsonArray redTeams  = match.getRedAllianceTeams(),
                 blueTeams = match.getBlueAllianceTeams();
@@ -73,7 +76,13 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                redList.addView(makeTextView(team.getAsString(), Constants.lparams));
+                final TextView v = makeTextView(team.getAsString(), Constants.lparams);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        redList.addView(v);
+                    }
+                });
             }
         }
         if(blueTeams.size() >0){
@@ -82,7 +91,14 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                blueList.addView(makeTextView(team.getAsString(),Constants.lparams));
+                final TextView v = makeTextView(team.getAsString(),Constants.lparams);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        blueList.addView(v);
+                    }
+                });
+
             }
         }
 
@@ -131,23 +147,42 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         }
 
         private void fetchNotes(){
-            ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey,eventKey);
-            LinearLayout notesList = (LinearLayout)activity.findViewById(R.id.team_notes_list);
-            notesList.removeAllViews();
-            if(notes.size() == 0){
-                TextView t = new TextView(activity);
-                t.setLayoutParams(Constants.lparams);
-                t.setText("No Notes for This Team");
-                notesList.addView(t);
+            ArrayList<Note> noteList = StartActivity.db.getAllNotes(teamKey,eventKey);
+            final ListView eventList = (ListView) activity.findViewById(R.id.team_notes_list);
+            eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            String[] notes, ids;
+            Note n;
+            if(noteList.size() == 0){
+                notes = new String[1];
+                notes[0] = activity.getString(R.string.no_team_notes);
+
+                ids = new String[1];
+                ids[0] = "-1";
             }else{
-                for(Note n:notes){
-                    TextView t = new TextView(activity);
-                    t.setLayoutParams(Constants.lparams);
-                    t.setText("• " + n.getNote());
-                    t.setTextSize(18);
-                    notesList.addView(t);
+                notes = new String[noteList.size()];
+                ids   = new String[noteList.size()];
+                for(int i=0;i<noteList.size();i++){
+                    n = noteList.get(i);
+                    notes[i] = Note.buildMatchNoteTitle(n,false);
+                    ids[i] = Short.toString(n.getId());
                 }
             }
+
+            final String[] finalNotes = notes,
+                           finalIds  = ids;
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    EventListArrayAdapter adapter = new EventListArrayAdapter(activity,finalNotes,finalIds);
+                    eventList.setAdapter(adapter);
+                    //eventList.setOnItemClickListener(new ClickListener(finalKeys));
+                    //eventList.setOnLongClickListener(new LongClickListener());
+                }
+            });
+
+            //divider
+
             Button addNote = (Button)activity.findViewById(R.id.add_note_button);
             addNote.setVisibility(View.VISIBLE);
             addNote.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +220,10 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
 
                 }
             });
+
+            TextView nothingSelected = (TextView)activity.findViewById(R.id.no_team_selected);
+            nothingSelected.setVisibility(View.GONE);
+
         }
 
         private void addView(View view){

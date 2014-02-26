@@ -83,11 +83,11 @@ public class NotesExpandableListAdapter extends ExapandableListAdapter {
                 return;
             }else{
                 //update in match notes group
-                groups.get(1).children.set(index,GetNotesForTeam.buildMatchNoteTitle(note));
+                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all")));
             }
         }else{
             //update in general notes group
-            groups.get(0).children.set(index,GetNotesForTeam.buildGeneralNoteTitle(note));
+            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all")));
         }
 
 
