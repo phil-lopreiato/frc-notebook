@@ -3,11 +3,14 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewMatch"
     tools:ignore="MergeRootFrame">
 
-    <TextView
+    <TextView style="@style/activity_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -116,36 +119,6 @@
         android:layout_below="@id/alliance_container"
         android:paddingBottom="@dimen/activity_half_vertical_margin" />
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/team_notes"
-        android:id="@+id/team_note_container"
-        android:layout_centerInParent="true">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/team_notes_list">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_team_selected" />
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_note_button"
-        android:layout_below="@id/team_note_container"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_centerInParent="true"
-        android:id="@+id/add_note_button"
-        android:visibility="gone" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -165,5 +138,36 @@
         android:text="@string/next_match_button"
         android:onClick="nextMatch"
         android:id="@+id/next_match" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_note_button"
+        android:layout_above="@id/prev_match"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_centerInParent="true"
+        android:id="@+id/add_note_button"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/team_notes"
+        android:layout_above="@id/add_note_button"
+        android:id="@+id/team_note_container"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/team_notes_list">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_team_selected" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

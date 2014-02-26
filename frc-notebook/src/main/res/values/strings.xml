@@ -21,6 +21,9 @@
     <string name="title_activity_view_event">View Event</string>
     <string name="teams_attending_header">Teams Attending</string>
 
+    <!-- Match Schedule -->
+    <string name="match_schedule_header">Match Schedule</string>
+
     <!-- View Team -->
     <string name="title_activity_view_team">View Team</string>
     <string name="new_general_note">New General Note</string>
