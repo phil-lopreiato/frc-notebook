@@ -39,7 +39,7 @@ public class StartActivity extends Activity{
         }*/
 
         getdb();
-
+        PreferenceHandler.setAppVersion(this);
         new ShowLocalEvents().execute(this);
     }
 

@@ -1,6 +1,9 @@
 package com.plnyyanks.frcnotebook.database;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
 import com.plnyyanks.frcnotebook.R;
@@ -21,5 +24,17 @@ public class PreferenceHandler {
         if(theme.equals("theme_light")) themeId = R.style.theme_light;
         if(theme.equals("theme_dark")) themeId = R.style.theme_dark;
         return themeId;
+    }
+
+    public static void setAppVersion(Context context){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            prefs.edit().putString("app_version",info.versionName).commit();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

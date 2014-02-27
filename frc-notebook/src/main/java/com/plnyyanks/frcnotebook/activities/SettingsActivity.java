@@ -90,6 +90,9 @@ public class SettingsActivity extends PreferenceActivity {
 
         addPreferencesFromResource(R.xml.pref_appearance);
         bindPreferenceSummaryToValue(findPreference("theme"));
+
+        addPreferencesFromResource(R.xml.pref_appinfo);
+        bindPreferenceSummaryToValue(findPreference("app_version"));
     }
 
     /** {@inheritDoc} */
@@ -216,5 +219,18 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AppInfoPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_appearance);
 
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("app_version"));
+        }
+    }
 }
