@@ -15,7 +15,7 @@
 
     <string name="pref_title_data_source">Match Data Source</string>
     <string-array name="pref_data_source_items">
-        <item>The Blue Alliance</item>
+        <item>The Blue Alliance API v1</item>
     </string-array>
     <string-array name="pref_data_source_values">
         <item>TBAv1</item>
@@ -33,6 +33,14 @@
         <item>theme_light</item>
         <item>theme_dark</item>
     </string-array>
+
+    <!-- App Data -->
+    <string name="pref_header_app_data">App Data</string>
+    <string name="pref_clear_data">Clear App Data</string>
+
+    <!-- App Info -->
+    <string name="pref_header_app_info">App Info</string>
+    <string name="pref_app_version">App Version</string>
 
 
 </resources>

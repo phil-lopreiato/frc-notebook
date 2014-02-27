@@ -1,10 +1,13 @@
 package com.plnyyanks.frcnotebook.activities;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -13,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.DatabaseHandler;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;
@@ -90,6 +94,39 @@ public class SettingsActivity extends PreferenceActivity {
 
         addPreferencesFromResource(R.xml.pref_appearance);
         bindPreferenceSummaryToValue(findPreference("theme"));
+
+        addPreferencesFromResource(R.xml.pref_app_data);
+        bindPreferenceSummaryToValue(findPreference("data_clear"));
+        Preference clearData = (Preference)findPreference("data_clear");
+        clearData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirm Deletion");
+                builder.setMessage("Are you sure you want to delete all stored data?");
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //delete the data now
+                                StartActivity.db.clearDatabase();
+                                Toast.makeText(context, "Cleared all data", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.create().show();
+                return false;
+            }
+        });
+
+        addPreferencesFromResource(R.xml.pref_appinfo);
+        bindPreferenceSummaryToValue(findPreference("app_version"));
     }
 
     /** {@inheritDoc} */
@@ -216,5 +253,33 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AppInfoPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_appinfo);
 
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("app_version"));
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class DataPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_app_data);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("data_clear"));
+        }
+    }
 }

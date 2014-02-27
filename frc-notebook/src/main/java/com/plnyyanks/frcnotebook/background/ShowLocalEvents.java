@@ -46,7 +46,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
     @Override
     protected String doInBackground(Activity... activities) {
         parentActivity = activities[0];
-        List<Event> storedEvents = StartActivity.db.getAllEvents();
+        final List<Event> storedEvents = StartActivity.db.getAllEvents();
 
         eventList = (ListView) parentActivity.findViewById(R.id.event_list);
         eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -56,14 +56,20 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
             finalEvents.add(e.getEventName() + " - "+e.getEventYear());
             finalKeys.add(e.getEventKey());
         }
+        if(storedEvents.size()==0){
+            finalEvents.add("No events. Click the plus button above to get started");
+            finalKeys.add("-1");
+        }
 
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 adapter = new EventListArrayAdapter(parentActivity,finalEvents,finalKeys);
                 eventList.setAdapter(adapter);
-                eventList.setOnItemClickListener(new ClickListener());
-                eventList.setOnItemLongClickListener(new LongClickListener());
+                if(storedEvents.size()!=0){
+                    eventList.setOnItemClickListener(new ClickListener());
+                    eventList.setOnItemLongClickListener(new LongClickListener());
+                }
                 //eventList.setOnItemSelectedListener(new SelectedListener());
             }
         });

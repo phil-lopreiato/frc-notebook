@@ -10,4 +10,10 @@
         android:fragment="com.plnyyanks.frcnotebook.activities.SettingsActivity$AppearancePreferenceFragment"
         android:title="@string/pref_header_appearance" />
 
+    <header android:fragment="com.plnyyanks.frcnotebook.activities.SettingsActivity$DataPreferenceFragment"
+        android:title="@string/pref_header_app_info"/>
+
+    <header android:fragment="com.plnyyanks.frcnotebook.activities.SettingsActivity$AppInfoPreferenceFragment"
+        android:title="@string/pref_header_app_data" />
+
 </preference-headers>

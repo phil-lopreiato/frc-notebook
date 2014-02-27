@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.background;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +25,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.activities.SettingsActivity;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -126,14 +130,26 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         }
 
         if(!StartActivity.db.matchExists(nextMatchKey)){
-            Button nextButton = (Button)activity.findViewById(R.id.next_match);
+            ImageView nextButton = (ImageView)activity.findViewById(R.id.next_match);
             nextButton.setVisibility(View.GONE);
         }
         if(!StartActivity.db.matchExists(previousMatchKey)){
-            Button prevButton = (Button)activity.findViewById(R.id.prev_match);
+            ImageView prevButton = (ImageView)activity.findViewById(R.id.prev_match);
             prevButton.setVisibility(View.GONE);
         }
         return null;
+    }
+
+    public static void openTeam(){
+        if(selectedTeam==null){
+            //no team selected, can't add note
+            Toast.makeText(activity,"Error: no team selected",Toast.LENGTH_SHORT).show();
+            Log.w(Constants.LOG_TAG,"Can't open team without one selected");
+            return;
+        }
+        ViewTeam.setTeam(selectedTeam);
+        Intent intent = new Intent(activity, ViewTeam.class);
+        activity.startActivity(intent);
     }
 
     private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){

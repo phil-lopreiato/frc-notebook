@@ -1,11 +1,13 @@
 package com.plnyyanks.frcnotebook.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ public class ViewMatch extends Activity {
     private static Match match;
     static Activity activity;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PreferenceHandler.getTheme());
@@ -54,6 +58,13 @@ public class ViewMatch extends Activity {
         bar.setSubtitle(eventKey);
 
         if(matchKey == null) return;
+
+        if(PreferenceHandler.getTheme()==R.style.theme_dark){
+            ImageView nextMatch = (ImageView)findViewById(R.id.next_match);
+            nextMatch.setBackground(getResources().getDrawable(R.drawable.ic_action_next_item_dark));
+            ImageView prevMatch = (ImageView)findViewById(R.id.prev_match);
+            prevMatch.setBackground(getResources().getDrawable(R.drawable.ic_action_previous_item_dark));
+        }
 
         new GetMatchInfo(this).execute(previousKey,matchKey,nextKey,eventKey);
     }
@@ -96,6 +107,9 @@ public class ViewMatch extends Activity {
         }
         if(id == R.id.action_add_match_note){
             GetMatchInfo.addMatchNote();
+        }
+        if(id==R.id.action_view_team){
+            GetMatchInfo.openTeam();
         }
         return super.onOptionsItemSelected(item);
     }

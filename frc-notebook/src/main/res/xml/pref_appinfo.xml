@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_header_app_info"
+        android:key="pref_app_info" >
+        <EditTextPreference
+            android:key="app_version"
+            android:title="@string/pref_app_version"
+            android:selectable="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

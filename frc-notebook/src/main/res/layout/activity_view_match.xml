@@ -119,23 +119,21 @@
         android:layout_below="@id/alliance_container"
         android:paddingBottom="@dimen/activity_half_vertical_margin" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/prevous_match_button"
+        android:background="@drawable/ic_action_previous_item_light"
         android:onClick="previousMatch"
         android:id="@+id/prev_match" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="@string/next_match_button"
+        android:background="@drawable/ic_action_next_item_light"
         android:onClick="nextMatch"
         android:id="@+id/next_match" />
 
