@@ -122,6 +122,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    public void clearDatabase(){
+        // on upgrade drop older tables
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+
+        // create new tables
+        onCreate(db);
+    }
+
     //managing events in SQL
     public long addEvent(Event in){
         //first, check if that event exists already and only insert if it doesn't

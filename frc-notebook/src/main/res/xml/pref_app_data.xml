@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_header_app_data"
+        android:key="pref_app_data" >
+        <Preference
+            android:key="data_clear"
+            android:id="@+id/data_clear"
+            android:title="@string/pref_clear_data"
+            android:editable="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>
