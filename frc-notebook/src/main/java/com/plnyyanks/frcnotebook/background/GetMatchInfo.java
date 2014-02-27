@@ -250,6 +250,11 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                             resultText = "Note added sucessfully";
                             adapter.values.add(Note.buildMatchNoteTitle(note,false,true));
                             adapter.keys.add(Short.toString(newNoteId));
+                            if(adapter.keys.get(0)=="-1"){
+                                //then, first note in list is the filler note
+                                adapter.keys.remove(0);
+                                adapter.values.remove(0);
+                            }
                             adapter.notifyDataSetChanged();
                         }else{
                             resultText = "Error adding note to database";
@@ -293,7 +298,6 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                                 oldNote.setNote(noteEditField.getText().toString());
                                 StartActivity.db.updateNote(oldNote);
                                 updateNoteInList(oldNote);
-                                adapter.notifyDataSetChanged();
                                 dialog.cancel();
                             }
                         });
@@ -309,12 +313,13 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         }
 
         private void updateNoteInList(Note newNote) {
-            int index = Arrays.asList(adapter.keys).indexOf(Short.toString(newNote.getId()));
+            int index = adapter.keys.indexOf(Short.toString(newNote.getId()));
             if(index == -1){
                 //not found. quit
                 return;
             }else{
-                adapter.values.set(index, newNote.getNote());
+                adapter.values.set(index, Note.buildMatchNoteTitle(newNote,false,true));
+                adapter.notifyDataSetChanged();
             }
         }
     }
