@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.background;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -23,7 +24,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.activities.SettingsActivity;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -134,6 +137,18 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             prevButton.setVisibility(View.GONE);
         }
         return null;
+    }
+
+    public static void openTeam(){
+        if(selectedTeam==null){
+            //no team selected, can't add note
+            Toast.makeText(activity,"Error: no team selected",Toast.LENGTH_SHORT).show();
+            Log.w(Constants.LOG_TAG,"Can't open team without one selected");
+            return;
+        }
+        ViewTeam.setTeam(selectedTeam);
+        Intent intent = new Intent(activity, ViewTeam.class);
+        activity.startActivity(intent);
     }
 
     private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){

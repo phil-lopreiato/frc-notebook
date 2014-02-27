@@ -97,6 +97,9 @@ public class ViewMatch extends Activity {
         if(id == R.id.action_add_match_note){
             GetMatchInfo.addMatchNote();
         }
+        if(id==R.id.action_view_team){
+            GetMatchInfo.openTeam();
+        }
         return super.onOptionsItemSelected(item);
     }
 

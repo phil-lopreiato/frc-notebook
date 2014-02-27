@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewMatch" >
 
+    <item android:id="@+id/action_view_team"
+        android:title="View Team"
+        android:orderInCategory="50"
+        android:icon="@drawable/ic_action_about_dark"
+        android:showAsAction="always|withText"/>
 
     <item android:id="@+id/action_add_match_note"
         android:title="Add"
