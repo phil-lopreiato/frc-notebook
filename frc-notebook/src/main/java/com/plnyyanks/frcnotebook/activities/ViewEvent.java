@@ -23,6 +23,7 @@ import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Team;
+import com.plnyyanks.frcnotebook.tba.TBA_EventDetailFetcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,6 +93,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+            return true;
+        }if(id==R.id.action_update_event){
+            new TBA_EventDetailFetcher(this, key).execute("");
             return true;
         }
         return super.onOptionsItemSelected(item);
