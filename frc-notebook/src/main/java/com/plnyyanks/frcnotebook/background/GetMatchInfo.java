@@ -90,7 +90,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                final TextView v = makeTextView(team.getAsString(), Constants.lparams);
+                final TextView v = makeTextView(team.getAsString());
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -110,7 +110,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                final TextView v = makeTextView(team.getAsString(),Constants.lparams);
+                final TextView v = makeTextView(team.getAsString());
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -144,7 +144,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         activity.startActivity(intent);
     }
 
-    private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){
+    private TextView makeTextView(String teamKey){
         TextView tv;
         tv = new TextView(activity);
         tv.setLayoutParams(Constants.lparams);
