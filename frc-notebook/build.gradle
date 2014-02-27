@@ -1,3 +1,5 @@
+import com.android.builder.DefaultManifestParser
+
 apply plugin: 'android'
 
 android {
@@ -7,26 +9,53 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode 3
-        versionName "2.1"
+        versionCode 4
+        versionName "2.2"
     }
-    /*signingConfigs {
+    signingConfigs {
         release {
             storeFile file("../../keystore.jks")
-            storePassword System.console().readLine("\n\$ Enter keystore password: ")
             keyAlias "frc-notebook"
-            keyPassword System.console().readLine("\n\$ Enter key password: ")
+
+            storePassword "notRealPassword"
+            keyPassword "notRealPassword"
         }
-    }*/
+    }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            /*signingConfig signingConfigs.release*/
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                def file = variant.outputFile
+                variant.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+            }
         }
     }
     lintOptions {
         abortOnError false
+    }
+    sourceSets{
+        main{
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+    }
+}
+
+
+task askForPasswords << {
+    // Must create String because System.readPassword() returns char[]
+    // (and assigning that below fails silently)
+    def storePw = new String(System.console().readPassword("\nKeystore password: "))
+    def keyPw  = new String(System.console().readPassword("Key password: "))
+
+    android.signingConfigs.release.storePassword = storePw
+    android.signingConfigs.release.keyPassword = keyPw
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.equals("packageRelease")) {
+        theTask.dependsOn "askForPasswords"
     }
 }
 

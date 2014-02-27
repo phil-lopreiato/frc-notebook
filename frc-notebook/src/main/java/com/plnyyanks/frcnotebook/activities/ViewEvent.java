@@ -71,6 +71,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     @Override
     protected void onResume() {
         StartActivity.checkThemeChanged(ViewEvent.class);
+        GetEventMatches.setActivity(this);
         super.onResume();
     }
 
@@ -102,7 +103,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         switch(tab.getPosition()){
             case 0:
             default:
-                f = new EventTeamListFragment(key); break;
+                f = new EventTeamListFragment(); break;
             case 1:
                 f = new EventScheduleFragment(); break;
         }
@@ -123,11 +124,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     public static class EventTeamListFragment extends Fragment {
 
-        private String eventKey;
-
-        public EventTeamListFragment(String key){
+        public EventTeamListFragment(){
             super();
-            eventKey = key;
         }
 
         public void onCreate(Bundle savedInstanceState){
@@ -137,13 +135,18 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_event_team_list, null);
-            new GetTeamsAttending(activity).execute(eventKey);
+            new GetTeamsAttending(activity).execute(key);
             return v;
         }
     }
 
     public static class EventScheduleFragment extends Fragment{
         View view;
+
+        public EventScheduleFragment(){
+            super();
+        }
+
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
         }

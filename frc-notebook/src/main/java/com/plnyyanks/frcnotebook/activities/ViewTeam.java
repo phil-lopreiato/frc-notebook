@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +66,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         Team team = StartActivity.db.getTeam(teamKey);
         ArrayList<String> events = team.getTeamEvents();
         for(String eventKey:events){
+            Log.d(Constants.LOG_TAG, "Making AB Tab for " + eventKey);
             Event event = StartActivity.db.getEvent(eventKey);
             ActionBar.Tab eventTab = bar.newTab();
             eventTab.setTag(event.getEventKey());

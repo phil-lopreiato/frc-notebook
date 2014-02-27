@@ -59,14 +59,14 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
         JsonElement element;
         String eventName;
-        String[] events = new String[result.size()],
-                 keys = new String[result.size()];
-        for(int i=0;i<events.length&&iterator.hasNext();i++){
+        ArrayList<String>   events = new ArrayList<String>(),
+                            keys = new ArrayList<String>();
+        for(int i=0;i<result.size()&&iterator.hasNext();i++){
             element = iterator.next();
             eventName = element.getAsJsonObject().get("name").getAsString();
             eventName += " - "+year;
-            events[i] = eventName;
-            keys[i] = element.getAsJsonObject().get("key").getAsString();
+            events.add(eventName);
+            keys.add(element.getAsJsonObject().get("key").getAsString());
         }
 
         EventListArrayAdapter adapter = new EventListArrayAdapter(listActivity,events,keys);
@@ -80,10 +80,10 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
     private class EventClickListener implements AdapterView.OnItemClickListener {
 
-        final String[] keys;
+        final ArrayList<String> keys;
         int pos;
 
-        public EventClickListener(String[] eventKeys){
+        public EventClickListener(ArrayList<String> eventKeys){
             keys = eventKeys;
         }
 
@@ -93,7 +93,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
             AlertDialog.Builder builder = new AlertDialog.Builder(listActivity);
             DialogInterface.OnClickListener dialogClickListener = new DialogClickListener();
 
-            builder.setMessage("Do you want to download info for "+keys[pos]+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+            builder.setMessage("Do you want to download info for "+keys.get(pos)+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
         }
 
         private class DialogClickListener implements DialogInterface.OnClickListener {
@@ -102,9 +102,9 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         //YES! Download info...
-                        Toast.makeText(listActivity, "Downloading Info for "+keys[pos],Toast.LENGTH_SHORT).show();
+                        Toast.makeText(listActivity, "Downloading Info for "+keys.get(pos),Toast.LENGTH_SHORT).show();
                         //start the background task to download matches
-                        new TBA_EventDetailFetcher(listActivity,keys[pos]).execute("");
+                        new TBA_EventDetailFetcher(listActivity,keys.get(pos)).execute("");
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
