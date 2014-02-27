@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
-import com.plnyyanks.frcnotebook.adapters.ExapandableListAdapter;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 
 /**

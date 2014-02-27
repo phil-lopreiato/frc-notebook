@@ -1,22 +1,17 @@
 package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
-import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 
 import java.util.ArrayList;

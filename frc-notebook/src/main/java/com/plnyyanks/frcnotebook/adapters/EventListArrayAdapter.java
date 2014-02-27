@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.plnyyanks.frcnotebook.Constants;
-import com.plnyyanks.frcnotebook.background.GetMatchInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Created by phil on 2/22/14.

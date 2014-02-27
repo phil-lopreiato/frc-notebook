@@ -9,26 +9,18 @@ import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
-import com.plnyyanks.frcnotebook.adapters.ExapandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.NotesExpandableListAdapter;
-import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
-import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;

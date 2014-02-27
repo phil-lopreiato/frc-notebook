@@ -3,22 +3,15 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
 import com.plnyyanks.frcnotebook.database.DatabaseHandler;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
-import com.plnyyanks.frcnotebook.datatypes.Event;
-
-import java.util.List;
 
 public class StartActivity extends Activity{
 

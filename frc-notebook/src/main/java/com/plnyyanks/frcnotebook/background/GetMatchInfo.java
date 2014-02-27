@@ -8,12 +8,9 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,19 +22,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.activities.SettingsActivity;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
-import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -318,7 +310,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                 //not found. quit
                 return;
             }else{
-                adapter.values.set(index, Note.buildMatchNoteTitle(newNote,false,true));
+                adapter.values.set(index, Note.buildMatchNoteTitle(newNote, false, true));
                 adapter.notifyDataSetChanged();
             }
         }

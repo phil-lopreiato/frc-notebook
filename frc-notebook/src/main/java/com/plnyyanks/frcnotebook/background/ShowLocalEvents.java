@@ -2,20 +2,15 @@ package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.Constants;
@@ -25,7 +20,6 @@ import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 import java.util.List;

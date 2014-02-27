@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -16,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.database.DatabaseHandler;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;

@@ -1,10 +1,9 @@
 package com.plnyyanks.frcnotebook.activities;
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,21 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetEventMatches;
 import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.datatypes.Match;
-import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.tba.TBA_EventDetailFetcher;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
