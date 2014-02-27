@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -129,11 +130,11 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         }
 
         if(!StartActivity.db.matchExists(nextMatchKey)){
-            Button nextButton = (Button)activity.findViewById(R.id.next_match);
+            ImageView nextButton = (ImageView)activity.findViewById(R.id.next_match);
             nextButton.setVisibility(View.GONE);
         }
         if(!StartActivity.db.matchExists(previousMatchKey)){
-            Button prevButton = (Button)activity.findViewById(R.id.prev_match);
+            ImageView prevButton = (ImageView)activity.findViewById(R.id.prev_match);
             prevButton.setVisibility(View.GONE);
         }
         return null;
