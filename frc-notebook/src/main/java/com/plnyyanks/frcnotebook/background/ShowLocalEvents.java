@@ -154,8 +154,8 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //delete the event now
-                            StartActivity.db.deleteEvent(finalKeys.get(item));
-                            Toast.makeText(parentActivity, "Deleted " + finalKeys.get(item) + " from database", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(parentActivity,"Deleting "+finalKeys.get(item),Toast.LENGTH_SHORT).show();
+                            new DeleteEvent(parentActivity).execute(finalKeys.get(item));
                             adapter.removeAt(item);
                             adapter.notifyDataSetChanged();
                             dialog.cancel();
