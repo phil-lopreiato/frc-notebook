@@ -66,12 +66,19 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         String titleString = match.getMatchType()+(match.getMatchType().equals("Quals")?" ":(" "+match.getSetNumber()+ " Match "))+match.getMatchNumber();
         matchTitle.setText(titleString);
 
-
         TextView redHeader = (TextView)activity.findViewById(R.id.red_score);
-        redHeader.setText(Integer.toString(match.getRedScore())+ " Points");
+        if(match.getRedScore()>=0){
+            redHeader.setText(Integer.toString(match.getRedScore())+ " Points");
+        }else{
+            redHeader.setVisibility(View.GONE);
+        }
 
         TextView blueHeader = (TextView)activity.findViewById(R.id.blue_score);
-        blueHeader.setText(Integer.toString(match.getBlueScore())+" Points");
+        if(match.getBlueScore()>=0){
+            blueHeader.setText(Integer.toString(match.getBlueScore())+" Points");
+        }else{
+            blueHeader.setVisibility(View.GONE);
+        }
 
         final LinearLayout redList = (LinearLayout) activity.findViewById(R.id.red_alliance);
         final LinearLayout blueList = (LinearLayout) activity.findViewById(R.id.blue_allaince);
