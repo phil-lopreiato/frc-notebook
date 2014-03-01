@@ -14,14 +14,20 @@ import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -31,6 +37,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
     private Activity listActivity;
     private String year;
+    private EventListArrayAdapter adapter;
 
     @Override
     protected JsonArray doInBackground(Activity... args) {
@@ -53,20 +60,40 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
         //LinearLayout eventList = (LinearLayout) listActivity.findViewById(R.id.event_list_to_download);
         ListView eventList = (ListView) listActivity.findViewById(R.id.event_list_to_download);
 
-        JsonElement element;
+        JsonObject element;
         String eventName,eventKey;
         ArrayList<ListItem> events = new ArrayList<ListItem>();
         ArrayList<String>   keys = new ArrayList<String>();
+        ArrayList<Event>    list = new ArrayList<Event>();
         for(int i=0;i<result.size()&&iterator.hasNext();i++){
-            element = iterator.next();
-            eventName = element.getAsJsonObject().get("name").getAsString();
-            eventName += " - "+year;
-            eventKey = element.getAsJsonObject().get("key").getAsString();
-            events.add(new ListElement(eventName,eventKey));
-            keys.add(eventKey);
+            element = iterator.next().getAsJsonObject();
+            eventName = element.get("name").getAsString();
+            eventKey = element.get("key").getAsString();
+
+            Event e = new Event();
+            e.setEventKey(eventKey);
+            e.setEventName(eventName);
+            e.setEventStart(element.get("start_date").getAsString());
+            list.add(e);
         }
 
-        EventListArrayAdapter adapter = new EventListArrayAdapter(listActivity,events,keys);
+        Collections.sort(list);
+        int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
+                currentWeek;
+        for(Event e:list){
+            currentWeek = e.getCompetitionWeek();
+            if(eventWeek != currentWeek){
+                events.add(new ListHeader(" Week "+currentWeek));
+                keys.add("week"+currentWeek);
+            }
+            eventWeek = currentWeek;
+
+            events.add(new ListElement(e.getEventName(),e.getEventKey()));
+            keys.add(e.getEventKey());
+        }
+
+
+        adapter = new EventListArrayAdapter(listActivity,events,keys);
         eventList.setAdapter(adapter);
         eventList.setOnItemClickListener(new EventClickListener(keys));
 
@@ -86,6 +113,8 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            ListItem item = adapter.values.get(i);
+            if (item instanceof ListHeader) return;
             pos = i;
             AlertDialog.Builder builder = new AlertDialog.Builder(listActivity);
             DialogInterface.OnClickListener dialogClickListener = new DialogClickListener();

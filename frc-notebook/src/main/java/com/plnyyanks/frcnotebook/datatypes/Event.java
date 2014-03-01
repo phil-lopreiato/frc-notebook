@@ -28,7 +28,8 @@ public class Event implements Comparable<Event>{
     private Date   startDate,
                    endDate;
 
-    private static DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+    public static final DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+    public static final SimpleDateFormat weekFormatter = new SimpleDateFormat("w");
 
     private ArrayList<Match> quals,quarterFinals,semiFinals,finals;
 
@@ -46,8 +47,8 @@ public class Event implements Comparable<Event>{
         this.eventYear = eventYear;
 
         try {
-            startDate = df.parse(eventStart);
-            endDate = df.parse(eventEnd);
+            startDate = parseDate(eventStart);
+            endDate = parseDate(eventEnd);
             Log.d(Constants.LOG_TAG,"Logged event with start date:"+startDate.toString());
         } catch (ParseException e) {
             startDate = new Date();
@@ -99,7 +100,7 @@ public class Event implements Comparable<Event>{
     public void setEventStart(String eventStart) {
         this.eventStart = eventStart;
         try {
-            startDate = df.parse(eventStart);
+            startDate = parseDate(eventStart);
         } catch (ParseException e) {
             startDate = new Date();
             Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
@@ -117,7 +118,7 @@ public class Event implements Comparable<Event>{
     public void setEventEnd(String eventEnd) {
         this.eventEnd = eventEnd;
         try {
-            endDate = df.parse(eventEnd);
+            endDate = parseDate(eventEnd);
         } catch (ParseException e) {
             endDate = new Date();
             Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
@@ -186,6 +187,26 @@ public class Event implements Comparable<Event>{
         Collections.sort(quarterFinals);
         Collections.sort(semiFinals);
         Collections.sort(finals);
+    }
+
+    public int getCompetitionWeek(){
+        int week = Integer.parseInt(weekFormatter.format(startDate))-8;
+        return week<0?0:week;
+    }
+
+    public static int getCompetitionWeek(String dateString){
+        try {
+            Date eventDate = parseDate(dateString);
+            int week = Integer.parseInt(weekFormatter.format(eventDate))-8;
+            return week<0?0:week;
+        } catch (ParseException e) {
+            Log.e(Constants.LOG_TAG,"Unable to parse date string. "+e.getStackTrace().toString());
+            return -1;
+        }
+    }
+
+    private static Date parseDate(String dateString) throws ParseException {
+        return df.parse(dateString);
     }
 
     @Override

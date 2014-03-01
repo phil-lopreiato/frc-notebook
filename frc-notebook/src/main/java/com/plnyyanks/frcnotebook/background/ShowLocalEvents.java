@@ -53,12 +53,11 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         eventList = (ListView) parentActivity.findViewById(R.id.event_list);
         eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         Event e;
-        SimpleDateFormat weekFormatter = new SimpleDateFormat("w");
-        int eventWeek = Integer.parseInt(weekFormatter.format(new Date())),
+        int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
             currentWeek;
         for(int i=0;i<storedEvents.size();i++){
             e=storedEvents.get(i);
-            currentWeek = Integer.parseInt(weekFormatter.format(e.getStartDate())) - 8;
+            currentWeek = e.getCompetitionWeek();
             if(eventWeek != currentWeek){
                 finalEvents.add(new ListHeader(e.getEventYear()+ " Week "+currentWeek));
                 finalKeys.add(e.getEventYear()+"_week"+currentWeek);
