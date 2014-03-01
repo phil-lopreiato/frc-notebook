@@ -1,6 +1,5 @@
 package com.plnyyanks.frcnotebook.adapters;
 
-import android.app.ActionBar;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;

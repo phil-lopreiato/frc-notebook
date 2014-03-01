@@ -1,8 +1,5 @@
 package com.plnyyanks.frcnotebook.datatypes;
 
-import android.util.Log;
-
-import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
 /**

@@ -8,12 +8,9 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,19 +22,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.activities.SettingsActivity;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
-import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -74,12 +68,19 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         String titleString = match.getMatchType()+(match.getMatchType().equals("Quals")?" ":(" "+match.getSetNumber()+ " Match "))+match.getMatchNumber();
         matchTitle.setText(titleString);
 
-
         TextView redHeader = (TextView)activity.findViewById(R.id.red_score);
-        redHeader.setText(Integer.toString(match.getRedScore())+ " Points");
+        if(match.getRedScore()>=0){
+            redHeader.setText(Integer.toString(match.getRedScore())+ " Points");
+        }else{
+            redHeader.setVisibility(View.GONE);
+        }
 
         TextView blueHeader = (TextView)activity.findViewById(R.id.blue_score);
-        blueHeader.setText(Integer.toString(match.getBlueScore())+" Points");
+        if(match.getBlueScore()>=0){
+            blueHeader.setText(Integer.toString(match.getBlueScore())+" Points");
+        }else{
+            blueHeader.setVisibility(View.GONE);
+        }
 
         final LinearLayout redList = (LinearLayout) activity.findViewById(R.id.red_alliance);
         final LinearLayout blueList = (LinearLayout) activity.findViewById(R.id.blue_allaince);
@@ -98,7 +99,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                final TextView v = makeTextView(team.getAsString(), Constants.lparams);
+                final TextView v = makeTextView(team.getAsString());
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -118,7 +119,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
             JsonElement team;
             while(iterator.hasNext()){
                 team = iterator.next();
-                final TextView v = makeTextView(team.getAsString(),Constants.lparams);
+                final TextView v = makeTextView(team.getAsString());
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -152,7 +153,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         activity.startActivity(intent);
     }
 
-    private TextView makeTextView(String teamKey,LinearLayout.LayoutParams lparams){
+    private TextView makeTextView(String teamKey){
         TextView tv;
         tv = new TextView(activity);
         tv.setLayoutParams(Constants.lparams);
@@ -190,31 +191,25 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         ArrayList<Note> noteList = StartActivity.db.getAllNotes(teamKey,eventKey);
         noteListView = (ListView) activity.findViewById(R.id.team_notes_list);
         noteListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        String[] notes, ids;
+        final ArrayList<ListItem> notes = new ArrayList<ListItem>();
+        final ArrayList<String> ids = new ArrayList<String>();
         Note n;
         if(noteList.size() == 0){
-            notes = new String[1];
-            notes[0] = activity.getString(R.string.no_team_notes);
+           notes.add(new ListElement(activity.getString(R.string.no_team_notes), "-1"));
+            ids.add("-1");
 
-            ids = new String[1];
-            ids[0] = "-1";
         }else{
-            notes = new String[noteList.size()];
-            ids   = new String[noteList.size()];
             for(int i=0;i<noteList.size();i++){
                 n = noteList.get(i);
-                notes[i] = Note.buildMatchNoteTitle(n,false, true);
-                ids[i] = Short.toString(n.getId());
+                notes.add(new ListElement(Note.buildMatchNoteTitle(n, false, true),Short.toString(n.getId())));
+                ids.add(Short.toString(n.getId()));
             }
         }
-
-        final String[] finalNotes = notes,
-                finalIds  = ids;
 
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new EventListArrayAdapter(activity,finalNotes,finalIds);
+                adapter = new EventListArrayAdapter(activity,notes,ids);
                 noteListView.setAdapter(adapter);
                 noteListView.setOnItemClickListener(new NoteClickListener());
                 noteListView.setOnItemLongClickListener(new LongClickListener());
@@ -248,8 +243,13 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                         short newNoteId = StartActivity.db.addNote(note);
                         if(newNoteId != -1){
                             resultText = "Note added sucessfully";
-                            adapter.values.add(Note.buildMatchNoteTitle(note,false,true));
+                            adapter.values.add(new ListElement(Note.buildMatchNoteTitle(note,false,true),Short.toString(newNoteId)));
                             adapter.keys.add(Short.toString(newNoteId));
+                            if(adapter.keys.get(0)=="-1"){
+                                //then, first note in list is the filler note
+                                adapter.keys.remove(0);
+                                adapter.values.remove(0);
+                            }
                             adapter.notifyDataSetChanged();
                         }else{
                             resultText = "Error adding note to database";
@@ -293,7 +293,6 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                                 oldNote.setNote(noteEditField.getText().toString());
                                 StartActivity.db.updateNote(oldNote);
                                 updateNoteInList(oldNote);
-                                adapter.notifyDataSetChanged();
                                 dialog.cancel();
                             }
                         });
@@ -309,12 +308,13 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         }
 
         private void updateNoteInList(Note newNote) {
-            int index = Arrays.asList(adapter.keys).indexOf(Short.toString(newNote.getId()));
+            int index = adapter.keys.indexOf(Short.toString(newNote.getId()));
             if(index == -1){
                 //not found. quit
                 return;
             }else{
-                adapter.values.set(index, newNote.getNote());
+                adapter.values.set(index,new ListElement(Note.buildMatchNoteTitle(newNote, false, true),adapter.keys.get(index)));
+                adapter.notifyDataSetChanged();
             }
         }
     }

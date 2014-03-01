@@ -9,8 +9,6 @@ import android.widget.ProgressBar;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
-import com.plnyyanks.frcnotebook.adapters.ExapandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.MatchListExpandableListAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
