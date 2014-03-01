@@ -2,31 +2,41 @@ package com.plnyyanks.frcnotebook.adapters;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by phil on 2/22/14.
  */
-public class EventListArrayAdapter extends ArrayAdapter<String> {
-    private Context context;
-    public ArrayList<String> values, keys;
+public class EventListArrayAdapter extends ArrayAdapter<ListItem> {
+    public static Context context;
+    private LayoutInflater mInflater;
+    public ArrayList<ListItem> values;
+    public ArrayList<String> keys;
 
-    public EventListArrayAdapter(Context context,String[] values,String[] keys){
-        this(context, new ArrayList<String>(Arrays.asList(values)),new ArrayList<String>(Arrays.asList(keys)));
+    public EventListArrayAdapter(Context context,ListItem[] values,String[] keys){
+        this(context, new ArrayList<ListItem>(Arrays.asList(values)),new ArrayList<String>(Arrays.asList(keys)));
     }
 
-    public EventListArrayAdapter(Context context,ArrayList<String> values,ArrayList<String> keys){
+    public enum ItemType{
+        LIST_ITEM,HEADER_ITEM
+    }
+
+    public EventListArrayAdapter(Context context,ArrayList<ListItem> values,ArrayList<String> keys){
         super(context,android.R.layout.simple_list_item_1,values);
         this.context = context;
         this.values = values;
         this.keys = keys;
+        mInflater = LayoutInflater.from(context);
     }
 
     public void removeAt(int index){
@@ -40,7 +50,7 @@ public class EventListArrayAdapter extends ArrayAdapter<String> {
         int index = keys.indexOf(key);
         if(index != -1){
             keys.remove(index);
-            keys.remove(index);
+            values.remove(index);
             Log.d(Constants.LOG_TAG,"Deleted note with id:"+key);
         }else{
             Log.w(Constants.LOG_TAG,"Tried to delete nonexistant note with id:"+key);
@@ -52,7 +62,7 @@ public class EventListArrayAdapter extends ArrayAdapter<String> {
             /*LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(android.R.layout.simple_list_item_1,parent,false);
             TextView mainLine = (TextView) rowView.findViewById(android.R.layout.simple_list_item_1); */
-        View v = super.getView(position, convertView, parent);
+        View v = getItem(position).getView(mInflater, convertView);
         if(v.isSelected()){
             v.setBackgroundResource(android.R.color.holo_blue_light);
         }else{

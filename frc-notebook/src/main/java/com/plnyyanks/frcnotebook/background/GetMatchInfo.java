@@ -26,6 +26,8 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
@@ -189,31 +191,25 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         ArrayList<Note> noteList = StartActivity.db.getAllNotes(teamKey,eventKey);
         noteListView = (ListView) activity.findViewById(R.id.team_notes_list);
         noteListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        String[] notes, ids;
+        final ArrayList<ListItem> notes = new ArrayList<ListItem>();
+        final ArrayList<String> ids = new ArrayList<String>();
         Note n;
         if(noteList.size() == 0){
-            notes = new String[1];
-            notes[0] = activity.getString(R.string.no_team_notes);
+           notes.add(new ListElement(activity.getString(R.string.no_team_notes), "-1"));
+            ids.add("-1");
 
-            ids = new String[1];
-            ids[0] = "-1";
         }else{
-            notes = new String[noteList.size()];
-            ids   = new String[noteList.size()];
             for(int i=0;i<noteList.size();i++){
                 n = noteList.get(i);
-                notes[i] = Note.buildMatchNoteTitle(n,false, true);
-                ids[i] = Short.toString(n.getId());
+                notes.add(new ListElement(Note.buildMatchNoteTitle(n, false, true),Short.toString(n.getId())));
+                ids.add(Short.toString(n.getId()));
             }
         }
-
-        final String[] finalNotes = notes,
-                finalIds  = ids;
 
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new EventListArrayAdapter(activity,finalNotes,finalIds);
+                adapter = new EventListArrayAdapter(activity,notes,ids);
                 noteListView.setAdapter(adapter);
                 noteListView.setOnItemClickListener(new NoteClickListener());
                 noteListView.setOnItemLongClickListener(new LongClickListener());
@@ -247,7 +243,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                         short newNoteId = StartActivity.db.addNote(note);
                         if(newNoteId != -1){
                             resultText = "Note added sucessfully";
-                            adapter.values.add(Note.buildMatchNoteTitle(note,false,true));
+                            adapter.values.add(new ListElement(Note.buildMatchNoteTitle(note,false,true),Short.toString(newNoteId)));
                             adapter.keys.add(Short.toString(newNoteId));
                             if(adapter.keys.get(0)=="-1"){
                                 //then, first note in list is the filler note
@@ -317,7 +313,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
                 //not found. quit
                 return;
             }else{
-                adapter.values.set(index, Note.buildMatchNoteTitle(newNote, false, true));
+                adapter.values.set(index,new ListElement(Note.buildMatchNoteTitle(newNote, false, true),adapter.keys.get(index)));
                 adapter.notifyDataSetChanged();
             }
         }

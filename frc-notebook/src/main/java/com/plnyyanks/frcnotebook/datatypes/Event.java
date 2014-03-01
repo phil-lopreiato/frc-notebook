@@ -1,12 +1,21 @@
 package com.plnyyanks.frcnotebook.datatypes;
 
+import android.util.Log;
+
+import com.plnyyanks.frcnotebook.Constants;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by phil on 2/19/14.
  */
-public class Event {
+public class Event implements Comparable<Event>{
 
     private String  eventKey;
     private String eventName;
@@ -15,7 +24,11 @@ public class Event {
     private String eventLocation;
     private String eventStart;
     private String eventEnd;
-    private int     eventYear;
+    private int    eventYear;
+    private Date   startDate,
+                   endDate;
+
+    private static DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
 
     private ArrayList<Match> quals,quarterFinals,semiFinals,finals;
 
@@ -31,6 +44,16 @@ public class Event {
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
         this.eventYear = eventYear;
+
+        try {
+            startDate = df.parse(eventStart);
+            endDate = df.parse(eventEnd);
+            Log.d(Constants.LOG_TAG,"Logged event with start date:"+startDate.toString());
+        } catch (ParseException e) {
+            startDate = new Date();
+            endDate = new Date();
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+        }
     }
 
     public String getEventKey() {
@@ -69,16 +92,36 @@ public class Event {
         return eventStart;
     }
 
+    public Date getStartDate(){
+        return startDate;
+    }
+
     public void setEventStart(String eventStart) {
         this.eventStart = eventStart;
+        try {
+            startDate = df.parse(eventStart);
+        } catch (ParseException e) {
+            startDate = new Date();
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+        }
     }
 
     public String getEventEnd() {
         return eventEnd;
     }
 
+    public Date getEndDate(){
+        return endDate;
+    }
+
     public void setEventEnd(String eventEnd) {
         this.eventEnd = eventEnd;
+        try {
+            endDate = df.parse(eventEnd);
+        } catch (ParseException e) {
+            endDate = new Date();
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+        }
     }
 
     public int getEventYear() {
@@ -143,5 +186,12 @@ public class Event {
         Collections.sort(quarterFinals);
         Collections.sort(semiFinals);
         Collections.sort(finals);
+    }
+
+    @Override
+    public int compareTo(Event event) {
+        if(startDate==null || event.getStartDate() == null)
+            return 0;
+        return startDate.compareTo(event.getStartDate());
     }
 }

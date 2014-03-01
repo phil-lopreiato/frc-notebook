@@ -20,8 +20,14 @@ import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.datatypes.ListHeader;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,24 +40,36 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
     private ListView eventList;
     private Object mActionMode;
     private int selectedItem=-1;
-    ArrayList<String> finalKeys = new ArrayList<String>(), finalEvents = new ArrayList<String>();
+    ArrayList<String> finalKeys = new ArrayList<String>();
+    ArrayList<ListItem> finalEvents = new ArrayList<ListItem>();
 
 
     @Override
     protected String doInBackground(Activity... activities) {
         parentActivity = activities[0];
         final List<Event> storedEvents = StartActivity.db.getAllEvents();
+        Collections.sort(storedEvents);
 
         eventList = (ListView) parentActivity.findViewById(R.id.event_list);
         eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         Event e;
+        SimpleDateFormat weekFormatter = new SimpleDateFormat("w");
+        int eventWeek = Integer.parseInt(weekFormatter.format(new Date())),
+            currentWeek;
         for(int i=0;i<storedEvents.size();i++){
             e=storedEvents.get(i);
-            finalEvents.add(e.getEventName() + " - "+e.getEventYear());
+            currentWeek = Integer.parseInt(weekFormatter.format(e.getStartDate())) - 8;
+            if(eventWeek != currentWeek){
+                finalEvents.add(new ListHeader(e.getEventYear()+ " Week "+currentWeek));
+                finalKeys.add(e.getEventYear()+"_week"+currentWeek);
+            }
+            eventWeek = currentWeek;
+
+            finalEvents.add(new ListElement(e.getEventName(),e.getEventKey()));
             finalKeys.add(e.getEventKey());
         }
         if(storedEvents.size()==0){
-            finalEvents.add("No events. Click the plus button above to get started");
+            finalEvents.add(new ListElement("No events. Click the plus button above to get started","-1"));
             finalKeys.add("-1");
         }
 
@@ -82,12 +100,13 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.d(Constants.LOG_TAG,"Item click: "+i+", selected: "+selectedItem);
-
-                String eventKey = finalKeys.get(i);
-                ViewEvent.setEvent(eventKey);
-                Intent intent = new Intent(parentActivity, ViewEvent.class);
-                parentActivity.startActivity(intent);
+            Log.d(Constants.LOG_TAG, "Item click: " + i + ", selected: " + selectedItem);
+            ListItem item = adapter.values.get(i);
+            if (item instanceof ListHeader) return;
+            String eventKey = finalKeys.get(i);
+            ViewEvent.setEvent(eventKey);
+            Intent intent = new Intent(parentActivity, ViewEvent.class);
+            parentActivity.startActivity(intent);
 
         }
     }
@@ -97,7 +116,11 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
             Log.d(Constants.LOG_TAG, "Item Long Click: " + i);
+            ListItem item =  adapter.values.get(i);
+            if(item instanceof ListHeader) return false;
+
             eventList.setOnItemClickListener(null);
+            item.setSelected(true);
             view.setSelected(true);
             adapter.notifyDataSetChanged();
             selectedItem = i;

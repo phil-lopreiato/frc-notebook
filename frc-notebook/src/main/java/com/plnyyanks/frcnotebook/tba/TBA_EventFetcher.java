@@ -16,8 +16,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -51,15 +54,16 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
         ListView eventList = (ListView) listActivity.findViewById(R.id.event_list_to_download);
 
         JsonElement element;
-        String eventName;
-        ArrayList<String>   events = new ArrayList<String>(),
-                            keys = new ArrayList<String>();
+        String eventName,eventKey;
+        ArrayList<ListItem> events = new ArrayList<ListItem>();
+        ArrayList<String>   keys = new ArrayList<String>();
         for(int i=0;i<result.size()&&iterator.hasNext();i++){
             element = iterator.next();
             eventName = element.getAsJsonObject().get("name").getAsString();
             eventName += " - "+year;
-            events.add(eventName);
-            keys.add(element.getAsJsonObject().get("key").getAsString());
+            eventKey = element.getAsJsonObject().get("key").getAsString();
+            events.add(new ListElement(eventName,eventKey));
+            keys.add(eventKey);
         }
 
         EventListArrayAdapter adapter = new EventListArrayAdapter(listActivity,events,keys);
