@@ -3,7 +3,8 @@
     tools:context="com.plnyyanks.frcnotebook.activities.ViewEvent" >
     <item android:id="@+id/action_update_event"
         android:orderInCategory="75"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_refresh"
         android:title="@string/action_update_event"/>
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetEventMatches;
@@ -86,6 +87,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             startActivity(intent);
             return true;
         }if(id==R.id.action_update_event){
+            Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
             new TBA_EventDetailFetcher(this, key).execute("");
             return true;
         }
