@@ -30,7 +30,7 @@ public class ViewMatch extends Activity {
     private static Match match;
     static Activity activity;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PreferenceHandler.getTheme());
@@ -51,9 +51,9 @@ public class ViewMatch extends Activity {
 
         if(PreferenceHandler.getTheme()==R.style.theme_dark){
             ImageView nextMatch = (ImageView)findViewById(R.id.next_match);
-            nextMatch.setBackground(getResources().getDrawable(R.drawable.ic_action_next_item_dark));
+            nextMatch.setBackgroundResource(R.drawable.ic_action_next_item_dark);
             ImageView prevMatch = (ImageView)findViewById(R.id.prev_match);
-            prevMatch.setBackground(getResources().getDrawable(R.drawable.ic_action_previous_item_dark));
+            prevMatch.setBackgroundResource(R.drawable.ic_action_previous_item_dark);
         }
 
         new GetMatchInfo(this).execute(previousKey,matchKey,nextKey,eventKey);
