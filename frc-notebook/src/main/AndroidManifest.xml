@@ -10,8 +10,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/theme_light"
-        android:versionCode="7"
-        android:versionName="2.2.3"
+        android:versionCode="8"
+        android:versionName="2.2.4"
         >
         <activity
             android:name=".activities.StartActivity"
