@@ -14,13 +14,13 @@ import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 /**
  * Created by phil on 2/23/14.
  */
-public abstract class ExapandableListAdapter extends BaseExpandableListAdapter {
+public abstract class CustomExapandableListAdapter extends BaseExpandableListAdapter {
 
-    private final SparseArray<ListGroup> groups;
+    public final SparseArray<ListGroup> groups;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public ExapandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
+    public CustomExapandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
         activity = act;
         this.groups = groups;
         inflater = act.getLayoutInflater();

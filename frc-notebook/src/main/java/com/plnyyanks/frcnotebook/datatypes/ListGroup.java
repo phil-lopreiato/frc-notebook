@@ -20,4 +20,8 @@ public class ListGroup {
         this.string = string;
     }
 
+    public String getTitle(){
+        return string;
+    }
+
 }

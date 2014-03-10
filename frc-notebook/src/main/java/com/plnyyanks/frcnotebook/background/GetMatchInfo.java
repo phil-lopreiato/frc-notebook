@@ -55,7 +55,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         this.activity = activity;
     }
     @Override
-    protected String doInBackground(String... strings) {
+    protected String doInBackground(String... strings) {/*
         previousMatchKey = strings[0];
         thisMatchKey     = strings[1];
         nextMatchKey     = strings[2];
@@ -137,7 +137,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
         if(!StartActivity.db.matchExists(previousMatchKey)){
             ImageView prevButton = (ImageView)activity.findViewById(R.id.prev_match);
             prevButton.setVisibility(View.GONE);
-        }
+        }*/
         return null;
     }
 
@@ -178,16 +178,16 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
 
         @Override
         public void onClick(View view) {
-
+/*
             TextView noteHeader = (TextView)activity.findViewById(R.id.team_notes);
             noteHeader.setText("Team "+teamKey.substring(3)+" Notes");
             selectedTeam = teamKey;
             fetchNotes(teamKey);
-
+*/
         }
     }
 
-    private void fetchNotes(String teamKey){
+    private void fetchNotes(String teamKey){/*
         ArrayList<Note> noteList = StartActivity.db.getAllNotes(teamKey,eventKey);
         noteListView = (ListView) activity.findViewById(R.id.team_notes_list);
         noteListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -218,7 +218,7 @@ public class GetMatchInfo extends AsyncTask<String,String,String> {
 
         TextView nothingSelected = (TextView)activity.findViewById(R.id.no_team_selected);
         nothingSelected.setVisibility(View.GONE);
-
+*/
     }
 
     public static void addMatchNote(){

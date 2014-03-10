@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -13,18 +14,20 @@ import android.widget.TextView;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.activities.ViewMatch;
+import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 /**
- * Created by phil on 2/25/14.
+ * Created by phil on 3/10/14.
  */
-public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
+public class AllianceExpandableListAdapter extends CustomExapandableListAdapter {
 
     private SparseArray<ListGroup> groups;
 
-    public NotesExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
+    public AllianceExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
         super(act, groups);
         this.groups = groups;
     }
@@ -41,13 +44,13 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Note oldNote = StartActivity.db.getNote(Short.parseShort((String)getChildKey(groupPosition, childPosition)));
+                final Note oldNote = StartActivity.db.getNote(Short.parseShort((String) getChildKey(groupPosition, childPosition)));
                 final EditText noteEditField = new EditText(activity);
                 //noteEditField.setId(999);
                 noteEditField.setText(oldNote.getNote());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Note on Team " + GetNotesForTeam.getTeamNumber());
+                builder.setTitle("Note on Team " + groups.get(groupPosition).getTitle().split(" ")[0]);
                 builder.setView(noteEditField);
                 builder.setMessage("Edit your note.");
                 builder.setPositiveButton("Update",
@@ -56,17 +59,19 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
                                 oldNote.setNote(noteEditField.getText().toString());
                                 StartActivity.db.updateNote(oldNote);
                                 updateNoteInList(oldNote);
-                                GetNotesForTeam.updateListData();
+                                GetNotesForMatch.updateListData();
                                 dialog.cancel();
                             }
-                        });
+                        }
+                );
 
                 builder.setNeutralButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
-                        });
+                        }
+                );
                 builder.create().show();
             }
         });
@@ -74,64 +79,37 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
             @Override
             public boolean onLongClick(View view) {
                 view.setSelected(true);
-                GetNotesForTeam.selectedNote = groups.get(groupPosition).children_keys.get(childPosition);
-                Log.d(Constants.LOG_TAG,"Note selected, id:"+GetNotesForTeam.selectedNote);
-                GetNotesForTeam.mActionMode = activity.startActionMode(GetNotesForTeam.mActionModeCallback);
-                GetNotesForTeam.updateListData();
+                GetNotesForMatch.selectedNote = groups.get(groupPosition).children_keys.get(childPosition);
+                Log.d(Constants.LOG_TAG, "Note selected, id:" + GetNotesForMatch.selectedNote);
+                GetNotesForMatch.mActionMode = activity.startActionMode(GetNotesForMatch.mActionModeCallback);
+                GetNotesForMatch.updateListData();
                 return false;
             }
         });
-        if(convertView.isSelected()){
+        if (convertView.isSelected()) {
             convertView.setBackgroundResource(android.R.color.holo_blue_light);
-        }else{
+        } else {
             convertView.setBackgroundResource(android.R.color.transparent);
         }
         return convertView;
     }
 
-    private void updateNoteInList(Note note){
-        SparseArray<ListGroup> groups = GetNotesForTeam.getListData();
-        int index = groups.get(0).children_keys.indexOf(Short.toString(note.getId()));
-        if(index == -1){
-            //if not found in general notes (groups[0], then check match notes)
-            index = groups.get(1).children_keys.indexOf(Short.toString(note.getId()));
-            if(index == -1){
-                //now, if error - not found anywhere
-                return;
-            }else{
-                //update in match notes group
-                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all"),true));
+    private void updateNoteInList(Note note) {
+        for (int i = 0; i < groups.size(); i++) {
+            int index = groups.get(i).children_keys.indexOf(Short.toString(note.getId()));
+            if (index != -1) {
+                groups.get(i).children.set(index, Note.buildMatchNoteTitle(note, false, true, true));
             }
-        }else{
-            //update in general notes group
-            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all")));
         }
-
-
     }
 
-    public void removeNote(short id){
-        SparseArray<ListGroup> groups = GetNotesForTeam.getListData();
-        int index = groups.get(0).children_keys.indexOf(Short.toString(id));
-        if(index == -1){
-            //if not found in general notes (groups[0], then check match notes)
-            index = groups.get(1).children_keys.indexOf(Short.toString(id));
-            if(index == -1){
-                Log.w(Constants.LOG_TAG, "Tried to delete nonexistant note with id:" + id);
-                return;
-            }else{
-                //delete from match notes
-                groups.get(1).children.remove(index);
-                groups.get(1).children_keys.remove(index);
-                groups.get(1).updateTitle("Match Notes ("+groups.get(1).children.size()+")");
-                Log.i(Constants.LOG_TAG,"Delete match note with id:"+id);
+    public void removeNote(short id) {
+        for (int i = 0; i < groups.size(); i++) {
+            int index = groups.get(i).children_keys.indexOf(Short.toString(id));
+            if (index != -1) {
+                groups.get(i).children.remove(index);
+                groups.get(i).children_keys.remove(index);
             }
-        }else{
-           //delete from general notes
-            groups.get(0).children.remove(index);
-            groups.get(0).children_keys.remove(index);
-            groups.get(0).updateTitle("General Notes ("+groups.get(0).children.size()+")");
-            Log.i(Constants.LOG_TAG,"Delete general note with id:"+id);
         }
     }
 }

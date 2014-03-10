@@ -19,12 +19,30 @@
         android:layout_centerHorizontal="true"
         android:paddingBottom="@dimen/activity_vertical_margin" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/ic_action_previous_item_light"
+        android:onClick="previousMatch"
+        android:id="@+id/prev_match" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_action_next_item_light"
+        android:onClick="nextMatch"
+        android:id="@+id/next_match" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/match_title"
+        android:layout_above="@id/prev_match"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:id="@+id/alliance_container"
         android:baselineAligned="false">
@@ -54,19 +72,13 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:layout_alignParentRight="true" />
 
-            <LinearLayout
+            <ExpandableListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_below="@id/red_score"
-                android:gravity="right"
-                android:id="@+id/red_alliance">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_teams" />
-            </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:id="@+id/red_teams">
+            </ExpandableListView>
         </RelativeLayout>
 
         <RelativeLayout
@@ -92,65 +104,18 @@
                 android:id="@+id/blue_score"
                 android:textColor="#FF0000FF" />
 
-            <LinearLayout
+            <ExpandableListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_below="@id/blue_score"
-                android:gravity="left"
-                android:id="@+id/blue_allaince">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_teams" />
-            </LinearLayout>
+                android:id="@+id/blue_teams">
+            </ExpandableListView>
         </RelativeLayout>
     </LinearLayout>
-
-
-    <TextView
-        style="@style/text_super_large"
+    <ProgressBar style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/team_notes_header"
-        android:id="@+id/team_notes"
+        android:layout_height="fill_parent"
+        android:id="@+id/match_loading_progress"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/alliance_container"
-        android:paddingBottom="@dimen/activity_half_vertical_margin" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/ic_action_previous_item_light"
-        android:onClick="previousMatch"
-        android:id="@+id/prev_match" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/ic_action_next_item_light"
-        android:onClick="nextMatch"
-        android:id="@+id/next_match" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_team_selected"
-        android:id="@+id/no_team_selected"
-        android:layout_below="@id/team_notes"
-        android:layout_centerHorizontal="true"/>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/team_notes"
-        android:layout_above="@id/prev_match"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/team_notes_list"></ListView>
-
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

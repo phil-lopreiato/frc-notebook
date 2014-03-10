@@ -17,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetMatchInfo;
+import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
@@ -56,7 +57,7 @@ public class ViewMatch extends Activity {
             prevMatch.setBackgroundResource(R.drawable.ic_action_previous_item_dark);
         }
 
-        new GetMatchInfo(this).execute(previousKey,matchKey,nextKey,eventKey);
+        new GetNotesForMatch(this).execute(previousKey, matchKey, nextKey, eventKey);
     }
 
     @Override
@@ -94,12 +95,6 @@ public class ViewMatch extends Activity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        }
-        if(id == R.id.action_add_match_note){
-            GetMatchInfo.addMatchNote();
-        }
-        if(id==R.id.action_view_team){
-            GetMatchInfo.openTeam();
         }
         if(id==R.id.action_update_match){
             Toast.makeText(this, "Updating data for " + matchKey, Toast.LENGTH_SHORT).show();

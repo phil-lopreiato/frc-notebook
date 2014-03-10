@@ -14,7 +14,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 /**
  * Created by phil on 2/25/14.
  */
-public class MatchListExpandableListAdapter extends ExapandableListAdapter {
+public class MatchListExpandableListAdapter extends CustomExapandableListAdapter {
 
 
     public MatchListExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {

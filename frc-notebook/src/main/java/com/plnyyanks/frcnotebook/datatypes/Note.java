@@ -90,6 +90,10 @@ public class Note {
     }
 
     public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch){
+       return buildMatchNoteTitle(note,displayEvent,displayMatch,false);
+    }
+
+    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch, boolean lineBreak){
         String output = "";
         if(displayEvent && !note.getEventKey().equals("all")){
             //on all notes tab. Include event title
@@ -100,6 +104,9 @@ public class Note {
         if(displayMatch && !note.getMatchKey().equals("all")){
             Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
             output += parentMatch.getTitle()+": ";
+        }
+        if(lineBreak){
+            output+="\n";
         }
         output +=note.getNote();
         return output;
