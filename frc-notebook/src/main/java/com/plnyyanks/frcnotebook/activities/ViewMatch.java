@@ -26,7 +26,7 @@ import com.plnyyanks.frcnotebook.tba.TBA_MatchDetailFetcher;
 
 public class ViewMatch extends Activity {
 
-    private static String matchKey,eventKey,nextKey,previousKey;
+    public static String matchKey,eventKey,nextKey,previousKey;
     private static Event parentEvent;
     private static Match match;
     static Activity activity;

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
@@ -44,21 +45,27 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Note oldNote = StartActivity.db.getNote(Short.parseShort((String) getChildKey(groupPosition, childPosition)));
+                final short noteId = Short.parseShort((String) getChildKey(groupPosition, childPosition));
+                String teamNumber = groups.get(groupPosition).getTitle().split(" ")[0];
+                final Note oldNote = noteId!=-1?StartActivity.db.getNote(noteId):new Note(ViewMatch.eventKey,ViewMatch.matchKey,"frc"+teamNumber,"");
+
                 final EditText noteEditField = new EditText(activity);
                 //noteEditField.setId(999);
-                noteEditField.setText(oldNote.getNote());
-
+                noteEditField.setText(noteId!=-1?oldNote.getNote():"");
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Note on Team " + groups.get(groupPosition).getTitle().split(" ")[0]);
+                builder.setTitle("Note on Team " + teamNumber);
                 builder.setView(noteEditField);
-                builder.setMessage("Edit your note.");
-                builder.setPositiveButton("Update",
+                builder.setPositiveButton("Submit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 oldNote.setNote(noteEditField.getText().toString());
-                                StartActivity.db.updateNote(oldNote);
-                                updateNoteInList(oldNote);
+                                if(noteId==-1){
+                                    short newId = StartActivity.db.addNote(oldNote);
+                                    addNote(StartActivity.db.getNote(newId));
+                                }else{
+                                    StartActivity.db.updateNote(oldNote);
+                                    updateNoteInList(oldNote);
+                                }
                                 GetNotesForMatch.updateListData();
                                 dialog.cancel();
                             }
@@ -73,6 +80,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                         }
                 );
                 builder.create().show();
+
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -99,6 +107,20 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
             int index = groups.get(i).children_keys.indexOf(Short.toString(note.getId()));
             if (index != -1) {
                 groups.get(i).children.set(index, Note.buildMatchNoteTitle(note, false, true, true));
+                return;
+            }
+        }
+    }
+
+    private void addNote(Note note){
+        String team;
+        for (int i = 0; i < groups.size(); i++) {
+            team = groups.get(i).getTitle().split(" ")[0];
+            if(note.getTeamKey().contains(team)){
+                groups.get(i).children.add(Note.buildMatchNoteTitle(note,false,true,true));
+                groups.get(i).children_keys.add(Short.toString(note.getId()));
+                Log.d(Constants.LOG_TAG,"added note to adapter, id "+note.getId());
+                return;
             }
         }
     }
@@ -109,6 +131,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
             if (index != -1) {
                 groups.get(i).children.remove(index);
                 groups.get(i).children_keys.remove(index);
+                return;
             }
         }
     }

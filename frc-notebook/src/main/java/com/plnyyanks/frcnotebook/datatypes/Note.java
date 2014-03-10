@@ -18,7 +18,6 @@ public class Note {
     }
 
     public Note(String eventKey, String matchKey, String teamKey, String note) {
-        this.id = id;
         this.eventKey = eventKey;
         this.matchKey = matchKey;
         this.teamKey = teamKey;
