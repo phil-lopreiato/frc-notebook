@@ -18,9 +18,9 @@ public class PreferenceHandler {
     public static int getTheme(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-
-        String theme = prefs.getString("theme","theme_light");
         int themeId = R.style.theme_light;
+        if(prefs==null) return themeId;
+        String theme = prefs.getString("theme","theme_light");
         if(theme.equals("theme_light")) themeId = R.style.theme_light;
         if(theme.equals("theme_dark")) themeId = R.style.theme_dark;
         return themeId;

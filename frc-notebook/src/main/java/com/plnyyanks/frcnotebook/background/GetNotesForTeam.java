@@ -90,12 +90,14 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
             @Override
             public void run() {
                 noteList = (ExpandableListView) activity.findViewById(R.id.note_list);
-                adapter = new NotesExpandableListAdapter(activity,groups);
-                noteList.setAdapter(adapter);
+                if(noteList!=null) {
+                    adapter = new NotesExpandableListAdapter(activity, groups);
+                    noteList.setAdapter(adapter);
 
-                //hide the progress bar
-                ProgressBar prog = (ProgressBar) activity.findViewById(R.id.notes_loading_progress);
-                prog.setVisibility(View.GONE);
+                    //hide the progress bar
+                    ProgressBar prog = (ProgressBar) activity.findViewById(R.id.notes_loading_progress);
+                    prog.setVisibility(View.GONE);
+                }
             }
         });
 
