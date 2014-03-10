@@ -33,7 +33,7 @@ public class PreferenceHandler {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             prefs.edit().putString("app_version",info.versionName).commit();
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
