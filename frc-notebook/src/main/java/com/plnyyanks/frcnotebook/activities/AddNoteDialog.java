@@ -59,17 +59,17 @@ public class AddNoteDialog extends DialogFragment {
         teams.addAll(redAlliance);
         teams.addAll(blueAlliance);
 
-        final String[] team_choices = new String[teams.size()+1];
-        team_choices[0] = getResources().getString(R.string.all_teams);
-        for(int i=1;i<team_choices.length;i++){
-            team_choices[i] = teams.get(i-1).getAsString().substring(3);
+        final String[] team_choices = new String[teams.size()/*+1*/];
+        //team_choices[0] = getResources().getString(R.string.all_teams);
+        for(int i=/*1*/0;i<team_choices.length;i++){
+            team_choices[i] = teams.get(i/*-1*/).getAsString().substring(3);
         }
         final Spinner s = (Spinner) layout.findViewById(R.id.team_selector);
         final EditText e = (EditText)layout.findViewById(R.id.note_contents);
         ArrayAdapter adapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
-        s.setSelection(0);
+        //s.setSelection(0);
         builder.setView(layout);
 
         // Add the buttons
