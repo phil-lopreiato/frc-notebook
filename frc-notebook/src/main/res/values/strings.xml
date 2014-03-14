@@ -51,8 +51,15 @@
     <string name="prevous_match_button">Previous Match</string>
     <string name="next_match_button">Next Match</string>
     <string name="action_update_match">Refresh</string>
+    <string name="action_add_note">Add Note</string>
 
+    <!-- Add Note Dialog -->
+    <string name="add_note_title">Add a Note</string>
+    <string name="add_note_message">Select a team</string>
+    <string name="note_hint">Add your note</string>
+    <string name="all_teams">All teams</string>
 
     <string name="hello_world">Hello world!</string>
-
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

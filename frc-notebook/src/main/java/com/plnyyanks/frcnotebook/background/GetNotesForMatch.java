@@ -95,8 +95,6 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
-                teamHeader.children.add("Add note");
-                teamHeader.children_keys.add("-1");
 
                 for (Note n : notes) {
                     teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,true));
@@ -114,8 +112,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
-                teamHeader.children.add("Add note");
-                teamHeader.children_keys.add("-1");
+
 
                 for (Note n : notes) {
                     teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,true));
@@ -162,6 +159,14 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
     public static void updateListData(){
         redAdaper.notifyDataSetChanged();
         blueAdapter.notifyDataSetChanged();
+    }
+
+    public static AllianceExpandableListAdapter getRedAdaper(){
+        return redAdaper;
+    }
+
+    public static AllianceExpandableListAdapter getBlueAdapter(){
+        return blueAdapter;
     }
 
     public static ActionMode.Callback mActionModeCallback = new ActionBarCallback() {

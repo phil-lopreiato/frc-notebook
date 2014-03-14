@@ -112,14 +112,16 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
         }
     }
 
-    private void addNote(Note note){
+    public void addNote(Note note){
         String team;
         for (int i = 0; i < groups.size(); i++) {
             team = groups.get(i).getTitle().split(" ")[0];
             if(note.getTeamKey().contains(team)){
                 groups.get(i).children.add(Note.buildMatchNoteTitle(note,false,true,true));
                 groups.get(i).children_keys.add(Short.toString(note.getId()));
+                groups.get(i).updateTitle(note.getTeamKey().substring(3)+(groups.get(i).children_keys.size()>0?(" ("+ groups.get(i).children_keys.size()+")"):""));
                 Log.d(Constants.LOG_TAG,"added note to adapter, id "+note.getId());
+                GetNotesForMatch.updateListData();
                 return;
             }
         }
@@ -131,6 +133,8 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
             if (index != -1) {
                 groups.get(i).children.remove(index);
                 groups.get(i).children_keys.remove(index);
+                String team = groups.get(i).getTitle().split(" ")[0];
+                groups.get(i).updateTitle(team+(groups.get(i).children_keys.size()>0?(" ("+ groups.get(i).children_keys.size()+")"):""));
                 return;
             }
         }

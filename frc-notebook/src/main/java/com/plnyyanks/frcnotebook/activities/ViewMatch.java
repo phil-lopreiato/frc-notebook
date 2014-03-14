@@ -3,14 +3,20 @@ package com.plnyyanks.frcnotebook.activities;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -91,15 +97,20 @@ public class ViewMatch extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if(id==R.id.action_update_match){
-            Toast.makeText(this, "Updating data for " + matchKey, Toast.LENGTH_SHORT).show();
-            new TBA_MatchDetailFetcher(activity,eventKey).execute(new String[]{"[\""+matchKey+"\"]",eventKey});
-            return true;
+        switch(id) {
+            case (R.id.action_settings):
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_update_match:
+                Toast.makeText(this, "Updating data for " + matchKey, Toast.LENGTH_SHORT).show();
+                new TBA_MatchDetailFetcher(activity, eventKey).execute(new String[]{"[\"" + matchKey + "\"]", eventKey});
+                return true;
+
+            case R.id.action_add_note:
+                new AddNoteDialog(match).show(getFragmentManager(), "Add Note");
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

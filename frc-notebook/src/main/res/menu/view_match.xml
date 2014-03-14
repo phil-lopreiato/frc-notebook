@@ -2,11 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewMatch" >
 
+
     <item android:id="@+id/action_update_match"
         android:orderInCategory="80"
         android:showAsAction="ifRoom|withText"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/action_update_match"/>
+
+    <item android:id="@+id/action_add_note"
+        android:orderInCategory="90"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_new"
+        android:title="@string/action_add_note"/>
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
