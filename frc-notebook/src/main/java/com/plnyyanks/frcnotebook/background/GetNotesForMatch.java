@@ -25,14 +25,17 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
+import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
 import com.plnyyanks.frcnotebook.adapters.MatchListExpandableListAdapter;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
+import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by phil on 3/10/14.
@@ -123,6 +126,17 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             }
         }
 
+        //generic notes go here
+        final ArrayList<Note> genericNotes = StartActivity.db.getAllNotes("all",match.getMatchKey(),eventKey);
+        ArrayList<ListItem> genericVals = new ArrayList<ListItem>();
+        ArrayList<String> genericKeys = new ArrayList<String>();
+        for(Note n:genericNotes){
+            genericVals.add(new ListElement(n.getNote(),Short.toString(n.getId())));
+            genericKeys.add(Short.toString(n.getId()));
+        }
+        final EventListArrayAdapter genericAdapter = new EventListArrayAdapter(activity,genericVals,genericKeys);
+
+
         if (!StartActivity.db.matchExists(nextMatchKey)) {
             ImageView nextButton = (ImageView) activity.findViewById(R.id.next_match);
             nextButton.setVisibility(View.GONE);
@@ -146,6 +160,11 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                     return;
                 blueAdapter = new AllianceExpandableListAdapter(activity, blueGroups);
                 blueAlliance.setAdapter(blueAdapter);
+
+                if(genericNotes.size()>0){
+                    ListView genericList = (ListView)activity.findViewById(R.id.generic_notes);
+                    genericList.setVisibility(View.VISIBLE);
+                }
 
                 //hide the progress bar
                 ProgressBar prog = (ProgressBar) activity.findViewById(R.id.match_loading_progress);
