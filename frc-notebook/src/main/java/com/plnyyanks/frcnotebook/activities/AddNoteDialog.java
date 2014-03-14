@@ -76,6 +76,11 @@ public class AddNoteDialog extends DialogFragment {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
+                if(e.getText().toString().isEmpty()){
+                    dialog.cancel();
+                    return;
+                }
+
                 Note newNote = new Note();
                 newNote.setNote(e.getText().toString());
                 newNote.setMatchKey(match.getMatchKey());
@@ -84,6 +89,7 @@ public class AddNoteDialog extends DialogFragment {
                 if(s.getSelectedItemPosition()==0){
                     //add note for all teams
                     newNote.setTeamKey("all");
+                    //TODO implement this
                 }else{
                     //generate team key
                     String team = "frc"+(String)s.getSelectedItem();
