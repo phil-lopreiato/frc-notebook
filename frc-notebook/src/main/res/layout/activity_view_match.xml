@@ -37,6 +37,15 @@
         android:onClick="nextMatch"
         android:id="@+id/next_match" />
 
+    <TextView style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/field_monitor_link"
+        android:text="@string/title_activity_field_monitor"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

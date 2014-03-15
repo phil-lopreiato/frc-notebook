@@ -26,6 +26,13 @@ public class PreferenceHandler {
         return themeId;
     }
 
+    public static boolean getFMEnabled(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs==null) return false;
+        return prefs.getBoolean("show_field_monitor",false);
+    }
+
     public static void setAppVersion(Context context){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);

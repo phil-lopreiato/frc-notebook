@@ -3,7 +3,7 @@
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
+    <!-- General settings -->
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_year">Competition Season</string>
@@ -20,6 +20,9 @@
     <string-array name="pref_data_source_values">
         <item>TBAv1</item>
     </string-array>
+
+    <string name="pref_title_field_monitor">Show Field Monitor</string>
+    <string name="pref_desc_field_monitor">Requires connection to field network</string>
 
     <!-- Appearance -->
     <string name="pref_header_appearance">Appearance</string>

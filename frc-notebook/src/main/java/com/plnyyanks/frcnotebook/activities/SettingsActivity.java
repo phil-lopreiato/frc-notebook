@@ -233,6 +233,7 @@ public class SettingsActivity extends PreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("competition_season"));
             bindPreferenceSummaryToValue(findPreference("data_source"));
+            bindPreferenceSummaryToValue(findPreference("show_field_monitor"));
         }
     }
 

@@ -9,6 +9,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -64,6 +66,18 @@ public class ViewMatch extends Activity {
         }
 
         new GetNotesForMatch(this).execute(previousKey, matchKey, nextKey, eventKey);
+
+        if(PreferenceHandler.getFMEnabled()) {
+            TextView fieldMonitor = (TextView) findViewById(R.id.field_monitor_link);
+            fieldMonitor.setVisibility(View.VISIBLE);
+            fieldMonitor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, FieldMonitorActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
@@ -125,5 +139,4 @@ public class ViewMatch extends Activity {
         Intent intent = new Intent(this, ViewMatch.class);
         startActivity(intent);
     }
-
 }
