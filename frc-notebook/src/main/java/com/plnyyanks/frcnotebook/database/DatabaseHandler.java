@@ -260,7 +260,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             e = iterator.next().getAsJsonObject();
             event = new Event();
             event.setEventKey(e.get(KEY_EVENTKEY).getAsString());
-            event.setShortName(e.get(KEY_EVENTNAME).getAsString());
+            event.setEventName(e.get(KEY_EVENTNAME).getAsString());
+            event.setShortName(e.get(KEY_EVENTSHORT).getAsString());
             event.setEventYear(e.get(KEY_EVENTYEAR).getAsInt());
             event.setEventLocation(e.get(KEY_EVENTLOC).getAsString());
             event.setEventStart(e.get(KEY_EVENTSTART).getAsString());
@@ -465,8 +466,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             match.setMatchType(m.get(KEY_MATCHTYPE).getAsString());
             match.setMatchNumber(m.get(KEY_MATCHNO).getAsInt());
             match.setSetNumber(m.get(KEY_MATCHSET).getAsInt());
-            match.setRedAlliance(m.get(KEY_REDALLIANCE).getAsString());
-            match.setBlueAlliance(m.get(KEY_BLUEALLIANCE).getAsString());
+            match.setRedAlliance(m.get(KEY_REDALLIANCE).toString());
+            match.setBlueAlliance(m.get(KEY_BLUEALLIANCE).toString());
             match.setRedScore(m.get(KEY_REDSCORE).getAsInt());
             match.setBlueScore(m.get(KEY_BLUESCORE).getAsInt());
 
@@ -636,9 +637,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             team = new Team();
 
             team.setTeamKey(t.get(KEY_TEAMKEY).getAsString());
-            team.setTeamName(t.get(KEY_TEAMNAME).getAsString());
+            try {
+                team.setTeamName(t.get(KEY_TEAMNAME).getAsString());
+            }catch(Exception e){
+                team.setTeamName("");
+            }
             team.setTeamNumber(t.get(KEY_TEAMNUMBER).getAsInt());
-            team.setTeamWebsite(t.get(KEY_TEAMSITE).getAsString());
+            try{
+                team.setTeamWebsite(t.get(KEY_TEAMSITE).getAsString());
+            }catch(Exception e){
+                team.setTeamWebsite("");
+            }
+
             team.setTeamEvents(JSONManager.getAsStringArrayList(t.get(KEY_TEAMEVENTS).getAsJsonArray().toString()));
 
             addTeam(team);

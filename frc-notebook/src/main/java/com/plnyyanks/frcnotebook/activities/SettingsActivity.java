@@ -1,10 +1,12 @@
 package com.plnyyanks.frcnotebook.activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -17,6 +19,8 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.BackupDatabase;
+import com.plnyyanks.frcnotebook.database.ImportDatabase;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;
@@ -40,13 +44,13 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
-    private static Context context;
+    private static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
-        context = this;
+        activity = this;
     }
 
     @Override
@@ -100,7 +104,7 @@ public class SettingsActivity extends PreferenceActivity {
         clearData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle("Confirm Deletion");
                 builder.setMessage("Are you sure you want to delete all stored data?");
                 builder.setPositiveButton("Yes",
@@ -108,7 +112,7 @@ public class SettingsActivity extends PreferenceActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //delete the data now
                                 StartActivity.db.clearDatabase();
-                                Toast.makeText(context, "Cleared all data", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Cleared all data", Toast.LENGTH_SHORT).show();
                                 dialog.cancel();
                             }
                         });
@@ -120,6 +124,22 @@ public class SettingsActivity extends PreferenceActivity {
                             }
                         });
                 builder.create().show();
+                return false;
+            }
+        });
+        Preference exportData = (Preference)findPreference("export_data");
+        exportData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new BackupDatabase(activity).execute(true,true,true,true);
+                return false;
+            }
+        });
+        Preference importData = (Preference)findPreference("import_data");
+        importData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new ImportDatabase(activity).execute("");
                 return false;
             }
         });
