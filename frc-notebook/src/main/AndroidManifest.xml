@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.plnyyanks.frcnotebook" >
 
-    <uses-sdk   android:targetSdkVersion="19"
-                android:minSdkVersion="14" />
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -11,10 +12,9 @@
         android:label="@string/app_name"
         android:theme="@style/theme_light"
         android:versionCode="8"
-        android:versionName="2.2.4"
-        >
+        android:versionName="2.2.4" >
         <activity
-            android:name=".activities.StartActivity"
+            android:name="com.plnyyanks.frcnotebook.activities.StartActivity"
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,29 +23,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.EventDownloadActivity"
+            android:name="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download"
-            android:parentActivityName=".activities.StartActivity" >
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
         </activity>
         <activity
-            android:name=".activities.ViewEvent"
+            android:name="com.plnyyanks.frcnotebook.activities.ViewEvent"
             android:label="@string/title_activity_view_event"
-            android:parentActivityName=".activities.StartActivity" >
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
         </activity>
         <activity
-            android:name=".activities.ViewTeam"
+            android:name="com.plnyyanks.frcnotebook.activities.ViewTeam"
             android:label="@string/title_activity_view_team"
-            android:parentActivityName=".activities.ViewEvent" >
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="com.plnyyanks.frcnotebook.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.StartActivity" >
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
         </activity>
         <activity
-            android:name=".activities.ViewMatch"
+            android:name="com.plnyyanks.frcnotebook.activities.ViewMatch"
             android:label="@string/title_activity_view_match"
-            android:parentActivityName=".activities.ViewEvent">
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
+        </activity>
+        <activity
+            android:name="com.plnyyanks.frcnotebook.activities.FieldMonitorActivity"
+            android:label="@string/title_activity_field_monitor"
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch">
         </activity>
     </application>
 

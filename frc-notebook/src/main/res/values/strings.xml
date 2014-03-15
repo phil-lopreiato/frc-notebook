@@ -15,7 +15,6 @@
     <string name="title_activity_start">FRC Notebook</string>
     <string name="select_event_title">Select an Event</string>
     <string name="download_event_button">Download Info For An Event</string>
-
     <string name="event_content_layout">event_list_layout</string>
 
     <!-- Team List -->
@@ -58,8 +57,12 @@
     <string name="add_note_message">Select a team</string>
     <string name="note_hint">Add your note</string>
     <string name="all_teams">All teams</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Field Monitor-->>
+    <string name="title_activity_field_monitor">Field Monitor</string>
+    <string name="action_refresh">Refresh</string>
+
 </resources>
