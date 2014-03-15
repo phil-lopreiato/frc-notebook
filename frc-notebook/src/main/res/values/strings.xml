@@ -61,7 +61,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
-    <!-- Field Monitor-->>
+    <!-- Field Monitor-->
     <string name="title_activity_field_monitor">Field Monitor</string>
     <string name="action_refresh">Refresh</string>
 
