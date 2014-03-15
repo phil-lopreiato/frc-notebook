@@ -295,9 +295,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_MATCHES, new String[] {KEY_MATCHKEY,KEY_MATCHTYPE,KEY_MATCHNO,KEY_MATCHSET,KEY_BLUEALLIANCE,KEY_REDALLIANCE,KEY_BLUESCORE,KEY_REDSCORE},
                 KEY_MATCHKEY + "=?",new String[] {key},null,null,null,null);
+
         if(cursor!= null && cursor.moveToFirst()){
             //(String matchKey, String matchType, int matchNumber, String blueAlliance, String redAlliance, int blueScore, int redScore)
-            Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
+            Match match = new Match();
+            match.setMatchKey(cursor.getString(0));
+            match.setMatchType(cursor.getString(1));
+            match.setMatchNumber(cursor.getInt(2));
+            match.setSetNumber(cursor.getInt(3));
+            match.setBlueAlliance(cursor.getString(4));
+            match.setRedAlliance(cursor.getString(5));
+            match.setBlueScore(cursor.getInt(6));
+            match.setRedScore(cursor.getInt(7));
+
             cursor.close();
             return match;
         }else{
@@ -316,7 +326,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
+                Match match = new Match();
+                match.setMatchKey(cursor.getString(0));
+                match.setMatchType(cursor.getString(1));
+                match.setMatchNumber(cursor.getInt(2));
+                match.setSetNumber(cursor.getInt(3));
+                match.setBlueAlliance(cursor.getString(4));
+                match.setRedAlliance(cursor.getString(5));
+                match.setBlueScore(cursor.getInt(6));
+                match.setRedScore(cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -336,7 +354,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
+                Match match = new Match();
+                match.setMatchKey(cursor.getString(0));
+                match.setMatchType(cursor.getString(1));
+                match.setMatchNumber(cursor.getInt(2));
+                match.setSetNumber(cursor.getInt(3));
+                match.setBlueAlliance(cursor.getString(4));
+                match.setRedAlliance(cursor.getString(5));
+                match.setBlueScore(cursor.getInt(6));
+                match.setRedScore(cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -356,7 +382,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
+                Match match = new Match();
+                match.setMatchKey(cursor.getString(0));
+                match.setMatchType(cursor.getString(1));
+                match.setMatchNumber(cursor.getInt(2));
+                match.setSetNumber(cursor.getInt(3));
+                match.setBlueAlliance(cursor.getString(4));
+                match.setRedAlliance(cursor.getString(5));
+                match.setBlueScore(cursor.getInt(6));
+                match.setRedScore(cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
