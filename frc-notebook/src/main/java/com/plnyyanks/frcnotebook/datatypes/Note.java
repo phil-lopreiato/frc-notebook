@@ -1,5 +1,8 @@
 package com.plnyyanks.frcnotebook.datatypes;
 
+import android.util.Log;
+
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
 /**
@@ -133,7 +136,13 @@ public class Note {
         if(lineBreak){
             output+="\n";
         }
-        output +=note.getNote();
+
+        if(note.getParent()==-1){
+            output +=note.getNote();
+        }else{
+            output += StartActivity.db.getDefNote(note.getParent());
+        }
+
         return output;
     }
 }

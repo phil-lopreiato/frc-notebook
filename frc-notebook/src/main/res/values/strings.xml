@@ -35,7 +35,7 @@
     <string name="add_note_button">Add Note</string>
     <string name="general_notes_header">General Notes</string>
     <string name="match_notes_header">Match Notes</string>
-    <string name="no_notes">No notes yet...</string>
+    <string name="no_notes">No notes yet</string>
 
     <!-- Match List -->
     <string name="qual_match_header">Qualification Matches</string>

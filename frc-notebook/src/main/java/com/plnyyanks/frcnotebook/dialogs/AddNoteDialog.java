@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,6 +25,7 @@ import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -65,43 +67,81 @@ public class AddNoteDialog extends DialogFragment {
         for(int i=/*1*/0;i<team_choices.length;i++){
             team_choices[i] = teams.get(i/*-1*/).getAsString().substring(3);
         }
-        final Spinner s = (Spinner) layout.findViewById(R.id.team_selector);
+
+
+        ArrayList<String> allPredefNotes = StartActivity.db.getAllDefNotes();
+        final String[] note_choice = new String[allPredefNotes.size()+1];
+        note_choice[0] = "Custom Note";
+        for(int i=1;i<note_choice.length;i++){
+            note_choice[i] = allPredefNotes.get(i-1);
+        }
+
+        final Spinner teamSpinner = (Spinner) layout.findViewById(R.id.team_selector);
+        final Spinner noteSpinner = (Spinner) layout.findViewById(R.id.predef_note_selector);
         final EditText e = (EditText)layout.findViewById(R.id.note_contents);
-        ArrayAdapter adapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
+        noteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==0){
+                    e.setVisibility(View.VISIBLE);
+                }else{
+                    e.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter teamAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
+        teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        teamSpinner.setAdapter(teamAdapter);
         //s.setSelection(0);
+
+        ArrayAdapter noteAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item,note_choice);
+        noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        noteSpinner.setAdapter(noteAdapter);
+
         builder.setView(layout);
 
         // Add the buttons
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                if(e.getText().toString().isEmpty()){
+                if(noteSpinner.getSelectedItemPosition()==0&&e.getText().toString().isEmpty()){
                     dialog.cancel();
                     return;
                 }
 
                 Note newNote = new Note();
-                newNote.setNote(e.getText().toString());
                 newNote.setMatchKey(match.getMatchKey());
                 newNote.setEventKey(match.getParentEvent().getEventKey());
 
-                if(s.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
+                if(noteSpinner.getSelectedItemPosition()==0){
+                    newNote.setNote(e.getText().toString());
+                }else{
+                    newNote.setNote((String)noteSpinner.getSelectedItem());
+                }
+
+                if(teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
                     //add note for all teams
                     newNote.setTeamKey("all");
                     //TODO implement this
                 }else{
                     //generate team key
-                    String team = "frc"+(String)s.getSelectedItem();
+                    String team = "frc"+(String)teamSpinner.getSelectedItem();
                     Iterator iterator = redAlliance.iterator();
                     String testTeam;
                     newNote.setTeamKey(team);
+                    Log.d(Constants.LOG_TAG,"team key: "+newNote.getTeamKey());
                     while(iterator.hasNext()){
                         testTeam = iterator.next().toString();
                         if(testTeam.equals("\""+team+"\"")){
                             short newId = StartActivity.db.addNote(newNote);
-                            GetNotesForMatch.getRedAdaper().addNote(StartActivity.db.getNote(newId));;
+                            newNote = StartActivity.db.getNote(newId);
+                            Log.d(Constants.LOG_TAG,"id: "+newId+" team: "+newNote.getTeamKey());
+                            GetNotesForMatch.getRedAdaper().addNote(newNote);
                             dialog.cancel();
                             return;
                         }

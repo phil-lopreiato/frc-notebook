@@ -116,6 +116,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
         String team;
         for (int i = 0; i < groups.size(); i++) {
             team = groups.get(i).getTitle().split(" ")[0];
+            Log.d(Constants.LOG_TAG,"Team key: "+note.getTeamKey()+" test: "+team);
             if(note.getTeamKey().contains(team)){
                 groups.get(i).children.add(Note.buildMatchNoteTitle(note,false,true,true));
                 groups.get(i).children_keys.add(Short.toString(note.getId()));

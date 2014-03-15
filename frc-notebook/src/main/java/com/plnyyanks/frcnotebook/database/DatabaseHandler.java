@@ -29,7 +29,7 @@ import java.util.List;
  * Created by phil on 2/19/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -116,10 +116,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
                 + KEY_NOTEID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + KEY_EVENTKEY + " TEXT,"
-                + KEY_MATCHKEY + " TEXT,"
-                + KEY_TEAMKEY + " TEXT,"
-                + KEY_NOTE + " TEXT,"
+                + KEY_EVENTKEY + " TEXT NOT NULL,"
+                + KEY_MATCHKEY + " TEXT NOT NULL,"
+                + KEY_TEAMKEY + " TEXT NOT NULL,"
+                + KEY_NOTE + " TEXT NOT NULL,"
                 + KEY_NOTETIME + " TEXT,"
                 + KEY_NOTEPARENT + " INTEGER,"
                 + KEY_NOTEPICS + " TEXT"
@@ -694,6 +694,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public short addNote(Note in) {
         short existCheck = noteExists(in);
         if (existCheck != -1) {
+            Log.d(Constants.LOG_TAG,"Note already exists");
             return existCheck;
         }
         Log.d(Constants.LOG_TAG, "ADDING NOTE FOR: " + in.getTeamKey() + " " + in.getEventKey() + " " + in.getMatchKey());
@@ -901,7 +902,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public short noteExists(Note note) {
-        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTE}, KEY_MATCHKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_TEAMKEY + "=? AND (" + KEY_NOTE + "=? OR "+KEY_NOTEPARENT+"=?)",
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTE}, KEY_MATCHKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_TEAMKEY + "=? AND " + KEY_NOTE + "=? AND "+KEY_NOTEPARENT+"=?",
                 new String[]{note.getMatchKey(), note.getEventKey(), note.getTeamKey(), note.getNote(),Short.toString(note.getParent())}, null, null, null, null);
         if (cursor.moveToFirst())
             return cursor.getShort(0);
@@ -1028,6 +1029,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return "";
+    }
+    public ArrayList<String> getAllDefNotes(){
+        ArrayList<String> noteList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + TABLE_PREDEF_NOTES;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+               noteList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return noteList;
     }
     public short defNoteExists(String n){
         Cursor cursor = db.query(TABLE_PREDEF_NOTES, new String[]{KEY_DEF_NOTEID}, KEY_DEF_NOTE + "=?",
