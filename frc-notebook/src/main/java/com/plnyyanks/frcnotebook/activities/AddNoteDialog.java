@@ -86,7 +86,7 @@ public class AddNoteDialog extends DialogFragment {
                 newNote.setMatchKey(match.getMatchKey());
                 newNote.setEventKey(match.getParentEvent().getEventKey());
 
-                if(s.getSelectedItemPosition()==0){
+                if(s.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
                     //add note for all teams
                     newNote.setTeamKey("all");
                     //TODO implement this
