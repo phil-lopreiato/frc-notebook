@@ -136,19 +136,18 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         }
         final EventListArrayAdapter genericAdapter = new EventListArrayAdapter(activity,genericVals,genericKeys);
 
-
-        if (!StartActivity.db.matchExists(nextMatchKey)) {
-            ImageView nextButton = (ImageView) activity.findViewById(R.id.next_match);
-            nextButton.setVisibility(View.GONE);
-        }
-        if (!StartActivity.db.matchExists(previousMatchKey)) {
-            ImageView prevButton = (ImageView) activity.findViewById(R.id.prev_match);
-            prevButton.setVisibility(View.GONE);
-        }
-
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (!StartActivity.db.matchExists(nextMatchKey)) {
+                    ImageView nextButton = (ImageView) activity.findViewById(R.id.next_match);
+                    nextButton.setVisibility(View.GONE);
+                }
+                if (!StartActivity.db.matchExists(previousMatchKey)) {
+                    ImageView prevButton = (ImageView) activity.findViewById(R.id.prev_match);
+                    prevButton.setVisibility(View.GONE);
+                }
+
                 redAlliance = (ExpandableListView) activity.findViewById(R.id.red_teams);
                 if (redAlliance == null)
                     return;
