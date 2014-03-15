@@ -6,23 +6,33 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
  * Created by phil on 2/19/14.
  */
 public class Note {
-    private String  eventKey,
-                    matchKey,
-                    teamKey,
-                    note;
-    private short   id;
+    private String  eventKey;
+    private String matchKey;
+    private String teamKey;
+    private String note;
+
+    private String pictures;
+    private short   id,parent;
     private long    timestamp;
 
     public Note(){
         timestamp = System.currentTimeMillis();
+        parent = -1;
+        pictures="";
     }
 
-    public Note(String eventKey, String matchKey, String teamKey, String note) {
+    public Note(String eventKey, String matchKey, String teamKey, String note){
+        this(eventKey,matchKey,teamKey,note,(short)-1,"");
+    }
+
+    public Note(String eventKey, String matchKey, String teamKey, String note,short parent,String pictures) {
         this.eventKey = eventKey;
         this.matchKey = matchKey;
         this.teamKey = teamKey;
         this.note = note;
         this.timestamp = System.currentTimeMillis();
+        this.parent = parent;
+        this.pictures = pictures;
     }
 
     public short getId() {
@@ -71,6 +81,22 @@ public class Note {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String pictures) {
+        this.pictures = pictures;
+    }
+
+    public short getParent() {
+        return parent;
+    }
+
+    public void setParent(short parent) {
+        this.parent = parent;
     }
 
     public static String buildGeneralNoteTitle(Note note,boolean displayEvent){

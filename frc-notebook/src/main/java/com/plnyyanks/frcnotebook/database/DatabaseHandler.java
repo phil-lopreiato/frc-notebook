@@ -11,10 +11,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
+import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import org.json.JSONObject;
@@ -27,42 +29,49 @@ import java.util.List;
  * Created by phil on 2/19/14.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
-    TABLE_EVENTS = "events",
-            KEY_EVENTKEY = "eventKey",
-            KEY_EVENTNAME = "eventName",
-            KEY_EVENTSHORT = "eventShortName",
-            KEY_EVENTYEAR = "eventYear",
-            KEY_EVENTLOC = "eventLocation",
-            KEY_EVENTSTART = "startDate",
-            KEY_EVENTEND = "endDate",
+    TABLE_EVENTS            = "events",
+            KEY_EVENTKEY    = "eventKey",
+            KEY_EVENTNAME   = "eventName",
+            KEY_EVENTSHORT  = "eventShortName",
+            KEY_EVENTYEAR   = "eventYear",
+            KEY_EVENTLOC    = "eventLocation",
+            KEY_EVENTSTART  = "startDate",
+            KEY_EVENTEND    = "endDate",
 
-    TABLE_MATCHES = "matches",
-            KEY_MATCHKEY = "matchKey",
-            KEY_MATCHTYPE = "type",
-            KEY_MATCHNO = "matchNumber",
-            KEY_MATCHSET = "matchSet",
+    TABLE_MATCHES           = "matches",
+            KEY_MATCHKEY    = "matchKey",
+            KEY_MATCHTYPE   = "type",
+            KEY_MATCHNO     = "matchNumber",
+            KEY_MATCHSET    = "matchSet",
             KEY_REDALLIANCE = "redAlliance",
-            KEY_BLUEALLIANCE = "blueAlliance",
-            KEY_BLUESCORE = "blueScore",
-            KEY_REDSCORE = "redScore",
+            KEY_BLUEALLIANCE= "blueAlliance",
+            KEY_BLUESCORE   = "blueScore",
+            KEY_REDSCORE    = "redScore",
 
-    TABLE_TEAMS = "teams",
-            KEY_TEAMKEY = "teamKey",
-            KEY_TEAMNUMBER = "teamNumber",
-            KEY_TEAMNAME = "teamName",
-            KEY_TEAMSITE = "teamWebsite",
-            KEY_TEAMEVENTS = "events",
+    TABLE_TEAMS             = "teams",
+            KEY_TEAMKEY     = "teamKey",
+            KEY_TEAMNUMBER  = "teamNumber",
+            KEY_TEAMNAME    = "teamName",
+            KEY_TEAMSITE    = "teamWebsite",
+            KEY_TEAMEVENTS  = "events",
 
-    TABLE_NOTES = "notes",
-            KEY_NOTEID = "id",
-    //KEY_EVENTKEY  = "eventKey",
-    //KEY_MATCHKEY  = "matchKey",
-    //KEY_TEAMKEY   = "teamKey",
-    KEY_NOTE = "note",
-            KEY_NOTETIME = "timestamp";
+    TABLE_NOTES             = "notes",
+            KEY_NOTEID      = "id",
+            //KEY_EVENTKEY  = "eventKey",
+            //KEY_MATCHKEY  = "matchKey",
+            //KEY_TEAMKEY   = "teamKey",
+            KEY_NOTE        = "note",
+            KEY_NOTETIME    = "timestamp",
+            KEY_NOTEPARENT  = "parentId",
+            KEY_NOTEPICS    = "pictures",
+
+    TABLE_PREDEF_NOTES      = "prefedined_note",
+            KEY_DEF_NOTEID  = "id",
+            KEY_DEF_NOTE    = "note";
+
 
     private SQLiteDatabase db;
 
@@ -111,21 +120,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_MATCHKEY + " TEXT,"
                 + KEY_TEAMKEY + " TEXT,"
                 + KEY_NOTE + " TEXT,"
-                + KEY_NOTETIME + " TEXT"
+                + KEY_NOTETIME + " TEXT,"
+                + KEY_NOTEPARENT + " INTEGER,"
+                + KEY_NOTEPICS + " TEXT"
                 + ")";
         db.execSQL(CREATE_NOTES_TABLE);
+
+        String CREATE_DEF_NOTE_TABLE = "CREATE TABLE "+TABLE_PREDEF_NOTES + "("
+                + KEY_DEF_NOTEID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                + KEY_DEF_NOTE + " TEXT"
+                + ")";
+        db.execSQL(CREATE_DEF_NOTE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+
+        if(oldVersion<12&&newVersion>=12){
+            String upgradeQuery1 = "ALTER TABLE "+TABLE_NOTES+" ADD COLUMN "+KEY_NOTEPARENT+" INTEGER";
+            String upgradeQuery2 = "ALTER TABLE "+TABLE_NOTES+" ADD COLUMN "+KEY_NOTEPICS+  " TEXT";
+            sqLiteDatabase.execSQL(upgradeQuery1);
+            sqLiteDatabase.execSQL(upgradeQuery2);
+
+            String CREATE_DEF_NOTE_TABLE = "CREATE TABLE "+TABLE_PREDEF_NOTES + "("
+                    + KEY_DEF_NOTEID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                    + KEY_DEF_NOTE + " TEXT"
+                    + ")";
+            sqLiteDatabase.execSQL(CREATE_DEF_NOTE_TABLE);
+
+            return;
+        }
+
         // on upgrade drop older tables
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PREDEF_NOTES);
 
         // create new tables
         onCreate(sqLiteDatabase);
+
     }
 
     public void clearDatabase() {
@@ -668,6 +703,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_TEAMKEY, in.getTeamKey());
         values.put(KEY_NOTE, in.getNote());
         values.put(KEY_NOTETIME, in.getTimestamp());
+        values.put(KEY_NOTEPARENT, in.getParent());
+        values.put(KEY_NOTEPICS, in.getPictures());
 
         //insert the row
         if (db.insert(TABLE_NOTES, null, values) == -1) {
@@ -686,7 +723,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
     public Note getNote(short id) {
-        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                 KEY_NOTEID + "=? ", new String[]{Short.toString(id)}, null, null, null, null);
 
         //loop through rows
@@ -699,6 +736,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setTeamKey(cursor.getString(3));
             note.setNote(cursor.getString(4));
             note.setTimestamp(cursor.getLong(5));
+            note.setParent(cursor.getShort(6));
+            note.setPictures(cursor.getString(7));
 
         }
         cursor.close();
@@ -721,6 +760,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
                 note.setTimestamp(cursor.getLong(5));
+                note.setParent(cursor.getShort(6));
+                note.setPictures(cursor.getString(7));
 
                 noteList.add(note);
             } while (cursor.moveToNext());
@@ -733,7 +774,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Note> getAllNotes(String teamKey) {
         ArrayList<Note> noteList = new ArrayList<Note>();
 
-        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                 KEY_TEAMKEY + "=?", new String[]{teamKey}, null, null, null, null);
 
         //loop through rows
@@ -746,6 +787,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
                 note.setTimestamp(cursor.getLong(5));
+                note.setParent(cursor.getShort(6));
+                note.setPictures(cursor.getString(7));
 
                 noteList.add(note);
             } while (cursor.moveToNext());
@@ -759,7 +802,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
-        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                 KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=?", new String[]{teamKey, eventKey}, null, null, null, null);
 
         //loop through rows
@@ -772,6 +815,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
                 note.setTimestamp(cursor.getLong(5));
+                note.setParent(cursor.getShort(6));
+                note.setPictures(cursor.getString(7));
 
                 noteList.add(note);
             } while (cursor.moveToNext());
@@ -788,19 +833,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor;
         if (!eventKey.equals("all") && !teamKey.equals("all")) {
             //regular event. Proceed normally
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
         } else if (eventKey.equals("all")) {
             //looking for all events worth of notes
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, matchKey}, null, null, null, null);
         } else if (teamKey.equals("all")) {
             //looking for all notes on a particular match
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);
         } else {
             //default to all events
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
         }
         //loop through rows
@@ -813,6 +858,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
                 note.setTimestamp(cursor.getLong(5));
+                note.setParent(cursor.getShort(6));
+                note.setPictures(cursor.getString(7));
 
                 noteList.add(note);
             } while (cursor.moveToNext());
@@ -828,10 +875,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor;
         if (!eventKey.equals("all")) {
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, eventKey, "all"}, null, null, null, null);
         } else {
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME},
+            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, "all"}, null, null, null, null);
         }
         //loop through rows
@@ -854,8 +901,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public short noteExists(Note note) {
-        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTE}, KEY_MATCHKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_TEAMKEY + "=? AND " + KEY_NOTE + "=?",
-                new String[]{note.getMatchKey(), note.getEventKey(), note.getTeamKey(), note.getNote()}, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTE}, KEY_MATCHKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_TEAMKEY + "=? AND (" + KEY_NOTE + "=? OR "+KEY_NOTEPARENT+"=?)",
+                new String[]{note.getMatchKey(), note.getEventKey(), note.getTeamKey(), note.getNote(),Short.toString(note.getParent())}, null, null, null, null);
         if (cursor.moveToFirst())
             return cursor.getShort(0);
         else
@@ -876,6 +923,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_TEAMKEY, in.getTeamKey());
         values.put(KEY_NOTE, in.getNote());
         values.put(KEY_NOTETIME, in.getTimestamp());
+        values.put(KEY_NOTEPARENT,in.getParent());
+        values.put(KEY_NOTEPICS,in.getPictures());
 
         return db.update(TABLE_NOTES, values, KEY_NOTEID + " =?", new String[]{Short.toString(in.getId())});
     }
@@ -903,6 +952,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 note.addProperty(KEY_TEAMKEY, cursor.getString(3));
                 note.addProperty(KEY_NOTE, cursor.getString(4));
                 note.addProperty(KEY_NOTETIME, cursor.getLong(5));
+                try {
+                    note.addProperty(KEY_NOTEPARENT, cursor.getShort(6));
+                    note.addProperty(KEY_NOTEPICS, cursor.getString(7));
+                }catch(Exception e){
+                    note.addProperty(KEY_NOTEPARENT,-1);
+                    note.addProperty(KEY_NOTEPICS,"");
+                }
 
                 output.add(note);
             } while (cursor.moveToNext());
@@ -927,8 +983,97 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             note.setTeamKey(n.get(KEY_TEAMKEY).getAsString());
             note.setNote(n.get(KEY_NOTE).getAsString());
             note.setTimestamp(n.get(KEY_NOTETIME).getAsLong());
+            try {
+                note.setParent(n.get(KEY_NOTEPARENT).getAsShort());
+                note.setPictures(n.get(KEY_NOTEPICS).getAsString());
+            }catch(Exception e){
+                note.setParent((short)-1);
+                note.setPictures("");
+            }
 
             addNote(note);
+        }
+    }
+
+    public short addDefNote(String n){
+        short existCheck = defNoteExists(n);
+        if (existCheck != -1) {
+            return existCheck;
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_DEF_NOTE, n);
+
+        //insert the row
+        if (db.insert(TABLE_PREDEF_NOTES, null, values) == -1) {
+            //error, return -1
+            return -1;
+        } else {
+            //else, return the note's ID
+            Cursor cursor = db.rawQuery("SELECT MAX(" + KEY_DEF_NOTEID + ") FROM " + TABLE_PREDEF_NOTES, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getShort(0);
+            } else {
+                return -1;
+            }
+        }
+    }
+    public String getDefNote(short id){
+        Cursor cursor = db.query(TABLE_PREDEF_NOTES, new String[]{KEY_DEF_NOTE},
+                KEY_DEF_NOTEID + "=? ", new String[]{Short.toString(id)}, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            String out = cursor.getString(0);
+            cursor.close();
+            return out;
+        }
+        cursor.close();
+        return "";
+    }
+    public short defNoteExists(String n){
+        Cursor cursor = db.query(TABLE_PREDEF_NOTES, new String[]{KEY_DEF_NOTEID}, KEY_DEF_NOTE + "=?",
+                new String[]{n}, null, null, null, null);
+        if (cursor.moveToFirst())
+            return cursor.getShort(0);
+        else
+            return -1;
+    }
+    public int updateDefNote(short id,String n){
+        ContentValues values = new ContentValues();
+        values.put(KEY_DEF_NOTEID, n);
+
+        return db.update(TABLE_PREDEF_NOTES, values, KEY_DEF_NOTEID+ " =?", new String[]{Short.toString(id)});
+    }
+    public void deleteDefNote(short id){
+        db.delete(TABLE_PREDEF_NOTES, KEY_DEF_NOTEID + "=?", new String[]{Short.toString(id)});
+    }
+    public JsonArray exportDefNotes(){
+        JsonArray output = new JsonArray();
+        String selectQuery = "SELECT * FROM " + TABLE_PREDEF_NOTES;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+                JsonObject note = new JsonObject();
+                note.addProperty(KEY_DEF_NOTEID, cursor.getShort(0));
+                note.addProperty(KEY_DEF_NOTE,cursor.getString(1));
+
+                output.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return output;
+    }
+    public void importDefNotes(JsonArray notes){
+        Iterator<JsonElement> iterator = notes.iterator();
+        JsonObject n;
+
+        while (iterator.hasNext()) {
+            n = iterator.next().getAsJsonObject();
+
+            addDefNote(n.get(KEY_DEF_NOTE).getAsString());
         }
     }
 
@@ -948,6 +1093,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         if (notes) {
             output.add(TABLE_NOTES, exportNotes());
+            if(tableExists(TABLE_PREDEF_NOTES)){
+                output.add(TABLE_PREDEF_NOTES,exportDefNotes());
+            }
         }
         return output;
     }
@@ -956,5 +1104,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         importMatches(data.get(TABLE_MATCHES).getAsJsonArray());
         importTeams(data.get(TABLE_TEAMS).getAsJsonArray());
         importNotes(data.get(TABLE_NOTES).getAsJsonArray());
+        if(tableExists(TABLE_PREDEF_NOTES)){
+            try {
+                importDefNotes(data.get(TABLE_PREDEF_NOTES).getAsJsonArray());
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    public boolean tableExists(String table){
+        Cursor cursor = db.rawQuery("SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '"+table+"'", null);
+        if(cursor!=null && cursor.getCount()>0) {
+            cursor.close();
+            return true;
+        }
+        return false;
     }
 }
