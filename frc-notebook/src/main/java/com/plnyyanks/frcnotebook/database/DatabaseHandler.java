@@ -876,4 +876,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    public JsonObject exportDatabase(){
+        return exportDatabase(true,true,true,true);
+    }
+    public JsonObject exportDatabase(boolean events, boolean matches, boolean teams, boolean notes){
+        JsonObject output = new JsonObject();
+        if(events){
+            output.add(TABLE_EVENTS,exportEvents());
+        }
+        if(matches){
+            output.add(TABLE_MATCHES,exportMatches());
+        }
+        if(teams){
+            output.add(TABLE_TEAMS,exportTeams());
+        }
+        if(notes){
+            output.add(TABLE_NOTES,exportNotes());
+        }
+        return output;
+    }
+
+    public void importDatabase(JsonObject data){
+        importEvents(data.get(TABLE_EVENTS).getAsJsonArray());
+        importMatches(data.get(TABLE_MATCHES).getAsJsonArray());
+        importTeams(data.get(TABLE_TEAMS).getAsJsonArray());
+        importNotes(data.get(TABLE_NOTES).getAsJsonArray());
+    }
 }
