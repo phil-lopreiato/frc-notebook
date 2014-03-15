@@ -1,4 +1,4 @@
-package com.plnyyanks.frcnotebook.activities;
+package com.plnyyanks.frcnotebook.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.GetMatchInfo;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.datatypes.Match;

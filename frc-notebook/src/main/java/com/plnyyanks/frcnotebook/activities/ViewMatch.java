@@ -1,35 +1,24 @@
 package com.plnyyanks.frcnotebook.activities;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.background.GetMatchInfo;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
-import com.plnyyanks.frcnotebook.tba.TBA_EventDetailFetcher;
+import com.plnyyanks.frcnotebook.dialogs.AddNoteDialog;
 import com.plnyyanks.frcnotebook.tba.TBA_MatchDetailFetcher;
 
 public class ViewMatch extends Activity {
