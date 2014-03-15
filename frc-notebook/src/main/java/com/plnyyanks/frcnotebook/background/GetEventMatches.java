@@ -13,6 +13,7 @@ import com.plnyyanks.frcnotebook.adapters.MatchListExpandableListAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Match;
+import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 
@@ -79,15 +80,18 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         elimMatches.addAll(fMatches);
 
         ListGroup qualGroup = new ListGroup("Qualification Matches ("+qualMatches.size()+")");
+        ArrayList<Note> notes;
         for (Match m : qualMatches) {
-            qualGroup.children.add(m.getMatchType()+" "+m.getMatchNumber());
+            notes = StartActivity.db.getAllNotes("all",event.getEventKey(),m.getMatchKey());
+            qualGroup.children.add(m.getMatchType()+" "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
             qualGroup.children_keys.add(m.getMatchKey());
         }
         groups.append(0,qualGroup);
 
         ListGroup elimGroup = new ListGroup(("Elimination Matches ("+elimMatches.size()+")"));
         for (Match m : elimMatches) {
-            elimGroup.children.add(m.getMatchType()+" "+m.getSetNumber()+" Match "+m.getMatchNumber());
+            notes = StartActivity.db.getAllNotes("all",event.getEventKey(),m.getMatchKey());
+            elimGroup.children.add(m.getMatchType()+" "+m.getSetNumber()+" Match "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
             elimGroup.children_keys.add(m.getMatchKey());
         }
         groups.append(1,elimGroup);
