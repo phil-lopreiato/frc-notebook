@@ -4,6 +4,10 @@
     <PreferenceCategory
         android:title="@string/pref_header_app_info"
         android:key="pref_app_info" >
+        <Preference
+            android:title="@string/pref_title_github"
+            android:summary="@string/pref_desc_github"
+            android:key="github_link"/>
         <EditTextPreference
             android:key="app_version"
             android:title="@string/pref_app_version"

@@ -44,6 +44,8 @@
     <!-- App Info -->
     <string name="pref_header_app_info">App Info</string>
     <string name="pref_app_version">App Version</string>
+    <string name="pref_title_github">FRC Notebook is open source!</string>
+    <string name="pref_desc_github">View project on GitHub</string>
 
 
 </resources>

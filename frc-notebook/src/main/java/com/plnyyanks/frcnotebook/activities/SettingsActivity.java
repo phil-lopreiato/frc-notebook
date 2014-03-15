@@ -4,7 +4,9 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -94,7 +96,6 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("theme"));
 
         addPreferencesFromResource(R.xml.pref_app_data);
-        bindPreferenceSummaryToValue(findPreference("data_clear"));
         Preference clearData = (Preference)findPreference("data_clear");
         clearData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -125,6 +126,15 @@ public class SettingsActivity extends PreferenceActivity {
 
         addPreferencesFromResource(R.xml.pref_appinfo);
         bindPreferenceSummaryToValue(findPreference("app_version"));
+        Preference githubLink = (Preference)findPreference("github_link");
+        githubLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/"));
+                startActivity(browserIntent);
+                return false;
+            }
+        });
     }
 
     /** {@inheritDoc} */
