@@ -7,12 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +163,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_EVENTS, new String[] {KEY_EVENTKEY,KEY_EVENTNAME,KEY_EVENTSHORT,KEY_EVENTYEAR,KEY_EVENTLOC,KEY_EVENTSTART,KEY_EVENTEND},
                                  KEY_EVENTKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
-            Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5),cursor.getString(6),Integer.parseInt(cursor.getString(3)));
+            Event event = new Event(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getInt(3));
             cursor.close();
             return event;
         }else{
@@ -180,7 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setEventKey(cursor.getString(0));
                 event.setEventName(cursor.getString(1));
                 event.setShortName(cursor.getString(2));
-                event.setEventYear(Integer.parseInt(cursor.getString(3)));
+                event.setEventYear(cursor.getInt(3));
                 event.setEventLocation(cursor.getString(4));
                 event.setEventStart(cursor.getString(5));
                 event.setEventEnd(cursor.getString(6));
@@ -222,6 +227,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         deleteEventFromTeams(eventKey);
         deleteNotesFromEvent(eventKey);
     }
+    public JsonArray exportEvents(){
+        JsonArray output = new JsonArray();
+        String selectQuery = "SELECT * FROM "+TABLE_EVENTS;
+        Cursor cursor = db.rawQuery(selectQuery,null);
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                JsonObject event = new JsonObject();
+                event.addProperty(KEY_EVENTKEY,cursor.getString(0));
+                event.addProperty(KEY_EVENTNAME,cursor.getString(1));
+                event.addProperty(KEY_EVENTSHORT, cursor.getString(2));
+                event.addProperty(KEY_EVENTYEAR, cursor.getInt(3));
+                event.addProperty(KEY_EVENTLOC, cursor.getString(4));
+                event.addProperty(KEY_EVENTSTART, cursor.getString(5));
+                event.addProperty(KEY_EVENTEND, cursor.getString(6));
+
+                output.add(event);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        return output;
+    }
 
     //managing Matches in SQL
     public long addMatch(Match in){
@@ -250,7 +278,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_MATCHKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
             //(String matchKey, String matchType, int matchNumber, String blueAlliance, String redAlliance, int blueScore, int redScore)
-            Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
+            Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
             cursor.close();
             return match;
         }else{
@@ -269,7 +297,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
+                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -289,7 +317,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
+                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -309,7 +337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if(cursor.moveToFirst()){
             do{
-                Match match = new Match(cursor.getString(0),cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)),cursor.getString(4), cursor.getString(5),Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)));
+                Match match = new Match(cursor.getString(0),cursor.getString(1),cursor.getInt(3),cursor.getInt(4),cursor.getString(4), cursor.getString(5),cursor.getInt(6),cursor.getInt(7));
                 matchList.add(match);
             }while(cursor.moveToNext());
         }
@@ -345,6 +373,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteMatchesAtEvent(String eventKey){
         db.delete(TABLE_MATCHES,KEY_MATCHKEY+" LIKE '%"+eventKey+"%'",null);
     }
+    public JsonArray exportMatches(){
+        JsonArray output = new JsonArray();
+        String selectQuery = "SELECT * FROM "+TABLE_MATCHES;
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
+        if(cursor.moveToFirst()){
+            do{
+                JsonObject match = new JsonObject();
+                match.addProperty(KEY_MATCHKEY,cursor.getString(0));
+                match.addProperty(KEY_MATCHTYPE,cursor.getString(1));
+                match.addProperty(KEY_MATCHNO,cursor.getInt(2));
+                match.addProperty(KEY_MATCHSET,cursor.getInt(3));
+                match.add        (KEY_REDALLIANCE, JSONManager.getasJsonArray(cursor.getString(4)));
+                match.add        (KEY_BLUEALLIANCE, JSONManager.getasJsonArray(cursor.getString(5)));
+                match.addProperty(KEY_BLUESCORE,cursor.getInt(6));
+                match.addProperty(KEY_REDSCORE,cursor.getInt(7));
+
+                output.add(match);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return output;
+    }
 
     //managing teams in SQL
     public long addTeam(Team in){
@@ -368,7 +423,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_TEAMS, new String[] {KEY_TEAMKEY,KEY_TEAMNUMBER,KEY_TEAMNAME,KEY_TEAMSITE,KEY_TEAMEVENTS},
                 KEY_TEAMKEY + "=?",new String[] {key},null,null,null,null);
         if(cursor!= null && cursor.moveToFirst()){
-            Team team = new Team(cursor.getString(0),Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3), JSONManager.getAsStringArrayList(cursor.getString(4)));
+            Team team = new Team(cursor.getString(0),cursor.getInt(1), cursor.getString(2), cursor.getString(3), JSONManager.getAsStringArrayList(cursor.getString(4)));
             cursor.close();
             return team;
         }else{
@@ -388,7 +443,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do{
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
-                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamNumber(cursor.getInt(1));
                 team.setTeamName(cursor.getString(2));
                 team.setTeamName(cursor.getString(3));
                 team.setTeamEvents(JSONManager.getAsStringArrayList(cursor.getString(4)));
@@ -413,7 +468,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do{
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
-                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamNumber(cursor.getInt(1));
                 team.setTeamName(cursor.getString(2));
                 team.setTeamName(cursor.getString(3));
                 team.setTeamEvents(JSONManager.getAsStringArrayList(cursor.getString(4)));
@@ -463,7 +518,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do{
                 Team team = new Team();
                 team.setTeamKey(cursor.getString(0));
-                team.setTeamNumber(Integer.parseInt(cursor.getString(1)));
+                team.setTeamNumber(cursor.getInt(1));
                 team.setTeamName(cursor.getString(2));
                 team.setTeamName(cursor.getString(3));
                 team.setTeamEvents(JSONManager.getAsStringArrayList(cursor.getString(4)));
@@ -474,6 +529,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
+    }
+    public JsonArray exportTeams(){
+        JsonArray output = new JsonArray();
+        String selectQuery = "SELECT * FROM "+TABLE_TEAMS;
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                JsonObject team = new JsonObject();
+                team.addProperty(KEY_TEAMKEY,cursor.getString(0));
+                team.addProperty(KEY_TEAMNUMBER, cursor.getInt(1));
+                team.addProperty(KEY_TEAMNAME, cursor.getString(2));
+                team.addProperty(KEY_TEAMNAME, cursor.getString(3));
+                team.add(KEY_TEAMEVENTS, JSONManager.getasJsonArray(cursor.getString(4)));
+
+                output.add(team);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return output;
     }
 
     //managing notes in SQL
@@ -510,12 +588,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Note note = new Note();
         if(cursor.moveToFirst()){
 
-            note.setId(Short.parseShort(cursor.getString(0)));
+            note.setId(cursor.getShort(0));
             note.setEventKey(cursor.getString(1));
             note.setMatchKey(cursor.getString(2));
             note.setTeamKey(cursor.getString(3));
             note.setNote(cursor.getString(4));
-            note.setTimestamp(Long.parseLong(cursor.getString(5)));
+            note.setTimestamp(cursor.getLong(5));
 
         }
         cursor.close();
@@ -532,12 +610,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setId(cursor.getShort(0));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
-                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+                note.setTimestamp(cursor.getLong(5));
 
                 noteList.add(note);
             }while(cursor.moveToNext());
@@ -557,12 +635,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setId(cursor.getShort(0));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
-                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+                note.setTimestamp(cursor.getLong(5));
 
                 noteList.add(note);
             }while(cursor.moveToNext());
@@ -583,12 +661,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setId(cursor.getShort(0));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
-                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+                note.setTimestamp(cursor.getLong(5));
 
                 noteList.add(note);
             }while(cursor.moveToNext());
@@ -624,12 +702,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setId(cursor.getShort(0));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
-                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+                note.setTimestamp(cursor.getLong(5));
 
                 noteList.add(note);
             }while(cursor.moveToNext());
@@ -655,12 +733,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Note note = new Note();
-                note.setId(Short.parseShort(cursor.getString(0)));
+                note.setId(cursor.getShort(0));
                 note.setEventKey(cursor.getString(1));
                 note.setMatchKey(cursor.getString(2));
                 note.setTeamKey(cursor.getString(3));
                 note.setNote(cursor.getString(4));
-                note.setTimestamp(Long.parseLong(cursor.getString(5)));
+                note.setTimestamp(cursor.getLong(5));
 
                 noteList.add(note);
             }while(cursor.moveToNext());
@@ -696,6 +774,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public void deleteNotesFromEvent(String eventKey){
         db.delete(TABLE_NOTES,KEY_EVENTKEY+"=?",new String[]{eventKey});
+    }
+    public JsonArray exportNotes(){
+        JsonArray output = new JsonArray();
+        String selectQuery = "SELECT * FROM "+TABLE_NOTES;
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //loop through rows
+        if(cursor.moveToFirst()){
+            do{
+                JsonObject note = new JsonObject();
+                note.addProperty(KEY_NOTEID,cursor.getShort(0));
+                note.addProperty(KEY_EVENTKEY,cursor.getString(1));
+                note.addProperty(KEY_MATCHKEY,cursor.getString(2));
+                note.addProperty(KEY_TEAMKEY,cursor.getString(3));
+                note.addProperty(KEY_NOTE,cursor.getString(4));
+                note.addProperty(KEY_NOTETIME,cursor.getLong(5));
+
+                output.add(note);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return output;
     }
 
 }
