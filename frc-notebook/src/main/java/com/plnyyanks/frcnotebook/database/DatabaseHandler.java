@@ -20,6 +20,7 @@ import com.plnyyanks.frcnotebook.json.JSONManager;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -250,6 +251,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return output;
     }
+    public void importEvents(JsonArray events){
+        Iterator<JsonElement> iterator = events.iterator();
+        JsonObject e;
+        Event event;
+
+        while(iterator.hasNext()){
+            e = iterator.next().getAsJsonObject();
+            event = new Event();
+            event.setEventKey(e.get(KEY_EVENTKEY).getAsString());
+            event.setShortName(e.get(KEY_EVENTNAME).getAsString());
+            event.setEventYear(e.get(KEY_EVENTYEAR).getAsInt());
+            event.setEventLocation(e.get(KEY_EVENTLOC).getAsString());
+            event.setEventStart(e.get(KEY_EVENTSTART).getAsString());
+            event.setEventEnd(e.get(KEY_EVENTEND).getAsString());
+
+            addEvent(event);
+        }
+    }
 
     //managing Matches in SQL
     public long addMatch(Match in){
@@ -399,6 +418,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
 
         return output;
+    }
+    public void importMatches(JsonArray matches){
+        Iterator<JsonElement> iterator = matches.iterator();
+        JsonObject m;
+        Match match;
+
+        while(iterator.hasNext()){
+            m = iterator.next().getAsJsonObject();
+            match = new Match();
+            match.setMatchKey(m.get(KEY_MATCHKEY).getAsString());
+            match.setMatchType(m.get(KEY_MATCHTYPE).getAsString());
+            match.setMatchNumber(m.get(KEY_MATCHNO).getAsInt());
+            match.setSetNumber(m.get(KEY_MATCHSET).getAsInt());
+            match.setRedAlliance(m.get(KEY_REDALLIANCE).getAsString());
+            match.setBlueAlliance(m.get(KEY_BLUEALLIANCE).getAsString());
+            match.setRedScore(m.get(KEY_REDSCORE).getAsInt());
+            match.setBlueScore(m.get(KEY_BLUESCORE).getAsInt());
+
+            addMatch(match);
+        }
     }
 
     //managing teams in SQL
@@ -552,6 +591,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
 
         return output;
+    }
+    public void importTeams(JsonArray teams){
+        Iterator<JsonElement> iterator = teams.iterator();
+        JsonObject t;
+        Team team;
+
+        while(iterator.hasNext()){
+            t = iterator.next().getAsJsonObject();
+            team = new Team();
+
+            team.setTeamKey(t.get(KEY_TEAMKEY).getAsString());
+            team.setTeamName(t.get(KEY_TEAMNAME).getAsString());
+            team.setTeamNumber(t.get(KEY_TEAMNUMBER).getAsInt());
+            team.setTeamWebsite(t.get(KEY_TEAMSITE).getAsString());
+            team.setTeamEvents(JSONManager.getAsStringArrayList(t.get(KEY_TEAMEVENTS).getAsJsonArray().toString()));
+
+            addTeam(team);
+        }
     }
 
     //managing notes in SQL
@@ -784,12 +841,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 JsonObject note = new JsonObject();
-                note.addProperty(KEY_NOTEID,cursor.getShort(0));
-                note.addProperty(KEY_EVENTKEY,cursor.getString(1));
-                note.addProperty(KEY_MATCHKEY,cursor.getString(2));
-                note.addProperty(KEY_TEAMKEY,cursor.getString(3));
-                note.addProperty(KEY_NOTE,cursor.getString(4));
-                note.addProperty(KEY_NOTETIME,cursor.getLong(5));
+                note.addProperty(KEY_NOTEID, cursor.getShort(0));
+                note.addProperty(KEY_EVENTKEY, cursor.getString(1));
+                note.addProperty(KEY_MATCHKEY, cursor.getString(2));
+                note.addProperty(KEY_TEAMKEY, cursor.getString(3));
+                note.addProperty(KEY_NOTE, cursor.getString(4));
+                note.addProperty(KEY_NOTETIME, cursor.getLong(5));
 
                 output.add(note);
             }while(cursor.moveToNext());
@@ -798,6 +855,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
 
         return output;
+    }
+    public void importNotes(JsonArray notes){
+        Iterator<JsonElement> iterator = notes.iterator();
+        JsonObject n;
+        Note note;
+
+        while(iterator.hasNext()){
+            n = iterator.next().getAsJsonObject();
+            note = new Note();
+
+            note.setId(n.get(KEY_NOTEID).getAsShort());
+            note.setEventKey(n.get(KEY_EVENTKEY).getAsString());
+            note.setMatchKey(n.get(KEY_MATCHKEY).getAsString());
+            note.setTeamKey(n.get(KEY_TEAMKEY).getAsString());
+            note.setNote(n.get(KEY_NOTE).getAsString());
+            note.setTimestamp(n.get(KEY_NOTETIME).getAsLong());
+
+            addNote(note);
+        }
     }
 
 }
