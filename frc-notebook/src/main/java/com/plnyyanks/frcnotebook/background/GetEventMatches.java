@@ -46,6 +46,8 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
                     return;
                 MatchListExpandableListAdapter adapter = new MatchListExpandableListAdapter(activity,groups);
                 matchList.setAdapter(adapter);
+                matchList.expandGroup(0);
+                matchList.expandGroup(1);
 
                 //hide the progress bar
                 ProgressBar prog = (ProgressBar) activity.findViewById(R.id.matches_loading_progress);
