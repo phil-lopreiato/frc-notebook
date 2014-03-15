@@ -23,6 +23,11 @@
 
     <!-- Match Schedule -->
     <string name="match_schedule_header">Match Schedule</string>
+    <string-array name="match_sort_options">
+        <item>Sort by Match Number</item>
+        <item>Sort by Number of Notes Ascending</item>
+        <item>Sort by Number of Notes Descending</item>
+    </string-array>
 
     <!-- View Team -->
     <string name="title_activity_view_team">View Team</string>

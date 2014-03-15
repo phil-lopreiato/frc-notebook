@@ -16,6 +16,14 @@
         android:text="@string/match_schedule_header"
         android:id="@+id/event_schedule_header"/>
 
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/event_schedule_header"
+        android:id="@+id/match_sort_order"
+        android:entries="@array/match_sort_options"
+        android:visibility="gone"/>
+
     <ProgressBar style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -27,7 +35,7 @@
         android:id="@+id/match_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_schedule_header">
+        android:layout_below="@id/match_sort_order">
     </ExpandableListView>
 
 </RelativeLayout>
