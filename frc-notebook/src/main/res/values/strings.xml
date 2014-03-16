@@ -69,6 +69,11 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Edit Note Dialog -->
+    <string name="edit_note_team_title">Note on Team </string>
+    <string name="edit_note_generic_title">Edit Note</string>
+    <string name="submit">Submit</string>
+
     <!-- Delete Dialog -->
     <string name="delete_title">Confirm Deletion</string>
     <string name="yes">Yes</string>

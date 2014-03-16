@@ -40,4 +40,8 @@ public class MatchListExpandableListAdapter extends CustomExapandableListAdapter
         });
         return convertView;
     }
+
+    public void updateListData(){
+        notifyDataSetChanged();
+    }
 }

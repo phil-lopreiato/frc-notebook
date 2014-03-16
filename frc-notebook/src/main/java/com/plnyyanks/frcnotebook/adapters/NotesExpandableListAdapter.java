@@ -44,7 +44,7 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
             public void onClick(View v) {
                 final Note oldNote = StartActivity.db.getNote(Short.parseShort((String)getChildKey(groupPosition, childPosition)));
 
-                new EditNoteDialog(GetNotesForTeam.getTeamNumber(),oldNote,oldNote.getId(),NotesExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
+                new EditNoteDialog(activity.getString(R.string.edit_note_team_title)+GetNotesForTeam.getTeamNumber(),oldNote,oldNote.getId(),NotesExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -110,5 +110,9 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
             groups.get(0).updateTitle("General Notes ("+groups.get(0).children.size()+")");
             Log.i(Constants.LOG_TAG,"Delete general note with id:"+id);
         }
+    }
+
+    public void updateListData(){
+        notifyDataSetChanged();
     }
 }

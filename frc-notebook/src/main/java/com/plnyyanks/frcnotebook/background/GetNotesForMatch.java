@@ -9,6 +9,7 @@ import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.activities.ViewMatch;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
@@ -30,6 +32,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
+import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,10 +50,11 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
     private static SparseArray<ListGroup> redGroups = new SparseArray<ListGroup>(),
             blueGroups = new SparseArray<ListGroup>();
     public static Object mActionMode;
-    private static ListView noteListView;
+    private static ListView genericList;
     public static String selectedNote="";
     private static AllianceExpandableListAdapter redAdaper, blueAdapter;
     private static ExpandableListView redAlliance,blueAlliance;
+    private static  ListViewArrayAdapter genericAdapter;
 
     public GetNotesForMatch(Activity activity) {
         super();
@@ -124,14 +128,15 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         }
 
         //generic notes go here
-        final ArrayList<Note> genericNotes = StartActivity.db.getAllNotes("all",match.getMatchKey(),eventKey);
+        final ArrayList<Note> genericNotes = StartActivity.db.getAllNotes("all",eventKey,match.getMatchKey());
+        Log.d(Constants.LOG_TAG,"Found "+genericNotes.size()+" generic notes");
         ArrayList<ListItem> genericVals = new ArrayList<ListItem>();
         ArrayList<String> genericKeys = new ArrayList<String>();
         for(Note n:genericNotes){
             genericVals.add(new ListElement(n.getNote(),Short.toString(n.getId())));
             genericKeys.add(Short.toString(n.getId()));
         }
-        final ListViewArrayAdapter genericAdapter = new ListViewArrayAdapter(activity,genericVals,genericKeys);
+        genericAdapter = new ListViewArrayAdapter(activity,genericVals,genericKeys);
 
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -157,8 +162,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 blueAdapter = new AllianceExpandableListAdapter(activity, blueGroups);
                 blueAlliance.setAdapter(blueAdapter);
 
+                genericList = (ListView)activity.findViewById(R.id.generic_notes);
+                genericList.setAdapter(genericAdapter);
+                GenericNoteClick clickListener = new GenericNoteClick();
+                genericList.setOnItemClickListener(clickListener);
+                genericList.setOnItemLongClickListener(clickListener);
                 if(genericNotes.size()>0){
-                    ListView genericList = (ListView)activity.findViewById(R.id.generic_notes);
                     genericList.setVisibility(View.VISIBLE);
                 }
 
@@ -174,6 +183,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
     public static void updateListData(){
         redAdaper.notifyDataSetChanged();
         blueAdapter.notifyDataSetChanged();
+        genericAdapter.notifyDataSetChanged();
     }
 
     public static AllianceExpandableListAdapter getRedAdaper(){
@@ -182,6 +192,10 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
 
     public static AllianceExpandableListAdapter getBlueAdapter(){
         return blueAdapter;
+    }
+
+    public static ListViewArrayAdapter getGenericAdapter(){
+        return genericAdapter;
     }
 
     public static ActionMode.Callback mActionModeCallback = new ActionBarCallback() {
@@ -217,6 +231,15 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                             StartActivity.db.deleteNote(noteId);
                             redAdaper.removeNote(Short.parseShort(noteId));
                             blueAdapter.removeNote(Short.parseShort(noteId));
+                            genericAdapter.removeKey(noteId);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(genericAdapter.keys.size()==0){
+                                        genericList.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
                             updateListData();
                             Toast.makeText(activity, "Deleted note from database", Toast.LENGTH_SHORT).show();
                             dialog.cancel();
@@ -226,5 +249,27 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                     .show(activity.getFragmentManager(),"delete_note");
         }
     };
+
+    class GenericNoteClick implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if(!selectedNote.equals("")) return;
+            final short noteId = Short.parseShort((String) genericAdapter.getKey(i));
+            final Note oldNote = StartActivity.db.getNote(noteId);
+
+            new EditNoteDialog(activity.getString(R.string.edit_note_generic_title),oldNote,noteId,genericAdapter).show(activity.getFragmentManager(),"edit_note");
+        }
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            view.setSelected(true);
+            GetNotesForMatch.selectedNote = genericAdapter.getKey(i);
+            Log.d(Constants.LOG_TAG, "Note selected, id:" + GetNotesForMatch.selectedNote);
+            GetNotesForMatch.mActionMode = activity.startActionMode(GetNotesForMatch.mActionModeCallback);
+            GetNotesForMatch.updateListData();
+            return false;
+        }
+    }
 
 }

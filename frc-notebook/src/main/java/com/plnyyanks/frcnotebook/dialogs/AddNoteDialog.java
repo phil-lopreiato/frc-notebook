@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.gson.JsonArray;
@@ -20,6 +21,7 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
@@ -60,10 +62,10 @@ public class AddNoteDialog extends DialogFragment {
         teams.addAll(redAlliance);
         teams.addAll(blueAlliance);
 
-        final String[] team_choices = new String[teams.size()/*+1*/];
-        //team_choices[0] = getResources().getString(R.string.all_teams);
-        for(int i=/*1*/0;i<team_choices.length;i++){
-            team_choices[i] = teams.get(i/*-1*/).getAsString().substring(3);
+        final String[] team_choices = new String[teams.size()+1];
+        team_choices[0] = getResources().getString(R.string.all_teams);
+        for(int i=1;i<team_choices.length;i++){
+            team_choices[i] = teams.get(i-1).getAsString().substring(3);
         }
 
 
@@ -101,7 +103,7 @@ public class AddNoteDialog extends DialogFragment {
         ArrayAdapter teamAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
         teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         teamSpinner.setAdapter(teamAdapter);
-        //s.setSelection(0);
+        teamSpinner.setSelection(0);
 
         ArrayAdapter noteAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item,note_choice);
         noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,7 +134,15 @@ public class AddNoteDialog extends DialogFragment {
                 if(teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
                     //add note for all teams
                     newNote.setTeamKey("all");
-                    //TODO implement this
+                    StartActivity.db.addNote(newNote);
+                    if(GetNotesForMatch.getGenericAdapter().keys.size() == 0){
+                        ListView list = (ListView)activity.findViewById(R.id.generic_notes);
+                        list.setVisibility(View.VISIBLE);
+                    }
+                    GetNotesForMatch.getGenericAdapter().values.add(new ListElement(newNote.getNote(),Short.toString(newNote.getId())));
+                    GetNotesForMatch.getGenericAdapter().keys.add(Short.toString(newNote.getId()));
+                    GetNotesForMatch.getGenericAdapter().notifyDataSetChanged();
+
                 }else{
                     //generate team key
                     String team = "frc"+(String)teamSpinner.getSelectedItem();

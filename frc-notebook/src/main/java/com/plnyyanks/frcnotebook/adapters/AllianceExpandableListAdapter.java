@@ -50,7 +50,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                 String teamNumber = groups.get(groupPosition).getTitle().split(" ")[0];
                 final Note oldNote = noteId!=-1?StartActivity.db.getNote(noteId):new Note(ViewMatch.eventKey,ViewMatch.matchKey,"frc"+teamNumber,"");
 
-                new EditNoteDialog(teamNumber,oldNote,noteId,AllianceExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
+                new EditNoteDialog(activity.getString(R.string.edit_note_team_title)+teamNumber,oldNote,noteId,AllianceExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -80,6 +80,10 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                 return;
             }
         }
+    }
+
+    public void updateListData(){
+        GetNotesForMatch.updateListData();
     }
 
     public void addNote(Note note){
