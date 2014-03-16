@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -13,6 +14,7 @@ import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.dialogs.AddPredefNoteDialog;
+import com.plnyyanks.frcnotebook.dialogs.EditPredefNoteDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +69,12 @@ public class PredefinedNoteManager extends ListActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        new EditPredefNoteDialog(adapter,position).show(getFragmentManager(),"edit_predef_note");
+        super.onListItemClick(l, v, position, id);
     }
 
 }

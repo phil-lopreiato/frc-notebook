@@ -1057,7 +1057,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public int updateDefNote(short id,String n){
         ContentValues values = new ContentValues();
-        values.put(KEY_DEF_NOTEID, n);
+        values.put(KEY_DEF_NOTE, n);
 
         return db.update(TABLE_PREDEF_NOTES, values, KEY_DEF_NOTEID+ " =?", new String[]{Short.toString(id)});
     }
