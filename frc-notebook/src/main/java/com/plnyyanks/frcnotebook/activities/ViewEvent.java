@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     private static String key;
     private static Event event;
     protected static Activity activity;
+    private static int tabPosition=0;
 
     public static void setEvent(String eventKey){
         key = eventKey;
@@ -39,6 +41,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         setContentView(R.layout.activity_view_event);
 
         activity = this;
+
 
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -57,6 +60,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         scheduleTab.setText("Match Schedule");
         scheduleTab.setTabListener(this);
         bar.addTab(scheduleTab);
+
+        bar.setSelectedNavigationItem(tabPosition);
     }
 
     @Override
@@ -64,6 +69,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         StartActivity.checkThemeChanged(ViewEvent.class);
         GetEventMatches.setActivity(this);
         super.onResume();
+        getActionBar().setSelectedNavigationItem(tabPosition);
     }
 
     @Override
@@ -89,6 +95,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
                 new TBA_EventDetailFetcher(this, key).execute("");
                 return true;
+            case R.id.action_view_tba:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/event/" + key)));
+                return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
@@ -99,7 +108,8 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         Fragment f;
-        switch(tab.getPosition()){
+        tabPosition = tab.getPosition();
+        switch(tabPosition){
             case 0:
             default:
                 f = new EventTeamListFragment(); break;

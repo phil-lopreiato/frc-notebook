@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -88,6 +89,16 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_view_tba:
+                String year;
+                ActionBar.Tab selectedTab = getActionBar().getSelectedTab();
+                if(selectedTab.getPosition()==0){
+                    year = getString(R.string.current_year);
+                }else{
+                    year = selectedTab.getTag().toString().substring(0,4);
+                }
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/team/"+teamNumber+"/"+year)));
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

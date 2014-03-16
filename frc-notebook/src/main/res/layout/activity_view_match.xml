@@ -50,8 +50,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/match_title"
-        android:id="@+id/generic_notes"
-        android:visibility="gone"></ListView>
+        android:id="@+id/generic_notes"></ListView>
 
     <LinearLayout
         android:layout_width="fill_parent"

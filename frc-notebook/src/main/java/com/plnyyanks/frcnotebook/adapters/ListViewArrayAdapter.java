@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
+import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +19,7 @@ import java.util.Arrays;
 /**
  * Created by phil on 2/22/14.
  */
-public class ListViewArrayAdapter extends ArrayAdapter<ListItem> {
+public class ListViewArrayAdapter extends ArrayAdapter<ListItem> implements AdapterInterface{
     public static Context context;
     private LayoutInflater mInflater;
     public ArrayList<ListItem> values;
@@ -70,8 +73,27 @@ public class ListViewArrayAdapter extends ArrayAdapter<ListItem> {
         return v;
     }
 
-    public String getEventKey(int position){
+    public String getKey(int position){
         return keys.get(position);
+    }
+
+
+    @Override
+    public void addNote(Note n) {
+
+    }
+
+    @Override
+    public void updateNote(Note n) {
+        int index = keys.indexOf(Short.toString(n.getId()));
+        StartActivity.db.updateNote(n);
+        if(index != -1){
+            values.set(index,new ListElement(n.getNote(),Short.toString(n.getId())));
+        }
+    }
+
+    public void updateListData(){
+        notifyDataSetChanged();
     }
 
 }

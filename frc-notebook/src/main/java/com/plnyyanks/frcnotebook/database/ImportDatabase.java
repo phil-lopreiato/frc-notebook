@@ -1,10 +1,7 @@
 package com.plnyyanks.frcnotebook.database;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
@@ -14,12 +11,8 @@ import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Created by phil on 3/15/14.

@@ -3,7 +3,6 @@ package com.plnyyanks.frcnotebook.database;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
 import com.plnyyanks.frcnotebook.R;

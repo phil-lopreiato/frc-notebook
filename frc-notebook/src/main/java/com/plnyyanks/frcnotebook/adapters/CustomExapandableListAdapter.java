@@ -15,7 +15,7 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 /**
  * Created by phil on 2/23/14.
  */
-public abstract class CustomExapandableListAdapter extends BaseExpandableListAdapter {
+public abstract class CustomExapandableListAdapter extends BaseExpandableListAdapter implements AdapterInterface{
 
     public final SparseArray<ListGroup> groups;
     public LayoutInflater inflater;

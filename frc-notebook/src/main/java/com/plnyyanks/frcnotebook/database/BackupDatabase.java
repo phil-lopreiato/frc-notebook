@@ -1,10 +1,7 @@
 package com.plnyyanks.frcnotebook.database;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
@@ -12,10 +9,7 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 /**
  * Created by phil on 3/15/14.
