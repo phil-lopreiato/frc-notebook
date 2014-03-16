@@ -50,7 +50,7 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
 
         if(allPredefNotes.size()==0){
             predef_ids.add("-1");
-            predef_notes.add(new ListElement("No predefined notes. Tap the plus in the action bar to add one.","-1"));
+            predef_notes.add(new ListElement(getResources().getString(R.string.no_predef_notes),"-1"));
         }
 
         Iterator<Short> iterator = allPredefNotes.keySet().iterator();
