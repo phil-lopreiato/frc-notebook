@@ -15,6 +15,8 @@ import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by phil on 3/15/14.
  */
@@ -42,6 +44,10 @@ public class EditNoteDialog extends DialogFragment {
         final EditText noteEditField = new EditText(getActivity());
         //noteEditField.setId(999);
         noteEditField.setText(noteId!=-1?oldNote.getNote():"");
+        if(oldNote.getParent()!= -1) {
+            //note is a derivative of a predefined note. Don't allow editing
+            noteEditField.setEnabled(false);
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Note on Team " + teamNumber);
         builder.setView(noteEditField);

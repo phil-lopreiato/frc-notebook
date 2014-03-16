@@ -26,6 +26,7 @@ import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -69,11 +70,17 @@ public class AddNoteDialog extends DialogFragment {
         }
 
 
-        ArrayList<String> allPredefNotes = StartActivity.db.getAllDefNotes();
+        HashMap<Short,String> allPredefNotes = StartActivity.db.getAllDefNotes();
         final String[] note_choice = new String[allPredefNotes.size()+1];
+        final short[] note_choice_ids = new short[allPredefNotes.size()+1];
         note_choice[0] = "Custom Note";
-        for(int i=1;i<note_choice.length;i++){
-            note_choice[i] = allPredefNotes.get(i-1);
+        note_choice_ids[0] = -1;
+        Iterator<Short> iterator = allPredefNotes.keySet().iterator();
+        Short key;
+        for(int i=1;i<note_choice.length&&iterator.hasNext();i++){
+            key = iterator.next();
+            note_choice_ids[i] = key;
+            note_choice[i] = allPredefNotes.get(key);
         }
 
         final Spinner teamSpinner = (Spinner) layout.findViewById(R.id.team_selector);
@@ -117,11 +124,12 @@ public class AddNoteDialog extends DialogFragment {
                 Note newNote = new Note();
                 newNote.setMatchKey(match.getMatchKey());
                 newNote.setEventKey(match.getParentEvent().getEventKey());
+                newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
 
                 if(noteSpinner.getSelectedItemPosition()==0){
                     newNote.setNote(e.getText().toString());
                 }else{
-                    newNote.setNote((String)noteSpinner.getSelectedItem());
+                    newNote.setNote(note_choice[noteSpinner.getSelectedItemPosition()]);
                 }
 
                 if(teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
@@ -134,7 +142,7 @@ public class AddNoteDialog extends DialogFragment {
                     Iterator iterator = redAlliance.iterator();
                     String testTeam;
                     newNote.setTeamKey(team);
-                    Log.d(Constants.LOG_TAG,"team key: "+newNote.getTeamKey());
+                    Log.d(Constants.LOG_TAG, "team key: " + newNote.getTeamKey());
                     while(iterator.hasNext()){
                         testTeam = iterator.next().toString();
                         if(testTeam.equals("\""+team+"\"")){

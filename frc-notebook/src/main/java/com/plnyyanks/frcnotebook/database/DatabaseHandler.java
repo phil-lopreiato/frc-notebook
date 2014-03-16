@@ -22,6 +22,7 @@ import com.plnyyanks.frcnotebook.json.JSONManager;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -1030,15 +1031,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return "";
     }
-    public ArrayList<String> getAllDefNotes(){
-        ArrayList<String> noteList = new ArrayList<String>();
+    public HashMap<Short,String> getAllDefNotes(){
+        HashMap<Short,String> noteList = new HashMap<Short, String>();
         String selectQuery = "SELECT * FROM " + TABLE_PREDEF_NOTES;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         //loop through rows
         if (cursor.moveToFirst()) {
             do {
-               noteList.add(cursor.getString(1));
+               noteList.put(cursor.getShort(0),cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
