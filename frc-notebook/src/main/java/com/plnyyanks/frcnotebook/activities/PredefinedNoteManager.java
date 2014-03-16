@@ -24,6 +24,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.dialogs.AddPredefNoteDialog;
+import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 import com.plnyyanks.frcnotebook.dialogs.EditPredefNoteDialog;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
 
         if(allPredefNotes.size()==0){
             predef_ids.add("-1");
-            predef_notes.add(new ListElement(getResources().getString(R.string.no_predef_notes),"-1"));
+            predef_notes.add(new ListElement(getString(R.string.no_predef_notes),"-1"));
         }
 
         Iterator<Short> iterator = allPredefNotes.keySet().iterator();
@@ -140,10 +141,7 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
         }
 
         private void confirmAndDelete(final int item){
-            AlertDialog.Builder builder = new AlertDialog.Builder(PredefinedNoteManager.this);
-            builder.setTitle("Confirm Deletion");
-            builder.setMessage("Are you sure you want to delete this predefined note?");
-            builder.setPositiveButton("Yes",
+            DialogInterface.OnClickListener deleter =
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //delete the event now
@@ -152,15 +150,8 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
                             adapter.notifyDataSetChanged();
                             dialog.cancel();
                         }
-                    });
-
-            builder.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+                    };
+            new DeleteDialog(getString(R.string.delete_predef_note_message),deleter).show(getFragmentManager(),"delete_predef_note");
         }
     };
 

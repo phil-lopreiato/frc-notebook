@@ -29,6 +29,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -209,10 +210,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         }
 
         private void confirmAndDelete(final String noteId){
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle("Confirm Deletion");
-            builder.setMessage("Are you sure you want to delete this note?");
-            builder.setPositiveButton("Yes",
+            DialogInterface.OnClickListener deleter =
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //delete the event now
@@ -223,15 +221,9 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                             Toast.makeText(activity, "Deleted note from database", Toast.LENGTH_SHORT).show();
                             dialog.cancel();
                         }
-                    });
-
-            builder.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+                    };
+            new DeleteDialog(activity.getString(R.string.note_deletion_message),deleter)
+                    .show(activity.getFragmentManager(),"delete_note");
         }
     };
 
