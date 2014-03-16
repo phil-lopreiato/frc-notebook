@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -32,7 +33,7 @@ public class EventDownloadActivity extends Activity {
         if(prefs == null)
             prefs = PreferenceManager.getDefaultSharedPreferences(this);
         currentYear = prefs.getString("competition_season","2014");
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         new TBA_EventFetcher().execute(this);
     }
 
@@ -65,10 +66,14 @@ public class EventDownloadActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

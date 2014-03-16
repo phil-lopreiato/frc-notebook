@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -17,6 +18,7 @@ public class FieldMonitorActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_field_monitor);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         webview = (WebView)findViewById(R.id.field_monitor_webview);
         webview.getSettings().setJavaScriptEnabled(true);
@@ -47,6 +49,9 @@ public class FieldMonitorActivity extends Activity {
                 if(webview!=null){
                     webview.reload();
                 }
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);

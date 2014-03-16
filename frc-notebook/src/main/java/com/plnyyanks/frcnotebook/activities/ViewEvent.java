@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,16 +38,13 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().commit();
-        }
-
         activity = this;
 
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setTitle(event.getEventName());
         bar.setSubtitle("#"+key);
+        bar.setDisplayHomeAsUpEnabled(true);
 
         //tab for team list
         ActionBar.Tab teamListTab = bar.newTab();
@@ -82,14 +80,18 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }if(id==R.id.action_update_event){
-            Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
-            new TBA_EventDetailFetcher(this, key).execute("");
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_update_event:
+                Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
+                new TBA_EventDetailFetcher(this, key).execute("");
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
