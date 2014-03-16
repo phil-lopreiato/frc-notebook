@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewTeam" >
-    
+
+    <item android:id="@+id/action_view_tba"
+        android:title="@string/action_view_tba"
+        android:orderInCategory="90"
+        android:showAsAction="never"/>
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -93,6 +94,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             case R.id.action_update_event:
                 Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
                 new TBA_EventDetailFetcher(this, key).execute("");
+                return true;
+            case R.id.action_view_tba:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/event/" + key)));
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

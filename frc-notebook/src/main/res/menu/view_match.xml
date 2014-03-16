@@ -15,6 +15,11 @@
         android:icon="@drawable/ic_action_new"
         android:title="@string/action_add_note"/>
 
+    <item android:id="@+id/action_view_tba"
+        android:title="@string/action_view_tba"
+        android:orderInCategory="95"
+        android:showAsAction="never"/>
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

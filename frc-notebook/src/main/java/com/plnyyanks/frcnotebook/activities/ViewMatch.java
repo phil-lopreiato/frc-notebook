@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -112,6 +113,9 @@ public class ViewMatch extends Activity {
                 new AddNoteDialog(match).show(getFragmentManager(), "Add Note");
                 return true;
 
+            case R.id.action_view_tba:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/match/"+matchKey)));
+                return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
