@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -44,6 +45,7 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
         setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_predefined_note_manager);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         HashMap<Short,String> allPredefNotes = StartActivity.db.getAllDefNotes();
         predef_notes = new ArrayList<ListItem>();
@@ -85,6 +87,9 @@ public class PredefinedNoteManager extends ListActivity implements AdapterView.O
         switch(id){
             case R.id.action_new_predef_note:
                 new AddPredefNoteDialog(adapter).show(getFragmentManager(),"add_predef_note");
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);

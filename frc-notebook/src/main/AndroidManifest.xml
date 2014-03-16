@@ -18,7 +18,6 @@
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,16 +25,25 @@
             android:name="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.ViewEvent"
             android:label="@string/title_activity_view_event"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.ViewTeam"
             android:label="@string/title_activity_view_team"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.ViewEvent" />
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.SettingsActivity"
@@ -45,16 +53,25 @@
             android:name="com.plnyyanks.frcnotebook.activities.ViewMatch"
             android:label="@string/title_activity_view_match"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.ViewEvent" />
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.FieldMonitorActivity"
             android:label="@string/title_activity_field_monitor"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.ViewMatch" />
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.PredefinedNoteManager"
             android:label="@string/title_activity_predefined_note_manager"
             android:parentActivityName="com.plnyyanks.frcnotebook.activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.SettingsActivity" />
         </activity>
     </application>
 

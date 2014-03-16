@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,11 +35,6 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_team);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .commit();
-        }
-
         activity = this;
 
         ActionBar bar = getActionBar();
@@ -51,6 +47,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         teamOverviewTab.setTag("all");
         teamOverviewTab.setTabListener(this);
         bar.addTab(teamOverviewTab);
+        bar.setDisplayHomeAsUpEnabled(true);
 
         //add an actionbar tab for every event the team is competing at
         Team team = StartActivity.db.getTeam(teamKey);
@@ -87,10 +84,14 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

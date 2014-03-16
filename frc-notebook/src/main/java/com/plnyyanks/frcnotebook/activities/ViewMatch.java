@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,15 +36,11 @@ public class ViewMatch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_match);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .commit();
-        }
-
         activity = this;
         ActionBar bar = getActionBar();
         bar.setTitle(parentEvent.getEventName()+" - "+parentEvent.getEventYear());
         bar.setSubtitle(eventKey);
+        bar.setDisplayHomeAsUpEnabled(true);
 
         if(matchKey == null) return;
 
@@ -113,6 +110,10 @@ public class ViewMatch extends Activity {
 
             case R.id.action_add_note:
                 new AddNoteDialog(match).show(getFragmentManager(), "Add Note");
+                return true;
+
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
