@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/theme_light"
         android:versionCode="12"
-        android:versionName="2.3.3_dev" >
+        android:versionName="2.3.3" >
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.StartActivity"
             android:label="@string/title_activity_start" >
