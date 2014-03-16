@@ -939,6 +939,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteNotesFromEvent(String eventKey) {
         db.delete(TABLE_NOTES, KEY_EVENTKEY + "=?", new String[]{eventKey});
     }
+    public void deleteNotesFromParent(short parentId){
+        db.delete(TABLE_NOTES, KEY_NOTEPARENT + "=?", new String[]{Short.toString(parentId)});
+    }
     public JsonArray exportNotes() {
         JsonArray output = new JsonArray();
         String selectQuery = "SELECT * FROM " + TABLE_NOTES;
@@ -1063,6 +1066,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public void deleteDefNote(short id){
         db.delete(TABLE_PREDEF_NOTES, KEY_DEF_NOTEID + "=?", new String[]{Short.toString(id)});
+        deleteNotesFromParent(id);
     }
     public JsonArray exportDefNotes(){
         JsonArray output = new JsonArray();

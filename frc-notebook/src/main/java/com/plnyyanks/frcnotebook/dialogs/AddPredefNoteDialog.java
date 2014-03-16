@@ -48,6 +48,11 @@ public class AddPredefNoteDialog extends DialogFragment {
                             if(newId != -1){
                                 adapter.values.add(new ListElement(text,Short.toString(newId)));
                                 adapter.keys.add(Short.toString(newId));
+
+                                if(adapter.keys.get(0).equals("-1")){
+                                    adapter.values.remove(0);
+                                    adapter.keys.remove(0);
+                                }
                                 adapter.notifyDataSetChanged();
                             }
                         }
