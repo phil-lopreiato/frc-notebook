@@ -84,7 +84,6 @@
 
     <!-- Field Monitor-->
     <string name="title_activity_field_monitor">Field Monitor</string>
-    <string name="action_refresh">Refresh</string>
 
     <!-- Delete Dialog -->
     <string name="delete_title">Confirm Deletion</string>
