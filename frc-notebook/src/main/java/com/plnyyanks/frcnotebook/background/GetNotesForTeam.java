@@ -67,6 +67,7 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
                     String resultToast;
                     short dbResult = StartActivity.db.addNote(newNote);
                     if(dbResult != -1){
+                        newNote.setId(dbResult);
                         resultToast = "Note added sucessfully";
                         newNote.setId(dbResult);
                         ListGroup group = groups.get(0);

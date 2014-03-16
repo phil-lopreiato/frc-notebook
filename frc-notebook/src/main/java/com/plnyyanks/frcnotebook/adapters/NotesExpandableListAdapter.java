@@ -16,6 +16,7 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 
 /**
  * Created by phil on 2/25/14.
@@ -42,32 +43,8 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
             @Override
             public void onClick(View v) {
                 final Note oldNote = StartActivity.db.getNote(Short.parseShort((String)getChildKey(groupPosition, childPosition)));
-                final EditText noteEditField = new EditText(activity);
-                //noteEditField.setId(999);
-                noteEditField.setText(oldNote.getNote());
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Note on Team " + GetNotesForTeam.getTeamNumber());
-                builder.setView(noteEditField);
-                builder.setMessage("Edit your note.");
-                builder.setPositiveButton("Update",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                oldNote.setNote(noteEditField.getText().toString());
-                                StartActivity.db.updateNote(oldNote);
-                                updateNoteInList(oldNote);
-                                GetNotesForTeam.updateListData();
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNeutralButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                builder.create().show();
+                new EditNoteDialog(GetNotesForTeam.getTeamNumber(),oldNote,oldNote.getId(),NotesExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -89,7 +66,7 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
         return convertView;
     }
 
-    private void updateNoteInList(Note note){
+    public void updateNote(Note note){
         SparseArray<ListGroup> groups = GetNotesForTeam.getListData();
         int index = groups.get(0).children_keys.indexOf(Short.toString(note.getId()));
         if(index == -1){
