@@ -23,6 +23,8 @@
 
     <string name="pref_title_field_monitor">Show Field Monitor</string>
     <string name="pref_desc_field_monitor">Requires connection to field network</string>
+    <string name="pref_title_predef_notes">Manage Predefined Notes</string>
+    <string name="pref_desc_predef_notes">Reusable notes that you can quickly add to a team</string>
 
     <!-- Appearance -->
     <string name="pref_header_appearance">Appearance</string>

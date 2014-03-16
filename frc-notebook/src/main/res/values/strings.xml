@@ -15,7 +15,6 @@
     <string name="title_activity_start">FRC Notebook</string>
     <string name="select_event_title">Select an Event</string>
     <string name="download_event_button">Download Info For An Event</string>
-    <string name="event_content_layout">event_list_layout</string>
 
     <!-- Team List -->
     <string name="title_activity_view_event">View Event</string>
@@ -23,6 +22,7 @@
 
     <!-- Match Schedule -->
     <string name="match_schedule_header">Match Schedule</string>
+
     <string-array name="match_sort_options">
         <item>Sort by Match Number</item>
         <item>Sort by Number of Notes Ascending</item>
@@ -66,8 +66,13 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
-    <!-- Field Monitor-->>
-    <string name="title_activity_field_monitor">Field Monitor</string>
+    <!-- Field Monitor -->
+>    <string name="title_activity_field_monitor">Field Monitor</string>
     <string name="action_refresh">Refresh</string>
+
+    <!-- Predefined Notes-->
+    <string name="title_activity_predefined_note_manager">Predefined Notes</string>
+    <string name="action_new_predef_note">Add</string>
+    <string name="no_predef_notes">You don\'t have any predefined notes yet. Tap the plus in the action bar to add one</string>
 
 </resources>

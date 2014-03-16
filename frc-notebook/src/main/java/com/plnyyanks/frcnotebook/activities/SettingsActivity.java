@@ -43,7 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
      * as a master/detail two-pane view on tablets. When true, a single pane is
      * shown on tablets.
      */
-    private static final boolean ALWAYS_SIMPLE_PREFS = false;
+    private static final boolean ALWAYS_SIMPLE_PREFS = true;
     private static Activity activity;
 
     @Override
@@ -95,6 +95,8 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("competition_season"));
         bindPreferenceSummaryToValue(findPreference("data_source"));
+        Preference managePredef = findPreference("open_predef_notes");
+        managePredef.setIntent(new Intent(this,PredefinedNoteManager.class));
 
         addPreferencesFromResource(R.xml.pref_appearance);
         bindPreferenceSummaryToValue(findPreference("theme"));
@@ -147,14 +149,7 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_appinfo);
         bindPreferenceSummaryToValue(findPreference("app_version"));
         Preference githubLink = (Preference)findPreference("github_link");
-        githubLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/"));
-                startActivity(browserIntent);
-                return false;
-            }
-        });
+        githubLink.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/")));
     }
 
     /** {@inheritDoc} */

@@ -9,8 +9,6 @@ import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,8 +23,7 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
-import com.plnyyanks.frcnotebook.adapters.MatchListExpandableListAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
@@ -35,7 +32,6 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by phil on 3/10/14.
@@ -134,7 +130,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             genericVals.add(new ListElement(n.getNote(),Short.toString(n.getId())));
             genericKeys.add(Short.toString(n.getId()));
         }
-        final EventListArrayAdapter genericAdapter = new EventListArrayAdapter(activity,genericVals,genericKeys);
+        final ListViewArrayAdapter genericAdapter = new ListViewArrayAdapter(activity,genericVals,genericKeys);
 
         activity.runOnUiThread(new Runnable() {
             @Override

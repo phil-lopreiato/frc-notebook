@@ -39,8 +39,7 @@
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            android:label="@string/title_activity_settings">
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.ViewMatch"
@@ -50,7 +49,12 @@
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.FieldMonitorActivity"
             android:label="@string/title_activity_field_monitor"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch">
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch" >
+        </activity>
+        <activity
+            android:name="com.plnyyanks.frcnotebook.activities.PredefinedNoteManager"
+            android:label="@string/title_activity_predefined_note_manager"
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.SettingsActivity">
         </activity>
     </application>
 

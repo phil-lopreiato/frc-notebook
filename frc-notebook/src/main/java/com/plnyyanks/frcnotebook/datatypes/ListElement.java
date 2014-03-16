@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 
 /**
  * Created by phil on 3/1/14.
@@ -21,7 +21,7 @@ public class ListElement implements ListItem {
 
     @Override
     public int getViewType() {
-        return EventListArrayAdapter.ItemType.LIST_ITEM.ordinal();
+        return ListViewArrayAdapter.ItemType.LIST_ITEM.ordinal();
     }
 
     @Override

@@ -18,13 +18,12 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,7 +35,7 @@ import java.util.List;
 public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
     private Activity parentActivity;
-    private EventListArrayAdapter adapter;
+    private ListViewArrayAdapter adapter;
     private ListView eventList;
     private Object mActionMode;
     private int selectedItem=-1;
@@ -75,7 +74,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new EventListArrayAdapter(parentActivity,finalEvents,finalKeys);
+                adapter = new ListViewArrayAdapter(parentActivity,finalEvents,finalKeys);
                 eventList.setAdapter(adapter);
                 if(storedEvents.size()!=0){
                     eventList.setOnItemClickListener(new ClickListener());

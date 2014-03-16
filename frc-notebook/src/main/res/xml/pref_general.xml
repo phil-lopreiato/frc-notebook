@@ -2,6 +2,10 @@
 <PreferenceCategory
     android:title="@string/pref_header_general"
     android:key="pref_general">
+    <Preference
+        android:key="open_predef_notes"
+        android:title="@string/pref_title_predef_notes"
+        android:summary="@string/pref_desc_predef_notes"/>
     <ListPreference
         android:key="competition_season"
         android:title="@string/pref_title_year"

@@ -12,18 +12,17 @@ import com.plnyyanks.frcnotebook.datatypes.ListItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by phil on 2/22/14.
  */
-public class EventListArrayAdapter extends ArrayAdapter<ListItem> {
+public class ListViewArrayAdapter extends ArrayAdapter<ListItem> {
     public static Context context;
     private LayoutInflater mInflater;
     public ArrayList<ListItem> values;
     public ArrayList<String> keys;
 
-    public EventListArrayAdapter(Context context,ListItem[] values,String[] keys){
+    public ListViewArrayAdapter(Context context, ListItem[] values, String[] keys){
         this(context, new ArrayList<ListItem>(Arrays.asList(values)),new ArrayList<String>(Arrays.asList(keys)));
     }
 
@@ -31,7 +30,7 @@ public class EventListArrayAdapter extends ArrayAdapter<ListItem> {
         LIST_ITEM,HEADER_ITEM
     }
 
-    public EventListArrayAdapter(Context context,ArrayList<ListItem> values,ArrayList<String> keys){
+    public ListViewArrayAdapter(Context context, ArrayList<ListItem> values, ArrayList<String> keys){
         super(context,android.R.layout.simple_list_item_1,values);
         this.context = context;
         this.values = values;

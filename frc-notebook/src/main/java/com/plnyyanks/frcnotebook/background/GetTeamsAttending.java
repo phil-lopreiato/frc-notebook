@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Team;
@@ -51,7 +51,7 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                EventListArrayAdapter adapter = new EventListArrayAdapter(activity,teams,keys);
+                ListViewArrayAdapter adapter = new ListViewArrayAdapter(activity,teams,keys);
                 ListView teamListView = (ListView) activity.findViewById(R.id.team_list);
                 teamListView.setAdapter(adapter);
                 teamListView.setOnItemClickListener(new ClickListener(keys));
