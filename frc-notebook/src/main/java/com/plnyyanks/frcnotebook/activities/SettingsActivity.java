@@ -1,10 +1,12 @@
 package com.plnyyanks.frcnotebook.activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -17,6 +19,8 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.database.BackupDatabase;
+import com.plnyyanks.frcnotebook.database.ImportDatabase;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
 import java.util.List;
@@ -39,14 +43,14 @@ public class SettingsActivity extends PreferenceActivity {
      * as a master/detail two-pane view on tablets. When true, a single pane is
      * shown on tablets.
      */
-    private static final boolean ALWAYS_SIMPLE_PREFS = false;
-    private static Context context;
+    private static final boolean ALWAYS_SIMPLE_PREFS = true;
+    private static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
-        context = this;
+        activity = this;
     }
 
     @Override
@@ -91,6 +95,8 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("competition_season"));
         bindPreferenceSummaryToValue(findPreference("data_source"));
+        Preference managePredef = findPreference("open_predef_notes");
+        managePredef.setIntent(new Intent(this,PredefinedNoteManager.class));
 
         addPreferencesFromResource(R.xml.pref_appearance);
         bindPreferenceSummaryToValue(findPreference("theme"));
@@ -100,7 +106,7 @@ public class SettingsActivity extends PreferenceActivity {
         clearData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle("Confirm Deletion");
                 builder.setMessage("Are you sure you want to delete all stored data?");
                 builder.setPositiveButton("Yes",
@@ -108,7 +114,7 @@ public class SettingsActivity extends PreferenceActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //delete the data now
                                 StartActivity.db.clearDatabase();
-                                Toast.makeText(context, "Cleared all data", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Cleared all data", Toast.LENGTH_SHORT).show();
                                 dialog.cancel();
                             }
                         });
@@ -123,18 +129,27 @@ public class SettingsActivity extends PreferenceActivity {
                 return false;
             }
         });
+        Preference exportData = (Preference)findPreference("export_data");
+        exportData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new BackupDatabase(activity).execute(true,true,true,true);
+                return false;
+            }
+        });
+        Preference importData = (Preference)findPreference("import_data");
+        importData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new ImportDatabase(activity).execute("");
+                return false;
+            }
+        });
 
         addPreferencesFromResource(R.xml.pref_appinfo);
         bindPreferenceSummaryToValue(findPreference("app_version"));
         Preference githubLink = (Preference)findPreference("github_link");
-        githubLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/"));
-                startActivity(browserIntent);
-                return false;
-            }
-        });
+        githubLink.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/")));
     }
 
     /** {@inheritDoc} */

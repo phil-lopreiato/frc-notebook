@@ -16,15 +16,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -37,7 +35,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
 
     private Activity listActivity;
     private String year;
-    private EventListArrayAdapter adapter;
+    private ListViewArrayAdapter adapter;
 
     @Override
     protected JsonArray doInBackground(Activity... args) {
@@ -93,7 +91,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
         }
 
 
-        adapter = new EventListArrayAdapter(listActivity,events,keys);
+        adapter = new ListViewArrayAdapter(listActivity,events,keys);
         eventList.setAdapter(adapter);
         eventList.setOnItemClickListener(new EventClickListener(keys));
 

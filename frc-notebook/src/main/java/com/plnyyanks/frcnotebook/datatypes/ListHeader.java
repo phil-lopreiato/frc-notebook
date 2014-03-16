@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 
 /**
  * Created by phil on 3/1/14.
@@ -19,7 +19,7 @@ public class ListHeader implements ListItem{
 
     @Override
     public int getViewType() {
-        return EventListArrayAdapter.ItemType.HEADER_ITEM.ordinal();
+        return ListViewArrayAdapter.ItemType.HEADER_ITEM.ordinal();
     }
 
     @Override

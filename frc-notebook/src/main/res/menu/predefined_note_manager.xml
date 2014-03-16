@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.plnyyanks.frcnotebook.activities.PredefinedNoteManager" >
+
+    <item android:id="@+id/action_new_predef_note"
+        android:title="@string/action_new_predef_note"
+        android:orderInCategory="100"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_new"/>
+</menu>

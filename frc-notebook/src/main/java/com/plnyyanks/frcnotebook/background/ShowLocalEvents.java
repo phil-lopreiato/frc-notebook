@@ -18,13 +18,13 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
-import com.plnyyanks.frcnotebook.adapters.EventListArrayAdapter;
+import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
+import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,7 +36,7 @@ import java.util.List;
 public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
     private Activity parentActivity;
-    private EventListArrayAdapter adapter;
+    private ListViewArrayAdapter adapter;
     private ListView eventList;
     private Object mActionMode;
     private int selectedItem=-1;
@@ -68,14 +68,14 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
             finalKeys.add(e.getEventKey());
         }
         if(storedEvents.size()==0){
-            finalEvents.add(new ListElement("No events. Click the plus button above to get started","-1"));
+            finalEvents.add(new ListElement(parentActivity.getString(R.string.no_events_message),"-1"));
             finalKeys.add("-1");
         }
 
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new EventListArrayAdapter(parentActivity,finalEvents,finalKeys);
+                adapter = new ListViewArrayAdapter(parentActivity,finalEvents,finalKeys);
                 eventList.setAdapter(adapter);
                 if(storedEvents.size()!=0){
                     eventList.setOnItemClickListener(new ClickListener());
@@ -169,28 +169,19 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         }
 
         private void confirmAndDelete(final int item){
-            AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
-            builder.setTitle("Confirm Deletion");
-            builder.setMessage("Are you sure you want to delete " + finalKeys.get(item) + "?");
-            builder.setPositiveButton("Yes",
+            DialogInterface.OnClickListener deleter =
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //delete the event now
-                            Toast.makeText(parentActivity,"Deleting "+finalKeys.get(item),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(parentActivity, "Deleting " + finalKeys.get(item), Toast.LENGTH_SHORT).show();
                             new DeleteEvent(parentActivity).execute(finalKeys.get(item));
                             adapter.removeAt(item);
                             adapter.notifyDataSetChanged();
                             dialog.cancel();
                         }
-                    });
-
-            builder.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+                    };
+            new DeleteDialog(parentActivity.getString(R.string.delete_event_message)+finalKeys.get(item)+"?",deleter)
+                    .show(parentActivity.getFragmentManager(),"delete_event");
         }
     };
 }

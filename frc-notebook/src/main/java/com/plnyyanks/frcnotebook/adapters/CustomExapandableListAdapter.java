@@ -10,6 +10,7 @@ import android.widget.CheckedTextView;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
+import com.plnyyanks.frcnotebook.datatypes.Note;
 
 /**
  * Created by phil on 2/23/14.
@@ -91,4 +92,7 @@ public abstract class CustomExapandableListAdapter extends BaseExpandableListAda
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+
+    public void updateNote(Note note){}
+    public void addNote(Note note){}
 }

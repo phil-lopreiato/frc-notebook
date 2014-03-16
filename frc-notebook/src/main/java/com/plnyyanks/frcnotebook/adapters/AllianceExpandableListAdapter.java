@@ -20,6 +20,7 @@ import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 
 /**
  * Created by phil on 3/10/14.
@@ -49,38 +50,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                 String teamNumber = groups.get(groupPosition).getTitle().split(" ")[0];
                 final Note oldNote = noteId!=-1?StartActivity.db.getNote(noteId):new Note(ViewMatch.eventKey,ViewMatch.matchKey,"frc"+teamNumber,"");
 
-                final EditText noteEditField = new EditText(activity);
-                //noteEditField.setId(999);
-                noteEditField.setText(noteId!=-1?oldNote.getNote():"");
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Note on Team " + teamNumber);
-                builder.setView(noteEditField);
-                builder.setPositiveButton("Submit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                oldNote.setNote(noteEditField.getText().toString());
-                                if(noteId==-1){
-                                    short newId = StartActivity.db.addNote(oldNote);
-                                    addNote(StartActivity.db.getNote(newId));
-                                }else{
-                                    StartActivity.db.updateNote(oldNote);
-                                    updateNoteInList(oldNote);
-                                }
-                                GetNotesForMatch.updateListData();
-                                dialog.cancel();
-                            }
-                        }
-                );
-
-                builder.setNeutralButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        }
-                );
-                builder.create().show();
-
+                new EditNoteDialog(teamNumber,oldNote,noteId,AllianceExpandableListAdapter.this).show(activity.getFragmentManager(),"edit_note");
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -102,7 +72,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
         return convertView;
     }
 
-    private void updateNoteInList(Note note) {
+    public void updateNote(Note note) {
         for (int i = 0; i < groups.size(); i++) {
             int index = groups.get(i).children_keys.indexOf(Short.toString(note.getId()));
             if (index != -1) {
@@ -116,6 +86,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
         String team;
         for (int i = 0; i < groups.size(); i++) {
             team = groups.get(i).getTitle().split(" ")[0];
+            Log.d(Constants.LOG_TAG,"Team key: "+note.getTeamKey()+" test: "+team);
             if(note.getTeamKey().contains(team)){
                 groups.get(i).children.add(Note.buildMatchNoteTitle(note,false,true,true));
                 groups.get(i).children_keys.add(Short.toString(note.getId()));

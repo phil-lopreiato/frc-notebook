@@ -16,12 +16,14 @@ import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 public class StartActivity extends Activity{
 
     public static Context startActivityContext;
+    public static Activity activity;
     public static DatabaseHandler db;
     private static int currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         startActivityContext = this;
+        activity = this;
         setTheme(PreferenceHandler.getTheme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
