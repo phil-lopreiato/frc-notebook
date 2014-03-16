@@ -1,13 +1,10 @@
 package com.plnyyanks.frcnotebook.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.Constants;

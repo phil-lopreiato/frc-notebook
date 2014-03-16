@@ -1,5 +1,3 @@
-import com.android.builder.DefaultManifestParser
-
 apply plugin: 'android'
 
 android {

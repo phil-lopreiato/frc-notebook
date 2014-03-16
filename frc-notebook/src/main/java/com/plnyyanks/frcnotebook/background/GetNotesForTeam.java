@@ -1,7 +1,6 @@
 package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;

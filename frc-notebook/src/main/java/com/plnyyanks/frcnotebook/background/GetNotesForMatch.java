@@ -1,7 +1,6 @@
 package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -22,7 +21,6 @@ import com.google.gson.JsonElement;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.activities.ViewMatch;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;

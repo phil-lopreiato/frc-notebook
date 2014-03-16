@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -133,7 +132,7 @@ public class SettingsActivity extends PreferenceActivity {
         exportData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new BackupDatabase(activity).execute(true,true,true,true);
+                new BackupDatabase(activity).execute(true, true, true, true);
                 return false;
             }
         });

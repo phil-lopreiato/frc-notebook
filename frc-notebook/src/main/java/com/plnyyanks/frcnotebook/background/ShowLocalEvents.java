@@ -1,7 +1,6 @@
 package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -181,7 +180,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                         }
                     };
             new DeleteDialog(parentActivity.getString(R.string.delete_event_message)+finalKeys.get(item)+"?",deleter)
-                    .show(parentActivity.getFragmentManager(),"delete_event");
+                    .show(parentActivity.getFragmentManager(), "delete_event");
         }
     };
 }

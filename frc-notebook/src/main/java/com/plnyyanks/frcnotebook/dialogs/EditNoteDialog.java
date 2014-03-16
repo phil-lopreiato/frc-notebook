@@ -10,11 +10,6 @@ import android.widget.EditText;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.AdapterInterface;
-import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
-import com.plnyyanks.frcnotebook.adapters.CustomExapandableListAdapter;
-import com.plnyyanks.frcnotebook.adapters.NotesExpandableListAdapter;
-import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
-import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
 /**

@@ -1,23 +1,17 @@
 package com.plnyyanks.frcnotebook.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.activities.ViewEvent;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
-import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;

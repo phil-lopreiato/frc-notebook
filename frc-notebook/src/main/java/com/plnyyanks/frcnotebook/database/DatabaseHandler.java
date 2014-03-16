@@ -11,15 +11,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
-import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
-import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
 import com.plnyyanks.frcnotebook.json.JSONManager;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1042,7 +1038,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //loop through rows
         if (cursor.moveToFirst()) {
             do {
-               noteList.put(cursor.getShort(0),cursor.getString(1));
+               noteList.put(cursor.getShort(0), cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
