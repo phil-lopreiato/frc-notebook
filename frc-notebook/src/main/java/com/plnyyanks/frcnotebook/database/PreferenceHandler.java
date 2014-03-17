@@ -33,6 +33,13 @@ public class PreferenceHandler {
         return prefs.getBoolean("show_field_monitor",false);
     }
 
+    public static boolean showMatchScores(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs==null) return false;
+        return prefs.getBoolean("show_scores",true);
+    }
+
     public static void setAppVersion(Context context){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
