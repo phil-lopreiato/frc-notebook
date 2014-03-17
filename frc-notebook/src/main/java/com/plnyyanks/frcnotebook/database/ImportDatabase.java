@@ -2,15 +2,18 @@ package com.plnyyanks.frcnotebook.database;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -47,6 +50,8 @@ public class ImportDatabase extends AsyncTask<String, String, String> {
                 contents += sCurrentLine;
             }
 
+        } catch(FileNotFoundException e){
+            return "error";
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -67,5 +72,9 @@ public class ImportDatabase extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         progress.dismiss();
+
+        if(s.equals("error")){
+            Toast.makeText(activity,activity.getString(R.string.info_no_backup_found),Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -17,11 +17,13 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.database.BackupDatabase;
 import com.plnyyanks.frcnotebook.database.ImportDatabase;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -128,19 +130,21 @@ public class SettingsActivity extends PreferenceActivity {
                 return false;
             }
         });
+        File backupFile =  new File(activity.getFilesDir(), Constants.DB_BACKUP_NAME);
+        Preference importData = (Preference)findPreference("import_data");
+        importData.setShouldDisableView(!(backupFile.exists() && !backupFile.isDirectory()));
+        importData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new ImportDatabase(activity).execute("");
+                return false;
+            }
+        });
         Preference exportData = (Preference)findPreference("export_data");
         exportData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 new BackupDatabase(activity).execute(true, true, true, true);
-                return false;
-            }
-        });
-        Preference importData = (Preference)findPreference("import_data");
-        importData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new ImportDatabase(activity).execute("");
                 return false;
             }
         });

@@ -1119,14 +1119,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return output;
     }
     public void importDatabase(JsonObject data) {
-        importEvents(data.get(TABLE_EVENTS).getAsJsonArray());
-        importMatches(data.get(TABLE_MATCHES).getAsJsonArray());
-        importTeams(data.get(TABLE_TEAMS).getAsJsonArray());
-        importNotes(data.get(TABLE_NOTES).getAsJsonArray());
+        if(data == null || data.equals(new JsonObject())) return;
+        JsonElement e;
+
+        e = data.get(TABLE_EVENTS);
+        if(e != null)
+            importEvents(e.getAsJsonArray());
+
+        e = data.get(TABLE_MATCHES);
+        if(e != null)
+            importMatches(e.getAsJsonArray());
+
+        e = data.get(TABLE_TEAMS);
+        if(e != null)
+            importTeams(e.getAsJsonArray());
+
+        e = data.get(TABLE_NOTES);
+        if(e != null)
+            importNotes(e.getAsJsonArray());
+
         if(tableExists(TABLE_PREDEF_NOTES)){
             try {
-                importDefNotes(data.get(TABLE_PREDEF_NOTES).getAsJsonArray());
-            }catch (Exception e){
+                e = data.get(TABLE_PREDEF_NOTES);
+                if(e != null)
+                    importDefNotes(e.getAsJsonArray());
+            }catch (Exception ex){
 
             }
         }
