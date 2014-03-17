@@ -36,8 +36,15 @@ public class PreferenceHandler {
     public static boolean showMatchScores(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        if(prefs==null) return false;
+        if(prefs==null) return true;
         return prefs.getBoolean("show_scores",true);
+    }
+
+    public static boolean showGeneralNotes(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs==null) return false;
+        return prefs.getBoolean("show_general_notes",false);
     }
 
     public static void setAppVersion(Context context){

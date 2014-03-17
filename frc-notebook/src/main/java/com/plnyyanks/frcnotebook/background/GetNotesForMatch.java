@@ -95,7 +95,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             String teamKey;
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
-                ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
+                ArrayList<Note> notes = new ArrayList<Note>();
+                if(PreferenceHandler.showGeneralNotes()){
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                }
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 
@@ -112,7 +117,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             String teamKey;
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
-                ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
+                ArrayList<Note> notes = new ArrayList<Note>();
+                if(PreferenceHandler.showGeneralNotes()){
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                }
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 

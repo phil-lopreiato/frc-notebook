@@ -3,21 +3,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/pref_header_appearance"
-        android:key="pref_appearance" >
-    <ListPreference
-        android:key="theme"
-        android:title="@string/pref_title_theme"
-        android:defaultValue="theme_light"
-        android:entries="@array/pref_theme_items"
-        android:entryValues="@array/pref_theme_values"/>
-    <CheckBoxPreference
-        android:title="@string/pref_title_field_monitor"
-        android:defaultValue="false"
-        android:summary="@string/pref_desc_field_monitor"
-        android:key="show_field_monitor" />
-    <CheckBoxPreference
-        android:title="@string/pref_show_scores"
-        android:defaultValue="true"
-        android:key="show_scores"/>
-</PreferenceCategory>
+        android:key="pref_appearance">
+        <ListPreference
+            android:key="theme"
+            android:title="@string/pref_title_theme"
+            android:defaultValue="theme_light"
+            android:entries="@array/pref_theme_items"
+            android:entryValues="@array/pref_theme_values" />
+        <CheckBoxPreference
+            android:title="@string/pref_show_scores"
+            android:defaultValue="true"
+            android:key="show_scores" />
+        <CheckBoxPreference
+            android:title="@string/pref_show_general_notes"
+            android:summary="@string/pref_show_general_notes_desc"
+            android:defaultValue="false"
+            android:key="show_general_notes"/>
+        <CheckBoxPreference
+            android:title="@string/pref_title_field_monitor"
+            android:defaultValue="false"
+            android:summary="@string/pref_desc_field_monitor"
+            android:key="show_field_monitor" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -134,11 +134,16 @@ public class AddNoteDialog extends DialogFragment {
                 if(teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
                     //add note for all teams
                     newNote.setTeamKey("all");
-                    StartActivity.db.addNote(newNote);
+                    short newId = StartActivity.db.addNote(newNote);
+                    if(newId == -1){
+                        dialog.cancel();
+                        return;
+                    }
                     if(GetNotesForMatch.getGenericAdapter().keys.size() == 0){
                         ListView list = (ListView)activity.findViewById(R.id.generic_notes);
                         list.setVisibility(View.VISIBLE);
                     }
+                    newNote = StartActivity.db.getNote(newId);
                     GetNotesForMatch.getGenericAdapter().values.add(new ListElement(newNote.getNote(),Short.toString(newNote.getId())));
                     GetNotesForMatch.getGenericAdapter().keys.add(Short.toString(newNote.getId()));
                     GetNotesForMatch.getGenericAdapter().notifyDataSetChanged();

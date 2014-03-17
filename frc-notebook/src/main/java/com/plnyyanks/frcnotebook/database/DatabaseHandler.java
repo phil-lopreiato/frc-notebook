@@ -830,7 +830,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor;
-        if (!eventKey.equals("all") && !teamKey.equals("all")) {
+        if (!eventKey.equals("all") && !teamKey.equals("")) {
             //regular event. Proceed normally
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
@@ -838,7 +838,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             //looking for all events worth of notes
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, matchKey}, null, null, null, null);
-        } else if (teamKey.equals("all")) {
+        } else if (teamKey.equals("")) {
             //looking for all notes on a particular match
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);

@@ -29,6 +29,8 @@
     <string name="pref_title_field_monitor">Show Field Monitor</string>
     <string name="pref_desc_field_monitor">Requires connection to field network</string>
     <string name="pref_show_scores">Show Match Results</string>
+    <string name="pref_show_general_notes">Show General Notes</string>
+    <string name="pref_show_general_notes_desc">Enabling this will show general notes you\'ve added for a team in the match view</string>
     <string name="pref_title_theme">Application Theme</string>
     <string-array name="pref_theme_items">
         <item>Light</item>
