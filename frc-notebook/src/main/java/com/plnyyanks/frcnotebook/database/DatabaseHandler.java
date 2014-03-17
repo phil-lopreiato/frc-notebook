@@ -166,6 +166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PREDEF_NOTES);
 
         // create new tables
         onCreate(db);
