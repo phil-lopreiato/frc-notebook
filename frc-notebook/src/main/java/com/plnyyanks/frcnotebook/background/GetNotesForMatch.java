@@ -24,6 +24,7 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
@@ -73,14 +74,14 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         matchTitle.setText(titleString);
 
         TextView redHeader = (TextView) activity.findViewById(R.id.red_score);
-        if (match.getRedScore() >= 0) {
+        if (match.getRedScore() >= 0 && PreferenceHandler.showMatchScores()) {
             redHeader.setText(Integer.toString(match.getRedScore()) + " Points");
         } else {
             redHeader.setVisibility(View.GONE);
         }
 
         TextView blueHeader = (TextView) activity.findViewById(R.id.blue_score);
-        if (match.getBlueScore() >= 0) {
+        if (match.getBlueScore() >= 0 && PreferenceHandler.showMatchScores()) {
             blueHeader.setText(Integer.toString(match.getBlueScore()) + " Points");
         } else {
             blueHeader.setVisibility(View.GONE);
@@ -94,7 +95,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             String teamKey;
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
-                ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
+                ArrayList<Note> notes = new ArrayList<Note>();
+                if(PreferenceHandler.showGeneralNotes()){
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                }
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 
@@ -111,7 +117,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             String teamKey;
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
-                ArrayList<Note> notes = StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey);
+                ArrayList<Note> notes = new ArrayList<Note>();
+                if(PreferenceHandler.showGeneralNotes()){
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
+                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                }
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 

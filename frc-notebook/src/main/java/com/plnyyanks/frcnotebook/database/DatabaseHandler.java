@@ -166,6 +166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PREDEF_NOTES);
 
         // create new tables
         onCreate(db);
@@ -829,7 +830,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor;
-        if (!eventKey.equals("all") && !teamKey.equals("all")) {
+        if (!eventKey.equals("all") && !teamKey.equals("")) {
             //regular event. Proceed normally
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
@@ -837,7 +838,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             //looking for all events worth of notes
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, matchKey}, null, null, null, null);
-        } else if (teamKey.equals("all")) {
+        } else if (teamKey.equals("")) {
             //looking for all notes on a particular match
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);
@@ -1118,14 +1119,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return output;
     }
     public void importDatabase(JsonObject data) {
-        importEvents(data.get(TABLE_EVENTS).getAsJsonArray());
-        importMatches(data.get(TABLE_MATCHES).getAsJsonArray());
-        importTeams(data.get(TABLE_TEAMS).getAsJsonArray());
-        importNotes(data.get(TABLE_NOTES).getAsJsonArray());
+        if(data == null || data.equals(new JsonObject())) return;
+        JsonElement e;
+
+        e = data.get(TABLE_EVENTS);
+        if(e != null)
+            importEvents(e.getAsJsonArray());
+
+        e = data.get(TABLE_MATCHES);
+        if(e != null)
+            importMatches(e.getAsJsonArray());
+
+        e = data.get(TABLE_TEAMS);
+        if(e != null)
+            importTeams(e.getAsJsonArray());
+
+        e = data.get(TABLE_NOTES);
+        if(e != null)
+            importNotes(e.getAsJsonArray());
+
         if(tableExists(TABLE_PREDEF_NOTES)){
             try {
-                importDefNotes(data.get(TABLE_PREDEF_NOTES).getAsJsonArray());
-            }catch (Exception e){
+                e = data.get(TABLE_PREDEF_NOTES);
+                if(e != null)
+                    importDefNotes(e.getAsJsonArray());
+            }catch (Exception ex){
 
             }
         }

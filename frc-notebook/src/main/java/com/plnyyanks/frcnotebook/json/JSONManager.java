@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.json;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -27,6 +28,7 @@ public class JSONManager {
     public static JsonObject getAsJsonObject(String input){
         if(parser == null)
             parser = new JsonParser();
+        if(input==null || input.equals("")) return new JsonObject();
         return parser.parse(input).getAsJsonObject();
     }
 

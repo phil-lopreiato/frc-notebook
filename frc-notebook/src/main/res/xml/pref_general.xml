@@ -20,10 +20,5 @@
         android:entries="@array/pref_data_source_items"
         android:entryValues="@array/pref_data_source_values"/>
 
-    <CheckBoxPreference
-        android:title="@string/pref_title_field_monitor"
-        android:defaultValue="false"
-        android:summary="@string/pref_desc_field_monitor"
-        android:key="show_field_monitor" />
 </PreferenceCategory>
 </PreferenceScreen>

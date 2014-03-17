@@ -15,9 +15,10 @@ public class PreferenceHandler {
     private static SharedPreferences prefs;
 
     public static int getTheme(){
+        int themeId = R.style.theme_light;
+        if(StartActivity.startActivityContext==null)return themeId;
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        int themeId = R.style.theme_light;
         if(prefs==null) return themeId;
         String theme = prefs.getString("theme","theme_light");
         if(theme.equals("theme_light")) themeId = R.style.theme_light;
@@ -30,6 +31,20 @@ public class PreferenceHandler {
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
         if(prefs==null) return false;
         return prefs.getBoolean("show_field_monitor",false);
+    }
+
+    public static boolean showMatchScores(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs==null) return true;
+        return prefs.getBoolean("show_scores",true);
+    }
+
+    public static boolean showGeneralNotes(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs==null) return false;
+        return prefs.getBoolean("show_general_notes",false);
     }
 
     public static void setAppVersion(Context context){

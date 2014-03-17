@@ -84,7 +84,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         ListGroup qualGroup = new ListGroup("Qualification Matches ("+qualMatches.size()+")");
         ArrayList<Note> notes;
         for (Match m : qualMatches) {
-            notes = StartActivity.db.getAllNotes("all",event.getEventKey(),m.getMatchKey());
+            notes = StartActivity.db.getAllNotes("",event.getEventKey(),m.getMatchKey());
             qualGroup.children.add(m.getMatchType()+" "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
             qualGroup.children_keys.add(m.getMatchKey());
         }
