@@ -13,4 +13,6 @@ public class Constants {
     public static final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     public static final String DB_BACKUP_NAME = "backup.json";
+
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 }

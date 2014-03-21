@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -21,10 +26,12 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -35,6 +42,7 @@ public class AddNoteDialog extends DialogFragment {
 
     private static Activity activity;
     private static Match match;
+    private Uri fileUri;
 
     public AddNoteDialog(){
         super();
@@ -50,10 +58,18 @@ public class AddNoteDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         activity = this.getActivity();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.add_note_title);
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(activity.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fragment_add_note,null);
+
+
+        ImageView camIcon = (ImageView)layout.findViewById(R.id.add_note_picture);
+        camIcon.setOnClickListener(new AddPictureListener());
+        if(PreferenceHandler.getTheme()==R.style.theme_dark){
+            camIcon.setBackgroundResource(R.drawable.ic_action_camera_dark);
+        }
 
         //get the teams for this match
         final JsonArray redAlliance = match.getRedAllianceTeams(),
@@ -191,5 +207,19 @@ public class AddNoteDialog extends DialogFragment {
         out.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         out.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return out;
+    }
+
+    class AddPictureListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            // create Intent to take a picture and return control to the calling application
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            fileUri = Uri.fromFile(new File(activity.getFilesDir(), "testImage.png")); //TODO better naming!
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+            // start the image capture Intent
+            startActivityForResult(intent, Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
     }
 }
