@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
@@ -209,17 +210,36 @@ public class AddNoteDialog extends DialogFragment {
         return out;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(Constants.LOG_TAG,"Result?");
+        if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                Toast.makeText(activity, "Image saved to:\n" +
+                        data.getData(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // User cancelled the image capture
+            } else {
+                // Image capture failed, advise user
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     class AddPictureListener implements View.OnClickListener{
 
         @Override
         public void onClick(View view) {
             // create Intent to take a picture and return control to the calling application
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            fileUri = Uri.fromFile(new File(activity.getFilesDir(), "testImage.png")); //TODO better naming!
+            fileUri = Uri.fromFile(new File(activity.getFilesDir(), "testImage.jpg")); //TODO better naming!
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
             // start the image capture Intent
-            startActivityForResult(intent, Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            activity.startActivityForResult(intent, Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
+
 }
