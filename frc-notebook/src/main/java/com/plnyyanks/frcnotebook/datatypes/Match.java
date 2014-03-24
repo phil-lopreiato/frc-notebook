@@ -11,6 +11,17 @@ import com.plnyyanks.frcnotebook.json.JSONManager;
  * Created by phil on 2/19/14.
  */
 public class Match implements Comparable<Match>{
+
+    public static final String  QUAL_SHORT    = "q",
+                                QUARTER_SHORT = "qf",
+                                SEMI_SHORT    = "sf",
+                                FINAL_SHORT   = "f";
+    public static final String  QUAL_LONG     = "Quals",
+                                QUARTER_LONG  = "Quarters",
+                                SEMI_LONG     = "Semis",
+                                FINAL_LONG    = "Finals";
+
+
     private String  matchKey,
                     matchType,
                     redAlliance,
@@ -39,6 +50,12 @@ public class Match implements Comparable<Match>{
 
     public String getMatchKey() {
         return matchKey;
+    }
+
+    public String getNextMatch(){
+        if(matchType.equals(QUAL_LONG)){
+            return buildMatchKey(matchKey.split("_")[0],QUAL_)
+        }
     }
 
     public void setMatchKey(String matchKey) {
@@ -129,5 +146,9 @@ public class Match implements Comparable<Match>{
             }else{
                 return Integer.compare(this.setNumber,match.getSetNumber());
             }
+    }
+
+    public static String buildMatchKey(String eventKey,String type,int set, int match){
+        return eventKey+type+(type.equals(QUAL_SHORT)?"":set)+"m"+match;
     }
 }
