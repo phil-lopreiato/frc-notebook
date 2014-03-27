@@ -138,6 +138,14 @@ public class Match implements Comparable<Match>{
         }
     }
 
+    public String getTitle(boolean showEvent){
+        if(showEvent){
+            return getParentEvent().getShortName()+" "+getTitle();
+        }else{
+            return getTitle();
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Match match) {
