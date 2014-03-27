@@ -6,12 +6,17 @@
 
     <Spinner
         android:layout_width="fill_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:id="@+id/match_selector"/>
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/team_selector"/>
 
     <Spinner
         android:layout_width="fill_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/predef_note_selector"/>
 
     <EditText style="@android:style/TextAppearance.DeviceDefault.Medium"

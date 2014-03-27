@@ -25,6 +25,7 @@ import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -35,15 +36,24 @@ public class AddNoteDialog extends DialogFragment {
 
     private static Activity activity;
     private static Match match;
+    private static String eventKey;
 
     public AddNoteDialog(){
         super();
         activity = this.getActivity();
+        match = null;
     }
 
     public AddNoteDialog(Match m){
         this();
         match = m;
+        eventKey = match.getParentEvent().getEventKey();
+    }
+
+    public AddNoteDialog(String k){
+        this();
+        match = null;
+        eventKey = k;
     }
 
     @Override
@@ -62,13 +72,13 @@ public class AddNoteDialog extends DialogFragment {
         teams.addAll(redAlliance);
         teams.addAll(blueAlliance);
 
-        final String[] team_choices = new String[teams.size()+1];
+        String[] team_choices = new String[teams.size()+1];
         team_choices[0] = getResources().getString(R.string.all_teams);
         for(int i=1;i<team_choices.length;i++){
             team_choices[i] = teams.get(i-1).getAsString().substring(3);
         }
 
-
+        //get predefined notes
         HashMap<Short,String> allPredefNotes = StartActivity.db.getAllDefNotes();
         final String[] note_choice = new String[allPredefNotes.size()+1];
         final short[] note_choice_ids = new short[allPredefNotes.size()+1];
@@ -82,8 +92,33 @@ public class AddNoteDialog extends DialogFragment {
             note_choice[i] = allPredefNotes.get(key);
         }
 
+        //get all the matches at this event
+        final String[] match_choices;
+        final String[] match_keys;
+        if(match!=null){
+            match_choices = new String[1];
+            match_choices[0] = match.getTitle();
+
+            match_keys = new String[1];
+            match_keys[0] = match.getMatchKey();
+        }else {
+            ArrayList<Match> matches;
+            if(eventKey!=null){
+                matches = StartActivity.db.getAllMatches(eventKey);
+            }else{
+                matches = StartActivity.db.getAllMatches();
+            }
+            match_choices = new String[matches.size()];
+            match_keys = new String[matches.size()];
+            for(int i=0;i<match_choices.length;i++){
+                match_choices[i] = matches.get(i).getTitle(eventKey==null);
+                match_keys[i] = matches.get(i).getMatchKey();
+            }
+        }
+
         final Spinner teamSpinner = (Spinner) layout.findViewById(R.id.team_selector);
         final Spinner noteSpinner = (Spinner) layout.findViewById(R.id.predef_note_selector);
+        final Spinner matchSpinner= (Spinner) layout.findViewById(R.id.match_selector);
         final EditText e = (EditText)layout.findViewById(R.id.note_contents);
         noteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -109,6 +144,11 @@ public class AddNoteDialog extends DialogFragment {
         noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         noteSpinner.setAdapter(noteAdapter);
 
+        ArrayAdapter matchAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item,match_choices);
+        matchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        matchSpinner.setAdapter(matchAdapter);
+        matchSpinner.setEnabled(match==null);
+
         builder.setView(layout);
 
         // Add the buttons
@@ -121,7 +161,7 @@ public class AddNoteDialog extends DialogFragment {
                 }
 
                 Note newNote = new Note();
-                newNote.setMatchKey(match.getMatchKey());
+                newNote.setMatchKey(match_keys[matchSpinner.getSelectedItemPosition()]);
                 newNote.setEventKey(match.getParentEvent().getEventKey());
                 newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
 
@@ -192,4 +232,29 @@ public class AddNoteDialog extends DialogFragment {
         out.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return out;
     }
+
+    private String[] getTeamsForMatch(String matchKey) {
+        if (matchKey.equals("all")) {
+            return null;
+        }
+        return getTeamsForMatch(StartActivity.db.getMatch(matchKey));
+    }
+
+    private String[] getTeamsForMatch(Match m){
+        //get the teams for this match
+        final JsonArray redAlliance = m.getRedAllianceTeams(),
+                blueAlliance = m.getBlueAllianceTeams(),
+                teams = new JsonArray();
+        teams.addAll(redAlliance);
+        teams.addAll(blueAlliance);
+
+        String[] team_choices = new String[teams.size() + 1];
+        team_choices[0] = getResources().getString(R.string.all_teams);
+        for (int i = 1; i < team_choices.length; i++) {
+            team_choices[i] = teams.get(i - 1).getAsString().substring(3);
+        }
+        return team_choices;
+    }
+
+
 }
