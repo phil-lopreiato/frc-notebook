@@ -17,6 +17,7 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -356,6 +357,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+        //loop through rows
+        ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
+        if (cursor.moveToFirst()) {
+            do {
+                Match match = new Match();
+                match.setMatchKey(cursor.getString(0));
+                match.setMatchType(cursor.getString(1));
+                match.setMatchNumber(cursor.getInt(2));
+                match.setSetNumber(cursor.getInt(3));
+                match.setBlueAlliance(cursor.getString(4));
+                match.setRedAlliance(cursor.getString(5));
+                match.setBlueScore(cursor.getInt(6));
+                match.setRedScore(cursor.getInt(7));
+                matchList.add(match);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return matchList;
+    }
+    public ArrayList<Match> getAllMatchesForTeam(String teamKey){
+        ArrayList<Match> matchList = new ArrayList<Match>();
+        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_REDALLIANCE + " LIKE '%" + teamKey + "%' OR "+KEY_BLUEALLIANCE + " LIKE '%" + teamKey + "%'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
         //loop through rows
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
         if (cursor.moveToFirst()) {

@@ -24,7 +24,7 @@ public class MatchListExpandableListAdapter extends CustomExapandableListAdapter
 
     @Override
     public void addNote(Note note) {
-        
+
     }
 
     @Override

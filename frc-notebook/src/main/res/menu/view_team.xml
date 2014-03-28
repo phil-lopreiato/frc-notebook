@@ -2,6 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewTeam" >
 
+    <item android:id="@+id/action_add_note"
+        android:title="@string/add_note_button"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:orderInCategory="80"/>
+
     <item android:id="@+id/action_view_tba"
         android:title="@string/action_view_tba"
         android:orderInCategory="90"
