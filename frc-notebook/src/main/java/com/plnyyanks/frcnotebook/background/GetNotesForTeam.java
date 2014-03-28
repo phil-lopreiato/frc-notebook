@@ -8,8 +8,6 @@ import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -25,9 +23,6 @@ import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 
 import java.util.ArrayList;
 
-/**
- * Created by phil on 2/24/14.
- */
 public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     private static Activity activity;
@@ -41,7 +36,7 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     public GetNotesForTeam(Activity activity) {
         super();
-        this.activity = activity;
+        GetNotesForTeam.activity = activity;
     }
 
     @Override
@@ -108,10 +103,6 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     public static String getEventKey() {
         return eventKey;
-    }
-
-    public static String getEventTitle(){
-        return eventTitle;
     }
 
     public static NotesExpandableListAdapter getAdapter(){

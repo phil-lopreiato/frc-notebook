@@ -36,18 +36,13 @@ import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * Created by phil on 3/10/14.
- */
 public class GetNotesForMatch extends AsyncTask<String, String, String> {
 
     private static Activity activity;
     private static String previousMatchKey,
-            thisMatchKey,
-            nextMatchKey,
-            eventKey;
+                          nextMatchKey;
     private static SparseArray<ListGroup> redGroups = new SparseArray<ListGroup>(),
-            blueGroups = new SparseArray<ListGroup>();
+                                          blueGroups = new SparseArray<ListGroup>();
     public static Object mActionMode;
     private static ListView genericList;
     public static String selectedNote="";
@@ -57,11 +52,12 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
 
     public GetNotesForMatch(Activity activity) {
         super();
-        this.activity = activity;
+        GetNotesForMatch.activity = activity;
     }
 
     @Override
     protected String doInBackground(String... strings) {
+        String thisMatchKey,eventKey;
         previousMatchKey = strings[0];
         thisMatchKey = strings[1];
         nextMatchKey = strings[2];
@@ -264,7 +260,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             if(!selectedNote.equals("")) return;
-            final short noteId = Short.parseShort((String) genericAdapter.getKey(i));
+            final short noteId = Short.parseShort(genericAdapter.getKey(i));
             final Note oldNote = StartActivity.db.getNote(noteId);
 
             new EditNoteDialog(activity.getString(R.string.edit_note_generic_title),oldNote,noteId,genericAdapter).show(activity.getFragmentManager(),"edit_note");

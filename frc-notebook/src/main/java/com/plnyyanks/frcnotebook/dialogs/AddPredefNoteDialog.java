@@ -9,11 +9,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
-import com.plnyyanks.frcnotebook.adapters.NotesExpandableListAdapter;
-import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
-import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 
 /**

@@ -17,9 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * Created by phil on 3/15/14.
- */
 public class ImportDatabase extends AsyncTask<String, String, String> {
     Activity activity;
     DatabaseProgressDialog progress;

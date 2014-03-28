@@ -1,6 +1,5 @@
 package com.plnyyanks.frcnotebook.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;

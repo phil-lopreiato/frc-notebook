@@ -20,9 +20,6 @@ import com.plnyyanks.frcnotebook.datatypes.Team;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by phil on 2/23/14.
- */
 public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
     private Activity activity;

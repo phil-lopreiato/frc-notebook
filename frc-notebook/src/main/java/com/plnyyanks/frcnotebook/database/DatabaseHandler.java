@@ -17,15 +17,11 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by phil on 2/19/14.
- */
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "VOL_NOTES",
@@ -235,10 +231,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public boolean eventExists(String key) {
         Cursor cursor = db.query(TABLE_EVENTS, new String[]{KEY_EVENTKEY}, KEY_EVENTKEY + "=?", new String[]{key}, null, null, null, null);
-        if (cursor.moveToFirst())
-            return true;
-        else
-            return false;
+        return cursor.moveToFirst();
     }
     public int updateEvent(Event in) {
 
@@ -252,9 +245,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EVENTEND, in.getEventEnd());
 
         return db.update(TABLE_EVENTS, values, KEY_EVENTKEY + " =?", new String[]{in.getEventKey()});
-    }
-    public void deleteEvent(Event in) {
-        deleteEvent(in.getEventKey());
     }
     public void deleteEvent(String eventKey) {
         db.delete(TABLE_EVENTS, KEY_EVENTKEY + "=?", new String[]{eventKey});
@@ -350,34 +340,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
     }
-    public ArrayList<Match> getAllMatches() {
-        ArrayList<Match> matchList = new ArrayList<Match>();
-
-        String selectQuery = "SELECT * FROM " + TABLE_MATCHES;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        //loop through rows
-        ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
-        if (cursor.moveToFirst()) {
-            do {
-                Match match = new Match();
-                match.setMatchKey(cursor.getString(0));
-                match.setMatchType(cursor.getString(1));
-                match.setMatchNumber(cursor.getInt(2));
-                match.setSetNumber(cursor.getInt(3));
-                match.setBlueAlliance(cursor.getString(4));
-                match.setRedAlliance(cursor.getString(5));
-                match.setBlueScore(cursor.getInt(6));
-                match.setRedScore(cursor.getInt(7));
-                matchList.add(match);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return matchList;
-    }
     public ArrayList<Match> getAllMatchesForTeam(String teamKey){
         ArrayList<Match> matchList = new ArrayList<Match>();
         String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_REDALLIANCE + " LIKE '%" + teamKey + "%' OR "+KEY_BLUEALLIANCE + " LIKE '%" + teamKey + "%'";
@@ -461,10 +423,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public boolean matchExists(String key) {
         Cursor cursor = db.query(TABLE_MATCHES, new String[]{KEY_MATCHKEY}, KEY_MATCHKEY + "=?", new String[]{key}, null, null, null, null);
-        if (cursor.moveToFirst())
-            return true;
-        else
-            return false;
+        return cursor.moveToFirst();
     }
     public int updateMatch(Match in) {
 
@@ -479,9 +438,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_REDSCORE, in.getRedScore());
 
         return db.update(TABLE_MATCHES, values, KEY_MATCHKEY + " =?", new String[]{in.getMatchKey()});
-    }
-    public void deleteMatch(Match in) {
-        db.delete(TABLE_MATCHES, KEY_MATCHKEY + "=?", new String[]{in.getMatchKey()});
     }
     public void deleteMatchesAtEvent(String eventKey) {
         db.delete(TABLE_MATCHES, KEY_MATCHKEY + " LIKE '%" + eventKey + "%'", null);
@@ -616,10 +572,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public boolean teamExists(String key) {
         Cursor cursor = db.query(TABLE_TEAMS, new String[]{KEY_TEAMKEY}, KEY_TEAMKEY + "=?", new String[]{key}, null, null, null, null);
-        if (cursor.moveToFirst())
-            return true;
-        else
-            return false;
+        return cursor.moveToFirst();
     }
     public int updateTeam(Team in) {
         return updateTeam(in, true);
@@ -935,10 +888,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public boolean noteExists(short id) {
         Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID}, KEY_NOTEID + "=?", new String[]{Short.toString(id)}, null, null, null, null);
-        if (cursor.moveToFirst())
-            return true;
-        else
-            return false;
+        return cursor.moveToFirst();
     }
     public int updateNote(Note in) {
         ContentValues values = new ContentValues();

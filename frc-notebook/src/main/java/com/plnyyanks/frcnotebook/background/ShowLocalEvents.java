@@ -29,15 +29,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by phil on 2/22/14.
- */
 public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
     private Activity parentActivity;
     private ListViewArrayAdapter adapter;
     private ListView eventList;
-    private Object mActionMode;
+    //private Object mActionMode;
     private int selectedItem=-1;
     ArrayList<String> finalKeys = new ArrayList<String>();
     ArrayList<ListItem> finalEvents = new ArrayList<ListItem>();
@@ -51,19 +48,18 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
         eventList = (ListView) parentActivity.findViewById(R.id.event_list);
         eventList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        Event e;
+
         int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
             currentWeek;
-        for(int i=0;i<storedEvents.size();i++){
-            e=storedEvents.get(i);
+        for (Event e : storedEvents) {
             currentWeek = e.getCompetitionWeek();
-            if(eventWeek != currentWeek){
-                finalEvents.add(new ListHeader(e.getEventYear()+ " Week "+currentWeek));
-                finalKeys.add(e.getEventYear()+"_week"+currentWeek);
+            if (eventWeek != currentWeek) {
+                finalEvents.add(new ListHeader(e.getEventYear() + " Week " + currentWeek));
+                finalKeys.add(e.getEventYear() + "_week" + currentWeek);
             }
             eventWeek = currentWeek;
 
-            finalEvents.add(new ListElement(e.getEventName(),e.getEventKey()));
+            finalEvents.add(new ListElement(e.getEventName(), e.getEventKey()));
             finalKeys.add(e.getEventKey());
         }
         if(storedEvents.size()==0){
@@ -123,22 +119,8 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
             adapter.notifyDataSetChanged();
             selectedItem = i;
             // start the CAB using the ActionMode.Callback defined above
-            mActionMode = parentActivity.startActionMode(mActionModeCallback);
+            parentActivity.startActionMode(mActionModeCallback);
             return false;
-        }
-    }
-
-    private class SelectedListener implements ListView.OnItemSelectedListener{
-
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.d(Constants.LOG_TAG,"Item Selected: "+i);
-            view.setBackgroundResource(android.R.color.holo_blue_light);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-            adapterView.setBackgroundResource(android.R.color.transparent);
         }
     }
 
@@ -160,7 +142,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             Log.d(Constants.LOG_TAG,"Destroy CAB");
-            mActionMode = null;
+            //mActionMode = null;
             eventList.setOnItemClickListener(new ClickListener());
             eventList.requestFocusFromTouch();
             eventList.clearChoices();

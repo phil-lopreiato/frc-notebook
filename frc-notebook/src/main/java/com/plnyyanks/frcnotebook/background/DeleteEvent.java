@@ -6,9 +6,6 @@ import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
-/**
- * Created by phil on 2/27/14.
- */
 public class DeleteEvent extends AsyncTask<String,String,String> {
 
     private Context context;

@@ -11,9 +11,6 @@ import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
 import java.io.File;
 import java.io.PrintWriter;
 
-/**
- * Created by phil on 3/15/14.
- */
 public class BackupDatabase extends AsyncTask<Boolean,String,String> {
 
     Activity activity;
@@ -33,7 +30,7 @@ public class BackupDatabase extends AsyncTask<Boolean,String,String> {
 
     @Override
     protected String doInBackground(Boolean... bools) {
-        JsonObject db = StartActivity.db.exportDatabase(bools[0].booleanValue(),bools[1].booleanValue(),bools[2].booleanValue(),bools[3].booleanValue());
+        JsonObject db = StartActivity.db.exportDatabase(bools[0],bools[1],bools[2],bools[3]);
         String filename = Constants.DB_BACKUP_NAME;
         File file = new File(activity.getFilesDir(), filename);
         PrintWriter out;

@@ -17,9 +17,6 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 
 import java.util.ArrayList;
 
-/**
- * Created by phil on 2/23/14.
- */
 public class GetEventMatches extends AsyncTask <String,String,String>{
 
     private static Activity activity;
@@ -70,7 +67,6 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         ArrayList<Match> allMatches = StartActivity.db.getAllMatches(key),
                 qualMatches, qfMatches, sfMatches, fMatches;
         event.sortMatches(allMatches);
-        qualMatches = new ArrayList<Match>();
         qualMatches = event.getQuals();
         qfMatches = event.getQuarterFinals();
         sfMatches = event.getSemiFinals();
