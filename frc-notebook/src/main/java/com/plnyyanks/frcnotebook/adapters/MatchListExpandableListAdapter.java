@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
+import com.plnyyanks.frcnotebook.datatypes.Note;
 
 /**
  * Created by phil on 2/25/14.
@@ -19,6 +20,11 @@ public class MatchListExpandableListAdapter extends CustomExapandableListAdapter
 
     public MatchListExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
         super(act, groups);
+    }
+
+    @Override
+    public void addNote(Note note) {
+        
     }
 
     @Override

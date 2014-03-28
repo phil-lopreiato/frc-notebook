@@ -20,6 +20,7 @@ import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.adapters.AdapterInterface;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.Match;
@@ -37,17 +38,22 @@ public class AddNoteDialog extends DialogFragment {
     private static Activity activity;
     private static Match match;
     private static String eventKey;
+    private static AdapterInterface redAdapter,blueAdapter,genericAdapter,teamAdapter;
 
     public AddNoteDialog(){
         super();
         activity = this.getActivity();
-        match = null;
+        //match = null;
     }
 
-    public AddNoteDialog(Match m){
+    public AddNoteDialog(Match m,AdapterInterface redAdapter,AdapterInterface blueAdapter, AdapterInterface genericAdapter, AdapterInterface teamAdapter){
         this();
         match = m;
         eventKey = match.getParentEvent().getEventKey();
+        this.redAdapter = redAdapter;
+        this.blueAdapter = blueAdapter;
+        this.genericAdapter = genericAdapter;
+        this.teamAdapter = teamAdapter;
     }
 
     public AddNoteDialog(String k){
@@ -184,9 +190,7 @@ public class AddNoteDialog extends DialogFragment {
                         list.setVisibility(View.VISIBLE);
                     }
                     newNote = StartActivity.db.getNote(newId);
-                    GetNotesForMatch.getGenericAdapter().values.add(new ListElement(newNote.getNote(),Short.toString(newNote.getId())));
-                    GetNotesForMatch.getGenericAdapter().keys.add(Short.toString(newNote.getId()));
-                    GetNotesForMatch.getGenericAdapter().notifyDataSetChanged();
+                    genericAdapter.addNote(newNote);
 
                 }else{
                     //generate team key
@@ -201,7 +205,7 @@ public class AddNoteDialog extends DialogFragment {
                             short newId = StartActivity.db.addNote(newNote);
                             newNote = StartActivity.db.getNote(newId);
                             Log.d(Constants.LOG_TAG,"id: "+newId+" team: "+newNote.getTeamKey());
-                            GetNotesForMatch.getRedAdaper().addNote(newNote);
+                            redAdapter.addNote(newNote);
                             dialog.cancel();
                             return;
                         }
@@ -211,7 +215,7 @@ public class AddNoteDialog extends DialogFragment {
                         testTeam = iterator.next().toString();
                         if(testTeam.equals("\""+team+"\"")){
                             short newId = StartActivity.db.addNote(newNote);
-                            GetNotesForMatch.getBlueAdapter().addNote(StartActivity.db.getNote(newId));;
+                            blueAdapter.addNote(StartActivity.db.getNote(newId));;
                             dialog.cancel();
                             return;
                         }

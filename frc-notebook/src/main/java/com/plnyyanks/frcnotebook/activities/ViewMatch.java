@@ -110,7 +110,11 @@ public class ViewMatch extends Activity {
                 return true;
 
             case R.id.action_add_note:
-                new AddNoteDialog(match).show(getFragmentManager(), "Add Note");
+                new AddNoteDialog(match,GetNotesForMatch.getRedAdaper(),
+                                        GetNotesForMatch.getBlueAdapter(),
+                                        GetNotesForMatch.getGenericAdapter(),
+                                        null)
+                     .show(getFragmentManager(), "Add Note");
                 return true;
 
             case R.id.action_view_tba:

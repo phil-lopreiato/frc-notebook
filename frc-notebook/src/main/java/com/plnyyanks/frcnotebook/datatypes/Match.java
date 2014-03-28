@@ -54,8 +54,9 @@ public class Match implements Comparable<Match>{
 
     public String getNextMatch(){
         if(matchType.equals(QUAL_LONG)){
-            return buildMatchKey(matchKey.split("_")[0],QUAL_)
+            //return buildMatchKey(matchKey.split("_")[0],QUAL_)
         }
+        return "";
     }
 
     public void setMatchKey(String matchKey) {

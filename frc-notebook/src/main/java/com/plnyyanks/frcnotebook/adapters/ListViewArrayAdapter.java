@@ -80,7 +80,9 @@ public class ListViewArrayAdapter extends ArrayAdapter<ListItem> implements Adap
 
     @Override
     public void addNote(Note n) {
-
+        values.add(new ListElement(n.getNote(),Short.toString(n.getId())));
+        keys.add(Short.toString(n.getId()));
+        notifyDataSetChanged();
     }
 
     @Override

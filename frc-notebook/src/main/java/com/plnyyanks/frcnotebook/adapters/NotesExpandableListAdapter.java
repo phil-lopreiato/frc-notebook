@@ -84,6 +84,11 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
 
     }
 
+    @Override
+    public void addNote(Note note) {
+
+    }
+
     public void removeNote(short id){
         SparseArray<ListGroup> groups = GetNotesForTeam.getListData();
         int index = groups.get(0).children_keys.indexOf(Short.toString(id));

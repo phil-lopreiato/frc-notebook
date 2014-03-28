@@ -94,5 +94,5 @@ public abstract class CustomExapandableListAdapter extends BaseExpandableListAda
     }
 
     public void updateNote(Note note){}
-    public void addNote(Note note){}
+    abstract public void addNote(Note note);
 }
