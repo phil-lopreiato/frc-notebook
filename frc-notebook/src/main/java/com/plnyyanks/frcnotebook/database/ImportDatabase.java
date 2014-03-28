@@ -65,7 +65,7 @@ public class ImportDatabase extends AsyncTask<String, String, String> {
         System.out.println(contents);
         JsonObject o = JSONManager.getAsJsonObject(contents);
         StartActivity.db.importDatabase(o);
-        return null;
+        return "";
     }
 
     @Override
