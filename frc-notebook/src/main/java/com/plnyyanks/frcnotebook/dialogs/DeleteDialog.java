@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.plnyyanks.frcnotebook.R;
-import com.plnyyanks.frcnotebook.activities.StartActivity;
 
 /**
  * Created by phil on 3/16/14.

@@ -13,30 +13,11 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_note_button"
-        android:id="@+id/submit_general_note"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/new_general_note"
-        android:hint="@string/new_general_note"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/submit_general_note"
-        android:maxLines="4" />
-
     <ExpandableListView
         android:id="@+id/note_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:paddingTop="@dimen/activity_half_vertical_margin"
-        android:layout_above="@id/submit_general_note"></ExpandableListView>
+        android:paddingTop="@dimen/activity_half_vertical_margin"/>
 
 </RelativeLayout>

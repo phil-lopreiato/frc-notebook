@@ -15,9 +15,6 @@ import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 
-/**
- * Created by phil on 2/25/14.
- */
 public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
 
     private SparseArray<ListGroup> groups;
@@ -30,7 +27,7 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String children = (String) getChild(groupPosition, childPosition);
-        TextView text = null;
+        TextView text;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.expandablelist_item, null);
         }
@@ -74,14 +71,30 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
                 return;
             }else{
                 //update in match notes group
-                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all"),true));
+                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),true));
             }
         }else{
             //update in general notes group
-            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventTitle().equals("all")));
+            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all")));
         }
 
 
+    }
+
+    @Override
+    public void addNote(Note note) {
+        if(note.getMatchKey().equals("all")){
+            //add to general note
+            groups.get(0).children.add(Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all")));
+            groups.get(0).children_keys.add(Short.toString(note.getId()));
+            groups.get(0).updateTitle("General Notes ("+groups.get(0).children.size()+")");
+        }else{
+            //add match note
+            groups.get(1).children.add(Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),true));
+            groups.get(1).children_keys.add(Short.toString(note.getId()));
+            groups.get(1).updateTitle("Match Notes ("+groups.get(1).children.size()+")");
+        }
+        notifyDataSetChanged();
     }
 
     public void removeNote(short id){

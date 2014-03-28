@@ -8,8 +8,6 @@ import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -25,9 +23,6 @@ import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 
 import java.util.ArrayList;
 
-/**
- * Created by phil on 2/24/14.
- */
 public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     private static Activity activity;
@@ -41,7 +36,7 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
     public GetNotesForTeam(Activity activity) {
         super();
-        this.activity = activity;
+        GetNotesForTeam.activity = activity;
     }
 
     @Override
@@ -51,40 +46,6 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
         teamNumber = teamKey.substring(3);
         eventTitle = strings[2];
         selectedNote = "";
-
-        Button addNote = (Button)activity.findViewById(R.id.submit_general_note);
-        if(addNote!=null){
-            addNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Note newNote = new Note();
-                    newNote.setTeamKey(teamKey);
-                    newNote.setEventKey(eventKey);
-                    newNote.setMatchKey("all");
-                    String noteText = ((EditText)activity.findViewById(R.id.new_general_note)).getText().toString();
-                    newNote.setNote(noteText);
-
-                    String resultToast;
-                    short dbResult = StartActivity.db.addNote(newNote);
-                    if(dbResult != -1){
-                        newNote.setId(dbResult);
-                        resultToast = "Note added sucessfully";
-                        newNote.setId(dbResult);
-                        ListGroup group = groups.get(0);
-                        group.children.add(newNote.getNote());
-                        group.children_keys.add(Integer.toString(newNote.getId()));
-                        group.updateTitle("General Notes ("+group.children.size()+")");
-                        updateListData();
-                    }else{
-                        resultToast = "Error adding note to database";
-                    }
-                    Toast.makeText(activity, resultToast, Toast.LENGTH_SHORT).show();
-
-                    EditText addBox = (EditText)activity.findViewById(R.id.new_general_note);
-                    addBox.setText("");
-                }
-            });
-        }
 
         createData();
         activity.runOnUiThread(new Runnable() {
@@ -118,7 +79,7 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
         ListGroup matchNoteGroup = new ListGroup(("Match Notes ("+matchNotes.size()+")"));
         for (Note n : matchNotes) {
-            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventTitle.equals("all"),true));
+            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventKey.equals("all"),true));
             matchNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(1,matchNoteGroup);
@@ -144,8 +105,8 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
         return eventKey;
     }
 
-    public static String getEventTitle(){
-        return eventTitle;
+    public static NotesExpandableListAdapter getAdapter(){
+        return adapter;
     }
 
     public static ActionMode.Callback mActionModeCallback = new ActionBarCallback() {

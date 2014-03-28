@@ -33,6 +33,7 @@
     <!-- Team List -->
     <string name="title_activity_view_event">View Event</string>
     <string name="teams_attending_header">Teams Attending</string>
+    <string name="team_fetch_error">Error getting teams from database</string>
 
     <!-- Match Schedule -->
     <string name="match_schedule_header">Match Schedule</string>
@@ -77,6 +78,7 @@
     <string name="add_note_message">Select a team</string>
     <string name="note_hint">Add your note</string>
     <string name="all_teams">All teams</string>
+    <string name="generic_note">General Note</string>
 
     <!-- Edit Note Dialog -->
     <string name="edit_note_team_title">Note on Team </string>

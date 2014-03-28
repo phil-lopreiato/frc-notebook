@@ -8,9 +8,6 @@ import android.preference.PreferenceManager;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
-/**
- * Created by phil on 2/24/14.
- */
 public class PreferenceHandler {
     private static SharedPreferences prefs;
 
@@ -29,22 +26,19 @@ public class PreferenceHandler {
     public static boolean getFMEnabled(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        if(prefs==null) return false;
-        return prefs.getBoolean("show_field_monitor",false);
+        return prefs != null && prefs.getBoolean("show_field_monitor", false);
     }
 
     public static boolean showMatchScores(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        if(prefs==null) return true;
-        return prefs.getBoolean("show_scores",true);
+        return prefs == null || prefs.getBoolean("show_scores", true);
     }
 
     public static boolean showGeneralNotes(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        if(prefs==null) return false;
-        return prefs.getBoolean("show_general_notes",false);
+        return prefs != null && prefs.getBoolean("show_general_notes", false);
     }
 
     public static void setAppVersion(Context context){

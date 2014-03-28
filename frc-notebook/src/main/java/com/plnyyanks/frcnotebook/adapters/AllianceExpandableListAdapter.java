@@ -94,6 +94,7 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                 return;
             }
         }
+        notifyDataSetChanged();
     }
 
     public void removeNote(short id) {
@@ -107,5 +108,6 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
                 return;
             }
         }
+        notifyDataSetChanged();
     }
 }

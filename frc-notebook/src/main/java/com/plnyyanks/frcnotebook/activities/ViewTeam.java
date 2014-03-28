@@ -21,6 +21,7 @@ import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Team;
+import com.plnyyanks.frcnotebook.dialogs.AddNoteDialog;
 
 import java.util.ArrayList;
 
@@ -89,6 +90,11 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_add_note:
+
+                new AddNoteDialog(getActionBar().getSelectedTab().getTag().toString(),GetNotesForTeam.getAdapter())
+                        .show(getFragmentManager(), "Add Note");
                 return true;
             case R.id.action_view_tba:
                 String year;

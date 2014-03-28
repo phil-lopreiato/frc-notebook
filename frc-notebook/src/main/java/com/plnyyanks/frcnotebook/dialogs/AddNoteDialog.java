@@ -20,8 +20,9 @@ import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.adapters.AdapterInterface;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
-import com.plnyyanks.frcnotebook.datatypes.ListElement;
+import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
@@ -37,23 +38,32 @@ public class AddNoteDialog extends DialogFragment {
     private static Activity activity;
     private static Match match;
     private static String eventKey;
+    private static AdapterInterface redAdapter,blueAdapter,genericAdapter,teamViewAdapter;
 
     public AddNoteDialog(){
         super();
         activity = this.getActivity();
-        match = null;
+        //match = null;
     }
 
-    public AddNoteDialog(Match m){
+    public AddNoteDialog(Match m,AdapterInterface redAdapter,AdapterInterface blueAdapter, AdapterInterface genericAdapter){
         this();
         match = m;
         eventKey = match.getParentEvent().getEventKey();
+        this.redAdapter = redAdapter;
+        this.blueAdapter = blueAdapter;
+        this.genericAdapter = genericAdapter;
+        this.teamViewAdapter = null;
     }
 
-    public AddNoteDialog(String k){
+    public AddNoteDialog(String k, AdapterInterface teamAdapter){
         this();
         match = null;
         eventKey = k;
+        this.redAdapter = null;
+        this.blueAdapter = null;
+        this.genericAdapter = null;
+        this.teamViewAdapter = teamAdapter;
     }
 
     @Override
@@ -65,18 +75,34 @@ public class AddNoteDialog extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(activity.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fragment_add_note,null);
 
-        //get the teams for this match
-        final JsonArray redAlliance = match.getRedAllianceTeams(),
-                        blueAlliance = match.getBlueAllianceTeams(),
-                        teams = new JsonArray();
-        teams.addAll(redAlliance);
-        teams.addAll(blueAlliance);
+        //if match is set, get the teams for this match
+        final JsonArray redAlliance,
+                  blueAlliance;
+        JsonArray teams;
+        String[] team_choices;
+        if(match!=null){
+            redAlliance = match.getRedAllianceTeams();
+            blueAlliance = match.getBlueAllianceTeams();
+            teams = new JsonArray();
+            teams.addAll(redAlliance);
+            teams.addAll(blueAlliance);
 
-        String[] team_choices = new String[teams.size()+1];
-        team_choices[0] = getResources().getString(R.string.all_teams);
-        for(int i=1;i<team_choices.length;i++){
-            team_choices[i] = teams.get(i-1).getAsString().substring(3);
+            team_choices = new String[teams.size()+1];
+            team_choices[0] = getResources().getString(R.string.all_teams);
+            for(int i=1;i<team_choices.length;i++){
+                team_choices[i] = teams.get(i-1).getAsString().substring(3);
+            }
+        }else{
+            //we're on the team page, so only allow this team
+            team_choices = new String[1];
+            team_choices[0] = GetNotesForTeam.getTeamNumber();
+
+            //keep the compiler happy
+            redAlliance = new JsonArray();
+            blueAlliance = new JsonArray();
         }
+
+
 
         //get predefined notes
         HashMap<Short,String> allPredefNotes = StartActivity.db.getAllDefNotes();
@@ -102,17 +128,19 @@ public class AddNoteDialog extends DialogFragment {
             match_keys = new String[1];
             match_keys[0] = match.getMatchKey();
         }else {
-            ArrayList<Match> matches;
-            if(eventKey!=null){
-                matches = StartActivity.db.getAllMatches(eventKey);
+            ArrayList<Match> matches = new ArrayList<Match>();
+            if(eventKey.equals("all")){
+                matches = StartActivity.db.getAllMatchesForTeam(GetNotesForTeam.getTeamKey());
             }else{
-                matches = StartActivity.db.getAllMatches();
+                matches = StartActivity.db.getAllMatches(eventKey,GetNotesForTeam.getTeamKey());
             }
-            match_choices = new String[matches.size()];
-            match_keys = new String[matches.size()];
-            for(int i=0;i<match_choices.length;i++){
-                match_choices[i] = matches.get(i).getTitle(eventKey==null);
-                match_keys[i] = matches.get(i).getMatchKey();
+            match_choices = new String[matches.size()+1];
+            match_keys = new String[matches.size()+1];
+            match_choices[0] = getString(R.string.generic_note);
+            match_keys[0] = "all";
+            for(int i=1;i<match_choices.length;i++){
+                match_choices[i] = matches.get(i-1).getTitle(eventKey.equals("all"));
+                match_keys[i] = matches.get(i-1).getMatchKey();
             }
         }
 
@@ -135,10 +163,10 @@ public class AddNoteDialog extends DialogFragment {
 
             }
         });
-        ArrayAdapter teamAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
+        final ArrayAdapter teamAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
         teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         teamSpinner.setAdapter(teamAdapter);
-        teamSpinner.setSelection(0);
+        teamSpinner.setEnabled(match!=null);
 
         ArrayAdapter noteAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item,note_choice);
         noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -159,65 +187,91 @@ public class AddNoteDialog extends DialogFragment {
                     dialog.cancel();
                     return;
                 }
+                if(match != null) {
+                    Note newNote = new Note();
+                    newNote.setMatchKey(match_keys[matchSpinner.getSelectedItemPosition()]);
+                    newNote.setEventKey(match.getParentEvent().getEventKey());
+                    newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
 
-                Note newNote = new Note();
-                newNote.setMatchKey(match_keys[matchSpinner.getSelectedItemPosition()]);
-                newNote.setEventKey(match.getParentEvent().getEventKey());
-                newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
+                    if (noteSpinner.getSelectedItemPosition() == 0) {
+                        newNote.setNote(e.getText().toString());
+                    } else {
+                        newNote.setNote(note_choice[noteSpinner.getSelectedItemPosition()]);
+                    }
 
-                if(noteSpinner.getSelectedItemPosition()==0){
-                    newNote.setNote(e.getText().toString());
+                    if (teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))) {
+                        //add note for all teams
+                        newNote.setTeamKey("all");
+                        short newId = StartActivity.db.addNote(newNote);
+                        if (newId == -1) {
+                            dialog.cancel();
+                            return;
+                        }
+                        if (GetNotesForMatch.getGenericAdapter().keys.size() == 0) {
+                            ListView list = (ListView) activity.findViewById(R.id.generic_notes);
+                            list.setVisibility(View.VISIBLE);
+                        }
+                        newNote = StartActivity.db.getNote(newId);
+                        genericAdapter.addNote(newNote);
+
+                    } else {
+                        //generate team key
+                        String team = "frc" + (String) teamSpinner.getSelectedItem();
+                        Iterator iterator = redAlliance.iterator();
+                        String testTeam;
+                        newNote.setTeamKey(team);
+                        Log.d(Constants.LOG_TAG, "team key: " + newNote.getTeamKey());
+                        while (iterator.hasNext()) {
+                            testTeam = iterator.next().toString();
+                            if (testTeam.equals("\"" + team + "\"")) {
+                                short newId = StartActivity.db.addNote(newNote);
+                                newNote = StartActivity.db.getNote(newId);
+                                Log.d(Constants.LOG_TAG, "id: " + newId + " team: " + newNote.getTeamKey());
+                                redAdapter.addNote(newNote);
+                                dialog.cancel();
+                                return;
+                            }
+                        }
+                        iterator = blueAlliance.iterator();
+                        while (iterator.hasNext()) {
+                            testTeam = iterator.next().toString();
+                            if (testTeam.equals("\"" + team + "\"")) {
+                                short newId = StartActivity.db.addNote(newNote);
+                                blueAdapter.addNote(StartActivity.db.getNote(newId));
+                                ;
+                                dialog.cancel();
+                                return;
+                            }
+                        }
+                    }
                 }else{
-                    newNote.setNote(note_choice[noteSpinner.getSelectedItemPosition()]);
-                }
+                    //add the note on the team view activity
+                    Note newNote = new Note();
+                    newNote.setMatchKey(match_keys[matchSpinner.getSelectedItemPosition()]);
+                    if(newNote.getMatchKey().equals("all")){
+                        newNote.setEventKey(eventKey);
+                    }else{
+                        newNote.setEventKey(newNote.getMatchKey().split("_")[0]);
+                    }
+                    newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
+                    newNote.setTeamKey(GetNotesForTeam.getTeamKey());
 
-                if(teamSpinner.getSelectedItem().equals(activity.getResources().getString(R.string.all_teams))){
-                    //add note for all teams
-                    newNote.setTeamKey("all");
+                    if (noteSpinner.getSelectedItemPosition() == 0) {
+                        //set note to custom text
+                        newNote.setNote(e.getText().toString());
+                    } else {
+                        //set note to a predefined note
+                        newNote.setNote(note_choice[noteSpinner.getSelectedItemPosition()]);
+                    }
+
                     short newId = StartActivity.db.addNote(newNote);
-                    if(newId == -1){
+                    if (newId == -1) {
                         dialog.cancel();
                         return;
                     }
-                    if(GetNotesForMatch.getGenericAdapter().keys.size() == 0){
-                        ListView list = (ListView)activity.findViewById(R.id.generic_notes);
-                        list.setVisibility(View.VISIBLE);
-                    }
                     newNote = StartActivity.db.getNote(newId);
-                    GetNotesForMatch.getGenericAdapter().values.add(new ListElement(newNote.getNote(),Short.toString(newNote.getId())));
-                    GetNotesForMatch.getGenericAdapter().keys.add(Short.toString(newNote.getId()));
-                    GetNotesForMatch.getGenericAdapter().notifyDataSetChanged();
-
-                }else{
-                    //generate team key
-                    String team = "frc"+(String)teamSpinner.getSelectedItem();
-                    Iterator iterator = redAlliance.iterator();
-                    String testTeam;
-                    newNote.setTeamKey(team);
-                    Log.d(Constants.LOG_TAG, "team key: " + newNote.getTeamKey());
-                    while(iterator.hasNext()){
-                        testTeam = iterator.next().toString();
-                        if(testTeam.equals("\""+team+"\"")){
-                            short newId = StartActivity.db.addNote(newNote);
-                            newNote = StartActivity.db.getNote(newId);
-                            Log.d(Constants.LOG_TAG,"id: "+newId+" team: "+newNote.getTeamKey());
-                            GetNotesForMatch.getRedAdaper().addNote(newNote);
-                            dialog.cancel();
-                            return;
-                        }
-                    }
-                    iterator = blueAlliance.iterator();
-                    while(iterator.hasNext()){
-                        testTeam = iterator.next().toString();
-                        if(testTeam.equals("\""+team+"\"")){
-                            short newId = StartActivity.db.addNote(newNote);
-                            GetNotesForMatch.getBlueAdapter().addNote(StartActivity.db.getNote(newId));;
-                            dialog.cancel();
-                            return;
-                        }
-                    }
+                    teamViewAdapter.addNote(newNote);
                 }
-
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
