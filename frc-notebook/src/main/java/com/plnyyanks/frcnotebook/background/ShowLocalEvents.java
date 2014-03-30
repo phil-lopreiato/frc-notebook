@@ -40,12 +40,20 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
     private int selectedItem=-1;
     ArrayList<String> finalKeys = new ArrayList<String>();
     ArrayList<ListItem> finalEvents = new ArrayList<ListItem>();
+    private boolean allEvents;
 
+    public ShowLocalEvents(){
+        allEvents = false;
+    }
+
+    public ShowLocalEvents(int selectedIndex){
+        allEvents = selectedIndex==0;
+    }
 
     @Override
     protected String doInBackground(Activity... activities) {
         parentActivity = activities[0];
-        final List<Event> storedEvents = StartActivity.db.getAllEvents();
+        final List<Event> storedEvents = allEvents?StartActivity.db.getAllEvents():StartActivity.db.getCurrentEvents();
         Collections.sort(storedEvents);
 
         eventList = (ListView) parentActivity.findViewById(R.id.event_list);
@@ -54,9 +62,9 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
             currentWeek;
         if(storedEvents.size()==0){
-            finalEvents.add(new ListElement(parentActivity.getString(R.string.no_events_message),"-1"));
+            finalEvents.add(new ListElement(allEvents?parentActivity.getString(R.string.no_events_message):parentActivity.getString(R.string.no_events_this_week_message),"-1"));
             finalKeys.add("-1");
-        }else{
+        }else if(allEvents){
             finalEvents.add(new ListElement(parentActivity.getString(R.string.view_all_notes_message),"all"));
             finalKeys.add("all");
         }

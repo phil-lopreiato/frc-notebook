@@ -28,8 +28,13 @@
     <string name="select_event_title">Select an Event</string>
     <string name="download_event_button">Download Info For An Event</string>
     <string name="no_events_message">No events. Click the plus button above to get started</string>
+    <string name="no_events_this_week_message">No stored events competing this week. Click the plus button above to download data for an event</string>
     <string name="delete_event_message">Are you sure you want to delete </string>
     <string name="view_all_notes_message">All Events</string>
+    <string-array name="event_list_navi_options">
+        <item>All Events</item>
+        <item>Competing Now</item>
+    </string-array>
 
     <!-- Team List -->
     <string name="title_activity_view_event">View Event</string>

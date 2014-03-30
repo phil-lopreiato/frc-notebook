@@ -18,6 +18,7 @@ import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -222,6 +223,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setEventEnd(cursor.getString(6));
 
                 eventList.add(event);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return eventList;
+    }
+    public ArrayList<Event> getCurrentEvents(){
+        ArrayList<Event> eventList = new ArrayList<Event>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Date currentDate = new Date();
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setEventKey(cursor.getString(0));
+                event.setEventName(cursor.getString(1));
+                event.setShortName(cursor.getString(2));
+                event.setEventYear(cursor.getInt(3));
+                event.setEventLocation(cursor.getString(4));
+                event.setEventStart(cursor.getString(5));
+                event.setEventEnd(cursor.getString(6));
+                if(currentDate.compareTo(event.getStartDate())>=0 && currentDate.compareTo(event.getEndDate())<=0)
+                    eventList.add(event);
             } while (cursor.moveToNext());
         }
 

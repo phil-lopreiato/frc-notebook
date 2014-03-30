@@ -49,6 +49,7 @@ public class Event implements Comparable<Event>{
         try {
             startDate = parseDate(eventStart);
             endDate = parseDate(eventEnd);
+            endDate.setTime(endDate.getTime() + 24*60*60*1000);
             Log.d(Constants.LOG_TAG,"Logged event with start date:"+startDate.toString());
         } catch (ParseException e) {
             startDate = new Date();
@@ -119,6 +120,7 @@ public class Event implements Comparable<Event>{
         this.eventEnd = eventEnd;
         try {
             endDate = parseDate(eventEnd);
+            endDate.setTime(endDate.getTime() + 24*60*60*1000);
         } catch (ParseException e) {
             endDate = new Date();
             Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
