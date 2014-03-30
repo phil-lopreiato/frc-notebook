@@ -1,4 +1,4 @@
 /frc-notebook/build/*
 /.gradle/1.10/taskArtifacts/*
 /.gradle/1.11/taskArtifacts/*
-/.idea/workspace.xml
+/.idea/*

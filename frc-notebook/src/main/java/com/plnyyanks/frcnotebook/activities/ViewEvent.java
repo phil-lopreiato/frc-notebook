@@ -42,6 +42,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
 
         activity = this;
 
+        if(event==null){
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+        }
+
 
         ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
