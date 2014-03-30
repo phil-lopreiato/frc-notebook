@@ -40,6 +40,11 @@
     <string name="title_activity_view_event">View Event</string>
     <string name="teams_attending_header">Teams Attending</string>
     <string name="team_fetch_error">Error getting teams from database</string>
+    <string-array name="team_list_sort_options">
+        <item>Sort by team number</item>
+        <item>Sort by number of notes (ascending)</item>
+        <item>Sort by number of notes (descending)</item>
+    </string-array>
 
     <!-- Match Schedule -->
     <string name="match_schedule_header">Match Schedule</string>

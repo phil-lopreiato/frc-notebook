@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
@@ -23,7 +25,10 @@ import java.util.Collections;
 public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
     private Activity activity;
-    private String msg = "";
+    private String msg = "",eventKey;
+    private ArrayList<ListItem> teams;
+    private ArrayList<String> keys;
+    ListViewArrayAdapter adapter;
 
     public GetTeamsAttending(Activity activity){
         super();
@@ -32,26 +37,38 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String eventKey = strings[0];
+        eventKey = strings[0];
 
         ArrayList<Team> teamList = StartActivity.db.getAllTeamAtEvent(eventKey);
+        Team.setSortType(Team.COMPARE_TEAM_NUMBER);
         Collections.sort(teamList);
-        final ArrayList<ListItem> teams = new ArrayList<ListItem>();
-        final ArrayList<String> keys = new ArrayList<String>();
 
+        teams = new ArrayList<ListItem>();
+        keys  = new ArrayList<String>();
         for (Team t : teamList) {
             teams.add(new ListElement(Integer.toString(t.getTeamNumber()), t.getTeamKey()));
             keys.add(t.getTeamKey());
         }
 
+        final String[] sortValues = activity.getResources().getStringArray(R.array.team_list_sort_options);
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ListViewArrayAdapter adapter = new ListViewArrayAdapter(activity,teams,keys);
+                adapter = new ListViewArrayAdapter(activity,teams,keys);
                 ListView teamListView = (ListView) activity.findViewById(R.id.team_list);
-                if(teamListView != null){
+
+                //create an adapter for the spinner
+                ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(activity,android.R.layout.simple_spinner_item,android.R.id.text1,sortValues);
+                sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                Spinner sortSpinner = (Spinner)activity.findViewById(R.id.team_list_sort);
+
+                if(teamListView != null && sortSpinner != null){
                     teamListView.setAdapter(adapter);
                     teamListView.setOnItemClickListener(new ClickListener(keys));
+
+                    sortSpinner.setAdapter(sortAdapter);
+                    sortSpinner.setOnItemSelectedListener(new SortListener());
 
                     //hide the progress bar
                     ProgressBar prog = (ProgressBar) activity.findViewById(R.id.teams_loading_progress);
@@ -88,6 +105,47 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
             ViewTeam.setTeam(teamKey);
             Intent intent = new Intent(activity, ViewTeam.class);
             activity.startActivity(intent);
+        }
+    }
+
+    private class SortListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            ArrayList<Team> teamList = StartActivity.db.getAllTeamAtEvent(eventKey);
+            switch(i){
+                case 0:
+                    //sort by team number
+                    Team.setSortType(Team.COMPARE_TEAM_NUMBER);
+                    Collections.sort(teamList);
+
+                    break;
+                case 1:
+                    //sort by notes, asc
+                    Team.setSortType(Team.COMPARE_NUM_NOTES);
+                    Collections.sort(teamList);
+                    break;
+                case 2:
+                    //sort by notes, desc
+                    Team.setSortType(Team.COMPARE_NUM_NOTES);
+                    Collections.sort(teamList);
+                    Collections.reverse(teamList);
+                    break;
+            }
+
+            teams = new ArrayList<ListItem>();
+            keys  = new ArrayList<String>();
+            for (Team t : teamList) {
+                teams.add(new ListElement(Integer.toString(t.getTeamNumber()), t.getTeamKey()));
+                keys.add(t.getTeamKey());
+            }
+
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
         }
     }
 }

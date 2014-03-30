@@ -3,6 +3,8 @@ package com.plnyyanks.frcnotebook.datatypes;
 import android.annotation.TargetApi;
 import android.os.Build;
 
+import com.plnyyanks.frcnotebook.activities.StartActivity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,6 +12,10 @@ import java.util.Collections;
  * Created by phil on 2/19/14.
  */
 public class Team implements Comparable<Team>{
+
+    public static final int COMPARE_TEAM_NUMBER = 0,COMPARE_NUM_NOTES = 1;
+    private static int compareType = COMPARE_TEAM_NUMBER;
+
     private String              teamKey;
     private String              teamName;
     private String              teamWebsite;
@@ -113,9 +119,19 @@ public class Team implements Comparable<Team>{
         }
     }
 
+    public static void setSortType(int type){
+        compareType = type;
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Team team) {
-        return Integer.compare(teamNumber,team.teamNumber);
+        switch(compareType){
+            default:
+            case COMPARE_TEAM_NUMBER:
+                return Integer.compare(teamNumber,team.teamNumber);
+            case COMPARE_NUM_NOTES:
+                return Integer.compare(StartActivity.db.getAllNotes(teamKey).size(),StartActivity.db.getAllNotes(team.getTeamKey()).size());
+        }
     }
 }

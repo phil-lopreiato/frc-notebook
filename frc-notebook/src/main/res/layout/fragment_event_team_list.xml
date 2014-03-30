@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin">
 
-    <TextView style="@style/activity_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/teams_attending_header"
-        android:id="@+id/team_list_header"/>
-
     <ProgressBar style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -20,10 +13,16 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_below="@id/download_event_header"/>
+    
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:id="@+id/team_list_sort"
+        android:visibility="gone"/>
 
     <ListView
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
        android:id="@+id/team_list"
-       android:layout_below="@id/team_list_header"></ListView>
+       android:layout_below="@id/team_list_sort"/>
 </RelativeLayout>
