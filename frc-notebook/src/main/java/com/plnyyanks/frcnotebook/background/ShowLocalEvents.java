@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.Constants;
@@ -81,6 +82,9 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
                     eventList.setOnItemLongClickListener(new LongClickListener());
                 }
                 //eventList.setOnItemSelectedListener(new SelectedListener());
+                //hide the progress bar
+                ProgressBar prog = (ProgressBar) parentActivity.findViewById(R.id.event_list_loading_progress);
+                prog.setVisibility(View.GONE);
             }
         });
 
