@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.R;
@@ -24,10 +26,11 @@ import com.plnyyanks.frcnotebook.tba.TBA_EventDetailFetcher;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
+    private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+
     private static String key;
     private static Event event;
     protected static Activity activity;
-    private static int tabPosition=0;
 
     public static void setEvent(String eventKey){
         key = eventKey;
@@ -68,7 +71,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         scheduleTab.setTabListener(this);
         bar.addTab(scheduleTab);
 
-        bar.setSelectedNavigationItem(tabPosition);
+        if(savedInstanceState!=null) {
+            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM,0));
+        }else{
+            bar.setSelectedNavigationItem(0);
+        }
     }
 
     @Override
@@ -76,7 +83,21 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         StartActivity.checkThemeChanged(ViewEvent.class);
         GetEventMatches.setActivity(this);
         super.onResume();
-        getActionBar().setSelectedNavigationItem(tabPosition);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Restore the previously serialized current dropdown position.
+        if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+            getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Serialize the current dropdown position.
+        outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+                .getSelectedNavigationIndex());
     }
 
     @Override
@@ -115,8 +136,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         Fragment f;
-        tabPosition = tab.getPosition();
-        switch(tabPosition){
+        switch(tab.getPosition()){
             case 0:
             default:
                 f = new EventTeamListFragment(); break;

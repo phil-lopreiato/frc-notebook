@@ -27,6 +27,8 @@ import java.util.ArrayList;
 
 public class ViewTeam extends Activity implements ActionBar.TabListener {
 
+    private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+
     protected static String teamKey, eventName;
     protected static int teamNumber;
     protected static Activity activity;
@@ -69,12 +71,33 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
             bar.addTab(eventTab);
         }
 
+        if(savedInstanceState!=null) {
+            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM,0));
+        }else{
+            bar.setSelectedNavigationItem(0);
+        }
+
     }
 
     @Override
     protected void onResume() {
         StartActivity.checkThemeChanged(ViewTeam.class);
         super.onResume();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Restore the previously serialized current dropdown position.
+        if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+            getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Serialize the current dropdown position.
+        outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+                .getSelectedNavigationIndex());
     }
 
     @Override
