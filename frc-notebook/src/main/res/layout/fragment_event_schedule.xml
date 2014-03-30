@@ -8,18 +8,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     tools:context="com.plnyyanks.frcnotebook.activities.ViewEvent" >
 
-    <TextView style="@style/activity_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="@dimen/activity_half_vertical_margin"
-        android:text="@string/match_schedule_header"
-        android:id="@+id/event_schedule_header"/>
-
-    <Spinner
+   <Spinner
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_schedule_header"
         android:id="@+id/match_sort_order"
         android:entries="@array/match_sort_options"
         android:visibility="gone"/>
