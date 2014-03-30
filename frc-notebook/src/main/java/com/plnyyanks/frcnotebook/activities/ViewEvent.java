@@ -32,6 +32,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     public static void setEvent(String eventKey){
         key = eventKey;
         event = StartActivity.db.getEvent(key);
+
     }
 
     @Override
@@ -45,6 +46,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         if(event==null){
             Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
+            return;
         }
 
 

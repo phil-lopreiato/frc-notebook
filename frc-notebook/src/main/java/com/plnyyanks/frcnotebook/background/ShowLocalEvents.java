@@ -16,6 +16,7 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewEvent;
+import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -51,6 +52,13 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
         int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
             currentWeek;
+        if(storedEvents.size()==0){
+            finalEvents.add(new ListElement(parentActivity.getString(R.string.no_events_message),"-1"));
+            finalKeys.add("-1");
+        }else{
+            finalEvents.add(new ListElement(parentActivity.getString(R.string.view_all_notes_message),"all"));
+            finalKeys.add("all");
+        }
         for (Event e : storedEvents) {
             currentWeek = e.getCompetitionWeek();
             if (eventWeek != currentWeek) {
@@ -61,10 +69,6 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
             finalEvents.add(new ListElement(e.getEventName(), e.getEventKey()));
             finalKeys.add(e.getEventKey());
-        }
-        if(storedEvents.size()==0){
-            finalEvents.add(new ListElement(parentActivity.getString(R.string.no_events_message),"-1"));
-            finalKeys.add("-1");
         }
 
         parentActivity.runOnUiThread(new Runnable() {
@@ -96,12 +100,18 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Log.d(Constants.LOG_TAG, "Item click: " + i + ", selected: " + selectedItem);
             ListItem item = adapter.values.get(i);
-            if (item instanceof ListHeader) return;
-            String eventKey = finalKeys.get(i);
-            ViewEvent.setEvent(eventKey);
-            Intent intent = new Intent(parentActivity, ViewEvent.class);
-            parentActivity.startActivity(intent);
+            if (item instanceof ListHeader || ((ListElement)item).getKey().equals("-1")) return;
 
+            String eventKey = finalKeys.get(i);
+            Intent intent;
+            if(eventKey.equals("all")){
+                ViewTeam.setTeam("all");
+                intent = new Intent(parentActivity, ViewTeam.class);
+            }else{
+                ViewEvent.setEvent(eventKey);
+                intent = new Intent(parentActivity, ViewEvent.class);
+            }
+            parentActivity.startActivity(intent);
         }
     }
 
@@ -111,7 +121,7 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
             Log.d(Constants.LOG_TAG, "Item Long Click: " + i);
             ListItem item =  adapter.values.get(i);
-            if(item instanceof ListHeader) return false;
+            if(item instanceof ListHeader || ((ListElement)item).getKey().equals("-1") || ((ListElement)item).getKey().equals("all")) return false;
 
             eventList.setOnItemClickListener(null);
             item.setSelected(true);

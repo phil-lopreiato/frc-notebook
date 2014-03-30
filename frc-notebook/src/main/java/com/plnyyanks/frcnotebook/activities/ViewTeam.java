@@ -40,7 +40,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         activity = this;
 
         ActionBar bar = getActionBar();
-        bar.setTitle("Team "+teamNumber);
+        bar.setTitle(teamNumber!=-1?"Team "+teamNumber:"All Data");
 
         //tab for team overview
         ActionBar.Tab teamOverviewTab = bar.newTab();
@@ -52,8 +52,13 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         bar.setDisplayHomeAsUpEnabled(true);
 
         //add an actionbar tab for every event the team is competing at
-        Team team = StartActivity.db.getTeam(teamKey);
-        ArrayList<String> events = team.getTeamEvents();
+        ArrayList<String> events;
+        if(teamNumber == -1){
+            events = StartActivity.db.getAllEventKeys();
+        }else {
+            Team team = StartActivity.db.getTeam(teamKey);
+            events = team.getTeamEvents();
+        }
         for(String eventKey:events){
             Log.d(Constants.LOG_TAG, "Making AB Tab for " + eventKey);
             Event event = StartActivity.db.getEvent(eventKey);
@@ -115,7 +120,11 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
 
     public static void setTeam(String key){
         teamKey = key;
-        teamNumber = Integer.parseInt(key.substring(3));
+        try {
+            teamNumber = Integer.parseInt(key.substring(3));
+        }catch(Exception ex){
+            teamNumber = -1;
+        }
     }
 
     @Override

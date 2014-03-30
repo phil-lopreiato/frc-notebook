@@ -202,8 +202,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
     }
-    public List<Event> getAllEvents() {
-        List<Event> eventList = new ArrayList<Event>();
+    public ArrayList<Event> getAllEvents() {
+        ArrayList<Event> eventList = new ArrayList<Event>();
 
         String selectQuery = "SELECT * FROM " + TABLE_EVENTS;
 
@@ -222,6 +222,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setEventEnd(cursor.getString(6));
 
                 eventList.add(event);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return eventList;
+    }
+    public ArrayList<String> getAllEventKeys(){
+        ArrayList<String> eventList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+                eventList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
 
