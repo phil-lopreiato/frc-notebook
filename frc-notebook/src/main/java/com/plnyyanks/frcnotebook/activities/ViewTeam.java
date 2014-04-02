@@ -89,7 +89,11 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore the previously serialized current dropdown position.
         if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-            getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+            try {
+                getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+            }catch(IllegalStateException e){
+                Log.w(Constants.LOG_TAG,"Failed restoring action bar navegition state on resume. Oh well...");
+            }
         }
     }
 
