@@ -30,6 +30,12 @@ public class PreferenceHandler {
         return prefs != null && prefs.getBoolean("show_field_monitor", false);
     }
 
+    public static boolean getTimesEnabled(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        return prefs != null && prefs.getBoolean("show_match_times", false);
+    }
+
     public static boolean showMatchScores(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);

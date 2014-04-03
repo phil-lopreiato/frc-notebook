@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class USFIRSTParser {
     private static final String URL_PATTERN = "http://www2.usfirst.org/%year%comp/events/%event%/matchresults.html";
 
-    public static void fetchMatches_USFIRST(String year, String eventKey) {
+    public static void fetchMatches_USFIRST(String year, String eventKey) throws IOException {
         try {
             URL url = new URL(URL_PATTERN.replaceAll("%year%", year).replaceAll("%event%", eventKey));
             parsePage(getPageContents(url),year+eventKey);
@@ -34,13 +34,14 @@ public class USFIRSTParser {
         }
     }
 
-    private static Document getPageContents(URL url) {
+    private static Document getPageContents(URL url) throws IOException {
         // TODO check android for Internet connectivity
         Document out = new Document("");
         try {
             out = Jsoup.connect(url.toString()).get();
         } catch (IOException e) {
             Log.e(Constants.LOG_TAG,"IO Exception while fetching match data. \n"+e.toString());
+            throw e;
         }
         return out;
     }

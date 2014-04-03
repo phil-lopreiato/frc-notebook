@@ -20,7 +20,8 @@ public class JSONManager {
     public static JsonArray getasJsonArray(String input){
        if(parser == null)
            parser = new JsonParser();
-
+        if(input == null || input.equals(""))
+            return new JsonArray();
         return parser.parse(input).getAsJsonArray();
     }
 

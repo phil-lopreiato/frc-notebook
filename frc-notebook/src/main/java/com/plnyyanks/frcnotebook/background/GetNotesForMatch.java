@@ -2,6 +2,7 @@ package com.plnyyanks.frcnotebook.background;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseArray;
@@ -33,10 +34,15 @@ import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.dialogs.DeleteDialog;
 import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class GetNotesForMatch extends AsyncTask<String, String, String> {
+
+    private static final String TIME_FORMAT = "hh:mm a";
 
     private static Activity activity;
     private static String previousMatchKey,
@@ -68,6 +74,35 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         TextView matchTitle = (TextView) activity.findViewById(R.id.match_title);
         String titleString = Match.LONG_TYPES.get(match.getMatchType()) + (match.getMatchType()== Match.MATCH_TYPES.QUAL ? " " : (" " + match.getSetNumber() + " Match ")) + match.getMatchNumber();
         matchTitle.setText(titleString);
+
+        if(PreferenceHandler.getTimesEnabled()){
+            String matchTime = match.getMatchTime();
+            if(matchTime!=null && !matchTime.equals("")){
+                TextView timeOffset = (TextView)activity.findViewById(R.id.match_time);
+                SimpleDateFormat df = new SimpleDateFormat(TIME_FORMAT);
+                Log.d(Constants.LOG_TAG,"Showing match time");
+                try {
+                    Date matchStart = df.parse(matchTime);
+                    Date currentTime = new Date();
+                    int hourdif = currentTime.getHours() - matchStart.getHours();
+                    int mindif = currentTime.getMinutes() - matchStart.getMinutes();
+                    String timeString =  Math.abs(hourdif)+":"+Math.abs(mindif);
+                    boolean ahead;
+                    if(hourdif>0 || (hourdif==0 && mindif>0)){
+                        timeString += " behind";
+                        ahead = false;
+                    }else{
+                        timeString += " ahead";
+                        ahead = true;
+                    }
+                    timeOffset.setText(timeString);
+                    timeOffset.setTextColor(ahead? Color.GREEN:Color.RED);
+                    timeOffset.setVisibility(View.VISIBLE);
+                } catch (ParseException e) {
+                    Log.w(Constants.LOG_TAG,"Error parsing match time");
+                }
+            }
+        }
 
         TextView redHeader = (TextView) activity.findViewById(R.id.red_score);
         if (match.getRedScore() >= 0 && PreferenceHandler.showMatchScores()) {

@@ -34,7 +34,7 @@ import java.util.List;
 public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
 
     private Activity parentActivity;
-    private ListViewArrayAdapter adapter;
+    public static ListViewArrayAdapter adapter;
     private ListView eventList;
     //private Object mActionMode;
     private int selectedItem=-1;

@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -97,7 +97,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_BLUEALLIANCE + " TEXT,"
                 + KEY_REDALLIANCE + " TEXT,"
                 + KEY_BLUESCORE + " INTEGER,"
-                + KEY_REDSCORE + " INTEGER"
+                + KEY_REDSCORE + " INTEGER,"
                 + KEY_MATCHTIME + " TEXT"
                 + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
@@ -155,10 +155,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return;
         }
 
-        if(oldVersion<15 && newVersion>=15 && !columnExists(sqLiteDatabase,TABLE_MATCHES,KEY_MATCHTIME)){
-            String updateQuery = "ALTER TABLE "+TABLE_MATCHES+" ADD COLUMN "+KEY_MATCHTIME+" TEXT";
-            sqLiteDatabase.execSQL(updateQuery);
-
+        if(oldVersion<16 && newVersion>=16 ){
+            if(!columnExists(sqLiteDatabase,TABLE_MATCHES,KEY_MATCHTIME)) {
+                Log.d(Constants.LOG_TAG,"Adding match time column");
+                String updateQuery = "ALTER TABLE " + TABLE_MATCHES + " ADD COLUMN " + KEY_MATCHTIME + " TEXT";
+                sqLiteDatabase.execSQL(updateQuery);
+            }
             return;
         }
 
