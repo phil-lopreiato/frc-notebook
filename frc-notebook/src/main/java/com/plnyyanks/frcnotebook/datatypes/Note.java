@@ -99,8 +99,12 @@ public class Note {
         this.parent = parent;
     }
 
-    public static String buildGeneralNoteTitle(Note note,boolean displayEvent){
+    public static String buildGeneralNoteTitle(Note note,boolean displayEvent,boolean displayTeam){
         String output = "";
+
+        if(displayTeam && !note.getTeamKey().equals("all")){
+            output += note.getTeamKey().substring(3)+": ";
+        }
 
         if(displayEvent){
             //on all notes tab. Include event title
@@ -114,12 +118,17 @@ public class Note {
         return output;
     }
 
-    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch){
-       return buildMatchNoteTitle(note,displayEvent,displayMatch,false);
+    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch, boolean displayTeam){
+       return buildMatchNoteTitle(note,displayEvent,displayMatch,displayTeam,false);
     }
 
-    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch, boolean lineBreak){
+    public static String buildMatchNoteTitle(Note note, boolean displayEvent, boolean displayMatch, boolean displayTeam,boolean lineBreak){
         String output = "";
+
+        if(displayTeam && !note.getTeamKey().equals("all")){
+            output += note.getTeamKey().substring(3)+", ";
+        }
+
         if(displayEvent && !note.getEventKey().equals("all")){
             //on all notes tab. Include event title
             Event parentEvent = StartActivity.db.getEvent(note.getEventKey());
@@ -128,7 +137,10 @@ public class Note {
 
         if(displayMatch && !note.getMatchKey().equals("all")){
             Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
-            output += parentMatch.getTitle()+": ";
+            output += parentMatch.getTitle()+" ";
+        }
+        if(displayEvent||displayMatch||displayTeam){
+            output += "- ";
         }
         if(lineBreak){
             output+="\n";

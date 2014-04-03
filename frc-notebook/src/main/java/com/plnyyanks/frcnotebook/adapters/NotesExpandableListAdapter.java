@@ -71,11 +71,11 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
                 return;
             }else{
                 //update in match notes group
-                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),true));
+                groups.get(1).children.set(index,Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),false,true));
             }
         }else{
             //update in general notes group
-            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all")));
+            groups.get(0).children.set(index,Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),false));
         }
 
 
@@ -85,12 +85,12 @@ public class NotesExpandableListAdapter extends CustomExapandableListAdapter {
     public void addNote(Note note) {
         if(note.getMatchKey().equals("all")){
             //add to general note
-            groups.get(0).children.add(Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all")));
+            groups.get(0).children.add(Note.buildGeneralNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),false));
             groups.get(0).children_keys.add(Short.toString(note.getId()));
             groups.get(0).updateTitle("General Notes ("+groups.get(0).children.size()+")");
         }else{
             //add match note
-            groups.get(1).children.add(Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),true));
+            groups.get(1).children.add(Note.buildMatchNoteTitle(note,GetNotesForTeam.getEventKey().equals("all"),false,true));
             groups.get(1).children_keys.add(Short.toString(note.getId()));
             groups.get(1).updateTitle("Match Notes ("+groups.get(1).children.size()+")");
         }

@@ -397,7 +397,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public ArrayList<Match> getAllMatchesForTeam(String teamKey){
         ArrayList<Match> matchList = new ArrayList<Match>();
-        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_REDALLIANCE + " LIKE '%" + teamKey + "%' OR "+KEY_BLUEALLIANCE + " LIKE '%" + teamKey + "%'";
+        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + (!teamKey.equals("all")?(" WHERE " + KEY_REDALLIANCE + " LIKE '%" + teamKey + "%' OR "+KEY_BLUEALLIANCE + " LIKE '%" + teamKey + "%'"):"");
         Cursor cursor = db.rawQuery(selectQuery, null);
         //loop through rows
         ////(String matchKey, String matchType, int matchNumber, int[] blueAlliance, int[] redAlliance, int blueScore, int redScore)
@@ -424,7 +424,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Match> getAllMatches(String eventKey) {
         ArrayList<Match> matchList = new ArrayList<Match>();
 
-        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_MATCHKEY + " LIKE '%" + eventKey + "%'";
+        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + (!eventKey.equals("all")?(" WHERE " + KEY_MATCHKEY + " LIKE '%" + eventKey + "%'"):"");
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -453,7 +453,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Match> getAllMatches(String eventKey, String teamKey) {
         ArrayList<Match> matchList = new ArrayList<Match>();
 
-        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_MATCHKEY + " LIKE '%" + eventKey + "%' AND " + KEY_TEAMKEY + "=" + teamKey;
+        String selectQuery = "SELECT * FROM " + TABLE_MATCHES + " WHERE " + KEY_MATCHKEY + " LIKE '%" + eventKey + "%'"+(!teamKey.equals("all")?(" AND (" + KEY_REDALLIANCE + " LIKE '%" + teamKey + "%' OR "+KEY_BLUEALLIANCE + " LIKE '%" + teamKey + "%')"):"");
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -585,8 +585,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
     }
-    public List<Team> getAllTeams() {
-        List<Team> teamList = new ArrayList<Team>();
+    public ArrayList<Team> getAllTeams() {
+        ArrayList<Team> teamList = new ArrayList<Team>();
 
         String selectQuery = "SELECT * FROM " + TABLE_TEAMS;
 
@@ -611,6 +611,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return teamList;
     }
     public ArrayList<Team> getAllTeamAtEvent(String eventKey) {
+        if(eventKey.equals("all")) return getAllTeams();
+
         ArrayList<Team> teamList = new ArrayList<Team>();
 
         String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + KEY_TEAMEVENTS + " LIKE '%" + eventKey + "%'";
@@ -873,21 +875,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor;
         if (!eventKey.equals("all") && !teamKey.equals("")) {
-            //regular event. Proceed normally
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
-                    KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
+            if(teamKey.equals("all")){
+                //looking for notes for ALL THE TEAMS
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);
+            }else{
+                //regular event. Proceed normally
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
+            }
         } else if (eventKey.equals("all")) {
             //looking for all events worth of notes
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
-                    KEY_TEAMKEY + "=? AND " +KEY_EVENTKEY+"=? AND "+ KEY_MATCHKEY + "=?", new String[]{teamKey,eventKey,matchKey}, null, null, null, null);
+            if(teamKey.equals("all")){
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_EVENTKEY+"=? AND "+ KEY_MATCHKEY + "=?", new String[]{eventKey,matchKey}, null, null, null, null);
+            }else{
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_TEAMKEY + "=? AND " +KEY_EVENTKEY+"=? AND "+ KEY_MATCHKEY + "=?", new String[]{teamKey,eventKey,matchKey}, null, null, null, null);
+            }
         } else if (teamKey.equals("")) {
             //looking for all notes on a particular match
             cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
                     KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);
         } else {
-            //default to all events
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
-                    KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
+            if(teamKey.equals("all")){
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{eventKey, matchKey}, null, null, null, null);
+            }else{
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "=?", new String[]{teamKey, eventKey, matchKey}, null, null, null, null);
+            }
         }
         //loop through rows
         if (cursor.moveToFirst()) {
@@ -915,11 +932,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor;
         if (!eventKey.equals("all")) {
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
-                    KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, eventKey, "all"}, null, null, null, null);
+            if(teamKey.equals("all")){
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                       KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{eventKey, "all"}, null, null, null, null);
+            }else{
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_TEAMKEY + "=? AND " + KEY_EVENTKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, eventKey, "all"}, null, null, null, null);
+            }
         } else {
-            cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
-                    KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, "all"}, null, null, null, null);
+            if(teamKey.equals("all")){
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_MATCHKEY + "!=?", new String[]{"all"}, null, null, null, null);
+            }else{
+                cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                        KEY_TEAMKEY + "=? AND " + KEY_MATCHKEY + "!=?", new String[]{teamKey, "all"}, null, null, null, null);
+            }
         }
         //loop through rows
         if (cursor.moveToFirst()) {

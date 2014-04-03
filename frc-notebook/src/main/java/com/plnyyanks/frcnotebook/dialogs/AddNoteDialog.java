@@ -25,6 +25,7 @@ import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
+import com.plnyyanks.frcnotebook.datatypes.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,9 +94,18 @@ public class AddNoteDialog extends DialogFragment {
                 team_choices[i] = teams.get(i-1).getAsString().substring(3);
             }
         }else{
-            //we're on the team page, so only allow this team
-            team_choices = new String[1];
-            team_choices[0] = GetNotesForTeam.getTeamNumber();
+            if(GetNotesForTeam.getTeamKey().equals("all")){
+                ArrayList<Team> all_teams = StartActivity.db.getAllTeamAtEvent(GetNotesForTeam.getEventKey());
+                team_choices = new String[all_teams.size()+1];
+                team_choices[0] = activity.getString(R.string.all_teams);
+                for(int i=1;i<all_teams.size();i++){
+                    team_choices[i] = Integer.toString(all_teams.get(i-1).getTeamNumber());
+                }
+            }else{
+                //we're on the team page, so only allow this team
+                team_choices = new String[1];
+                team_choices[0] = GetNotesForTeam.getTeamNumber();
+            }
 
             //keep the compiler happy
             redAlliance = new JsonArray();
@@ -166,7 +176,7 @@ public class AddNoteDialog extends DialogFragment {
         final ArrayAdapter teamAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item, team_choices);
         teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         teamSpinner.setAdapter(teamAdapter);
-        teamSpinner.setEnabled(match!=null);
+        teamSpinner.setEnabled(match!=null || GetNotesForTeam.getTeamKey().equals("all"));
 
         ArrayAdapter noteAdapter = new ArrayAdapter(activity,android.R.layout.simple_spinner_item,note_choice);
         noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -254,7 +264,8 @@ public class AddNoteDialog extends DialogFragment {
                         newNote.setEventKey(newNote.getMatchKey().split("_")[0]);
                     }
                     newNote.setParent(note_choice_ids[noteSpinner.getSelectedItemPosition()]);
-                    newNote.setTeamKey(GetNotesForTeam.getTeamKey());
+                    String team = "frc" + (String) teamSpinner.getSelectedItem();
+                    newNote.setTeamKey(team.equals(activity.getString(R.string.all_teams))?"all":team);
 
                     if (noteSpinner.getSelectedItemPosition() == 0) {
                         //set note to custom text

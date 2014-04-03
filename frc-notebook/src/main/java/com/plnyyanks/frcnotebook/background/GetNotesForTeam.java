@@ -72,14 +72,14 @@ public class GetNotesForTeam extends AsyncTask<String,String,String> {
 
        ListGroup generalNoteGroup = new ListGroup("General Notes ("+generalNotes.size()+")");
         for (Note n : generalNotes) {
-            generalNoteGroup.children.add(Note.buildGeneralNoteTitle(n, eventTitle.equals("all")));
+            generalNoteGroup.children.add(Note.buildGeneralNoteTitle(n, eventTitle.equals("all"),teamKey.equals("all")));
             generalNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(0,generalNoteGroup);
 
         ListGroup matchNoteGroup = new ListGroup(("Match Notes ("+matchNotes.size()+")"));
         for (Note n : matchNotes) {
-            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventKey.equals("all"),true));
+            matchNoteGroup.children.add(Note.buildMatchNoteTitle(n, eventKey.equals("all"),teamKey.equals("all"),true));
             matchNoteGroup.children_keys.add(Integer.toString(n.getId()));
         }
         groups.append(1,matchNoteGroup);

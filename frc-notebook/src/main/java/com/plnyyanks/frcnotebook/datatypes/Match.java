@@ -162,9 +162,9 @@ public class Match implements Comparable<Match>{
 
     public String getTitle(){
         if(getMatchType() == MATCH_TYPES.QUAL){
-            return matchType+" "+matchNumber;
+            return LONG_TYPES.get(getMatchType())+" "+matchNumber;
         }else{
-            return matchType+" "+setNumber+" Match "+matchNumber;
+            return LONG_TYPES.get(getMatchType())+" "+setNumber+" Match "+matchNumber;
         }
     }
 
@@ -187,6 +187,6 @@ public class Match implements Comparable<Match>{
     }
 
     public static String buildMatchKey(String eventKey,MATCH_TYPES type,int set, int match){
-        return eventKey+"_"+type+(type==MATCH_TYPES.QUAL?"":set)+"m"+match;
+        return eventKey+"_"+SHORT_TYPES.get(type)+(type==MATCH_TYPES.QUAL?"":set)+"m"+match;
     }
 }
