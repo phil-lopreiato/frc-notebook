@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -98,7 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_REDALLIANCE + " TEXT,"
                 + KEY_BLUESCORE + " INTEGER,"
                 + KEY_REDSCORE + " INTEGER"
-                + KEY_MATCHTIME + "TEXT"
+                + KEY_MATCHTIME + " TEXT"
                 + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
 
@@ -149,6 +149,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         if(oldVersion<14 && newVersion>=14){
+            String updateQuery = "ALTER TABLE "+TABLE_MATCHES+" ADD COLUMN "+KEY_MATCHTIME+" TEXT";
+            sqLiteDatabase.execSQL(updateQuery);
+
+            return;
+        }
+
+        if(oldVersion<15 && newVersion>=15 && !columnExists(sqLiteDatabase,TABLE_MATCHES,KEY_MATCHTIME)){
             String updateQuery = "ALTER TABLE "+TABLE_MATCHES+" ADD COLUMN "+KEY_MATCHTIME+" TEXT";
             sqLiteDatabase.execSQL(updateQuery);
 
@@ -1221,5 +1228,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+    private boolean columnExists(SQLiteDatabase inDatabase, String inTable, String columnToCheck) {
+        try{
+            //query 1 row
+            Cursor mCursor  = inDatabase.rawQuery( "SELECT * FROM " + inTable + " LIMIT 0", null );
+
+            //getColumnIndex gives us the index (0 to ...) of the column - otherwise we get a -1
+            if(mCursor.getColumnIndex(columnToCheck) != -1)
+                return true;
+            else
+                return false;
+
+        }catch (Exception Exp){
+            //something went wrong. Missing the database? The table?
+            Log.d("... - existsColumnInTable","When checking whether a column exists in the table, an error occurred: " + Exp.getMessage());
+            return false;
+        }
     }
 }
