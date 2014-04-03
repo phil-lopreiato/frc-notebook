@@ -48,9 +48,16 @@ public class PreferenceHandler {
 
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            prefs.edit().putString("app_version",info.versionName).commit();
+            if(info.versionCode!= prefs.getInt("version_code",0)); updatePrefs(prefs.getInt("version_code",0),info.versionCode);
+            prefs.edit().putString("app_version",info.versionName).putInt("version_code",info.versionCode).commit();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void updatePrefs(int old,int current){
+        if(old<19 && current >= 19){
+            setDataSource(Constants.DATAFEED_SOURCES.USFIRST);
         }
     }
 
@@ -61,5 +68,14 @@ public class PreferenceHandler {
             return Constants.DATAFEED_SOURCES.USFIRST; //if still null...
 
         return Constants.DATAFEED_SOURCES.valueOf(prefs.getString("data_source", Constants.DATAFEED_SOURCES.USFIRST.toString()));
+    }
+
+    public static void setDataSource(Constants.DATAFEED_SOURCES source){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs == null)
+            return;
+
+        prefs.edit().putString("data_source",source.toString());
     }
 }
