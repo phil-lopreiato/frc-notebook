@@ -56,7 +56,7 @@ public class PreferenceHandler {
     }
 
     private static void updatePrefs(int old,int current){
-        if(old<19 && current >= 19){
+        if(old<20 && current >= 20){
             setDataSource(Constants.DATAFEED_SOURCES.USFIRST);
         }
     }
@@ -76,6 +76,6 @@ public class PreferenceHandler {
         if(prefs == null)
             return;
 
-        prefs.edit().putString("data_source",source.toString());
+        prefs.edit().putString("data_source",source.toString()).commit();
     }
 }
