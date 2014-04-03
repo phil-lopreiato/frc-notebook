@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.preference.PreferenceManager;
 
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
@@ -51,5 +52,14 @@ public class PreferenceHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Constants.DATAFEED_SOURCES getDataSource(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        if(prefs == null)
+            return Constants.DATAFEED_SOURCES.USFIRST; //if still null...
+
+        return Constants.DATAFEED_SOURCES.valueOf(prefs.getString("data_source", Constants.DATAFEED_SOURCES.USFIRST.toString()));
     }
 }

@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -37,6 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_EVENTEND    = "endDate",
 
     TABLE_MATCHES           = "matches",
+            KEY_MATCHTIME   = "time",
             KEY_MATCHKEY    = "matchKey",
             KEY_MATCHTYPE   = "type",
             KEY_MATCHNO     = "matchNumber",
@@ -97,6 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_REDALLIANCE + " TEXT,"
                 + KEY_BLUESCORE + " INTEGER,"
                 + KEY_REDSCORE + " INTEGER"
+                + KEY_MATCHTIME + "TEXT"
                 + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
 
@@ -142,6 +144,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + KEY_DEF_NOTE + " TEXT"
                     + ")";
             sqLiteDatabase.execSQL(CREATE_DEF_NOTE_TABLE);
+
+            return;
+        }
+
+        if(oldVersion<14 && newVersion>=14){
+            String updateQuery = "ALTER TABLE "+TABLE_MATCHES+" ADD COLUMN "+KEY_MATCHTIME+" TEXT";
+            sqLiteDatabase.execSQL(updateQuery);
 
             return;
         }
@@ -346,13 +355,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             ContentValues values = new ContentValues();
             values.put(KEY_MATCHKEY, in.getMatchKey());
-            values.put(KEY_MATCHTYPE, in.getMatchType());
+            values.put(KEY_MATCHTYPE, Match.SHORT_TYPES.get(in.getMatchType()));
             values.put(KEY_MATCHNO, in.getMatchNumber());
             values.put(KEY_MATCHSET, in.getSetNumber());
             values.put(KEY_BLUEALLIANCE, in.getBlueAlliance());
             values.put(KEY_REDALLIANCE, in.getRedAlliance());
             values.put(KEY_BLUESCORE, in.getBlueScore());
             values.put(KEY_REDSCORE, in.getRedScore());
+            values.put(KEY_MATCHTIME,in.getMatchTime());
 
             //insert the row
             return db.insert(TABLE_MATCHES, null, values);
@@ -362,7 +372,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public Match getMatch(String key) {
 
-        Cursor cursor = db.query(TABLE_MATCHES, new String[]{KEY_MATCHKEY, KEY_MATCHTYPE, KEY_MATCHNO, KEY_MATCHSET, KEY_BLUEALLIANCE, KEY_REDALLIANCE, KEY_BLUESCORE, KEY_REDSCORE},
+        Cursor cursor = db.query(TABLE_MATCHES, new String[]{KEY_MATCHKEY, KEY_MATCHTYPE, KEY_MATCHNO, KEY_MATCHSET, KEY_BLUEALLIANCE, KEY_REDALLIANCE, KEY_BLUESCORE, KEY_REDSCORE,KEY_MATCHTIME},
                 KEY_MATCHKEY + "=?", new String[]{key}, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -376,6 +386,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             match.setRedAlliance(cursor.getString(5));
             match.setBlueScore(cursor.getInt(6));
             match.setRedScore(cursor.getInt(7));
+            match.setMatchTime(cursor.getString(8));
 
             cursor.close();
             return match;
@@ -401,6 +412,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 match.setRedAlliance(cursor.getString(5));
                 match.setBlueScore(cursor.getInt(6));
                 match.setRedScore(cursor.getInt(7));
+                match.setMatchTime(cursor.getString(8));
                 matchList.add(match);
             } while (cursor.moveToNext());
         }
@@ -429,6 +441,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 match.setRedAlliance(cursor.getString(5));
                 match.setBlueScore(cursor.getInt(6));
                 match.setRedScore(cursor.getInt(7));
+                match.setMatchTime(cursor.getString(8));
                 matchList.add(match);
             } while (cursor.moveToNext());
         }
@@ -457,6 +470,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 match.setRedAlliance(cursor.getString(5));
                 match.setBlueScore(cursor.getInt(6));
                 match.setRedScore(cursor.getInt(7));
+                match.setMatchTime(cursor.getString(8));
                 matchList.add(match);
             } while (cursor.moveToNext());
         }
@@ -473,13 +487,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_MATCHKEY, in.getMatchKey());
-        values.put(KEY_MATCHTYPE, in.getMatchType());
+        values.put(KEY_MATCHTYPE, Match.SHORT_TYPES.get(in.getMatchType()));
         values.put(KEY_MATCHNO, in.getMatchNumber());
         values.put(KEY_MATCHSET, in.getSetNumber());
         values.put(KEY_BLUEALLIANCE, in.getBlueAlliance());
         values.put(KEY_REDALLIANCE, in.getRedAlliance());
         values.put(KEY_BLUESCORE, in.getBlueScore());
         values.put(KEY_REDSCORE, in.getRedScore());
+        values.put(KEY_MATCHTIME,in.getMatchTime());
 
         return db.update(TABLE_MATCHES, values, KEY_MATCHKEY + " =?", new String[]{in.getMatchKey()});
     }
@@ -504,6 +519,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 match.add(KEY_BLUEALLIANCE, JSONManager.getasJsonArray(cursor.getString(4)));
                 match.addProperty(KEY_BLUESCORE, cursor.getInt(6));
                 match.addProperty(KEY_REDSCORE, cursor.getInt(7));
+                match.addProperty(KEY_MATCHTIME,cursor.getString(8));
 
                 output.add(match);
             } while (cursor.moveToNext());
@@ -529,6 +545,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             match.setBlueAlliance(m.get(KEY_BLUEALLIANCE).toString());
             match.setRedScore(m.get(KEY_REDSCORE).getAsInt());
             match.setBlueScore(m.get(KEY_BLUESCORE).getAsInt());
+            try {
+                match.setMatchTime(m.get(KEY_MATCHTIME).getAsString());
+            }catch(Exception e){
+                match.setMatchTime("");
+            }
 
             addMatch(match);
         }
@@ -821,7 +842,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey, String eventKey) {
-        Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
@@ -849,7 +869,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey, String eventKey, String matchKey) {
-        Log.d(Constants.LOG_TAG, "FETCHING NOTE FOR: " + teamKey + " " + eventKey + " " + matchKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor;
@@ -892,7 +911,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return noteList;
     }
     public ArrayList<Note> getAllMatchNotes(String teamKey, String eventKey) {
-        Log.d(Constants.LOG_TAG, "FETCHING MATCH NOTES FOR: " + teamKey + " " + eventKey);
         ArrayList<Note> noteList = new ArrayList<Note>();
 
         Cursor cursor;

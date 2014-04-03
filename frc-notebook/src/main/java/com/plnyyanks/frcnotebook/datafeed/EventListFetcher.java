@@ -1,4 +1,4 @@
-package com.plnyyanks.frcnotebook.tba;
+package com.plnyyanks.frcnotebook.datafeed;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,7 +31,7 @@ import java.util.Iterator;
 /**
  * Created by phil on 2/18/14.
  */
-public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
+public class EventListFetcher extends AsyncTask<Activity,String,JsonArray>{
 
     private Activity listActivity;
     private String year;
@@ -43,7 +43,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
         listActivity = args[0];
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(listActivity);
         year = prefs.getString("competition_season","2014");
-        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year="+year);
+        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year=" + year,true);
         return JSONManager.getasJsonArray(data);
     }
 
@@ -128,7 +128,7 @@ public class TBA_EventFetcher extends AsyncTask<Activity,String,JsonArray>{
                         //YES! Download info...
                         Toast.makeText(listActivity, "Downloading Info for "+keys.get(pos),Toast.LENGTH_SHORT).show();
                         //start the background task to download matches
-                        new TBA_EventDetailFetcher(listActivity,keys.get(pos)).execute("");
+                        new EventDetailFetcher(listActivity,keys.get(pos)).execute("");
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:

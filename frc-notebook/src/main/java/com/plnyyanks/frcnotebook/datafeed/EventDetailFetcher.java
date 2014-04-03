@@ -1,4 +1,4 @@
-package com.plnyyanks.frcnotebook.tba;
+package com.plnyyanks.frcnotebook.datafeed;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -17,19 +17,19 @@ import java.util.Iterator;
 /**
  * Created by phil on 2/19/14.
  */
-public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
+public class EventDetailFetcher extends AsyncTask<String,String,String> {
 
     private static Activity activity;
     private static String event;
 
-    public TBA_EventDetailFetcher(Activity parentActivity,String eventKey){
+    public EventDetailFetcher(Activity parentActivity, String eventKey){
         activity = parentActivity;
         event = eventKey;
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        return GET_Request.getWebData("http://www.thebluealliance.com/api/v1/event/details?event="+event);
+        return GET_Request.getWebData("http://www.thebluealliance.com/api/v1/event/details?event=" + event,true);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class TBA_EventDetailFetcher extends AsyncTask<String,String,String> {
 
     private long addMatches(JsonArray data, String eventKey){
         if(data.size()>0){
-            new TBA_MatchDetailFetcher(activity,eventKey).execute(new String[]{data.toString(),eventKey});
+            new MatchDetailFetcher(activity,eventKey).execute(new String[]{data.toString(),eventKey});
         }else{
             Toast.makeText(activity, "Info downloaded for " + this.event, Toast.LENGTH_SHORT).show();
         }

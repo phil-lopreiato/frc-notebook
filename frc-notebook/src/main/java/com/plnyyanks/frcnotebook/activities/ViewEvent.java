@@ -14,8 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.plnyyanks.frcnotebook.Constants;
@@ -23,8 +21,8 @@ import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetEventMatches;
 import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
+import com.plnyyanks.frcnotebook.datafeed.EventDetailFetcher;
 import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.tba.TBA_EventDetailFetcher;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
@@ -127,7 +125,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 return true;
             case R.id.action_update_event:
                 Toast.makeText(this,"Updating data for "+key,Toast.LENGTH_SHORT).show();
-                new TBA_EventDetailFetcher(this, key).execute("");
+                new EventDetailFetcher(this, key).execute("");
                 return true;
             case R.id.action_view_tba:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/event/" + key)));

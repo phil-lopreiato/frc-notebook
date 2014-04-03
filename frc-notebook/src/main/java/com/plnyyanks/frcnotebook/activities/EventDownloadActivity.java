@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
-import com.plnyyanks.frcnotebook.tba.TBA_EventFetcher;
+import com.plnyyanks.frcnotebook.datafeed.EventListFetcher;
 
 public class EventDownloadActivity extends Activity {
 
@@ -34,7 +34,7 @@ public class EventDownloadActivity extends Activity {
             prefs = PreferenceManager.getDefaultSharedPreferences(this);
         currentYear = prefs.getString("competition_season","2014");
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        new TBA_EventFetcher().execute(this);
+        new EventListFetcher().execute(this);
     }
 
     @Override

@@ -15,10 +15,14 @@
 
     <string name="pref_title_data_source">Match Data Source</string>
     <string-array name="pref_data_source_items">
+        <item>FIRST Website</item>
         <item>The Blue Alliance API v1</item>
+        <item>The Blue Alliance API v2</item>
     </string-array>
     <string-array name="pref_data_source_values">
+        <item>USFIRST</item>
         <item>TBAv1</item>
+        <item>TBAv2</item>
     </string-array>
 
     <string name="pref_title_predef_notes">Manage Predefined Notes</string>

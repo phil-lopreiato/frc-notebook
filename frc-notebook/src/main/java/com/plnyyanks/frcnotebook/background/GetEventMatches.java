@@ -81,7 +81,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         ArrayList<Note> notes;
         for (Match m : qualMatches) {
             notes = StartActivity.db.getAllNotes("",event.getEventKey(),m.getMatchKey());
-            qualGroup.children.add(m.getMatchType()+" "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
+            qualGroup.children.add(Match.LONG_TYPES.get(m.getMatchType())+" "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
             qualGroup.children_keys.add(m.getMatchKey());
         }
         groups.append(0,qualGroup);
@@ -89,7 +89,7 @@ public class GetEventMatches extends AsyncTask <String,String,String>{
         ListGroup elimGroup = new ListGroup(("Elimination Matches ("+elimMatches.size()+")"));
         for (Match m : elimMatches) {
             notes = StartActivity.db.getAllNotes("all",event.getEventKey(),m.getMatchKey());
-            elimGroup.children.add(m.getMatchType()+" "+m.getSetNumber()+" Match "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
+            elimGroup.children.add(Match.LONG_TYPES.get(m.getMatchType())+" "+m.getSetNumber()+" Match "+m.getMatchNumber()+(notes.size()>0?" ("+notes.size()+" notes)":""));
             elimGroup.children_keys.add(m.getMatchKey());
         }
         groups.append(1,elimGroup);

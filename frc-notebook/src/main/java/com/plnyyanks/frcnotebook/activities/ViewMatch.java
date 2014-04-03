@@ -18,10 +18,10 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
+import com.plnyyanks.frcnotebook.datafeed.MatchDetailFetcher;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.dialogs.AddNoteDialog;
-import com.plnyyanks.frcnotebook.tba.TBA_MatchDetailFetcher;
 
 public class ViewMatch extends Activity {
 
@@ -106,7 +106,7 @@ public class ViewMatch extends Activity {
 
             case R.id.action_update_match:
                 Toast.makeText(this, "Updating data for " + matchKey, Toast.LENGTH_SHORT).show();
-                new TBA_MatchDetailFetcher(activity, eventKey).execute(new String[]{"[\"" + matchKey + "\"]", eventKey});
+                new MatchDetailFetcher(activity, eventKey).execute(new String[]{"[\"" + matchKey + "\"]", eventKey});
                 return true;
 
             case R.id.action_add_note:
