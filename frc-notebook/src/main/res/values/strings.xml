@@ -83,6 +83,7 @@
     <string name="next_match_button">Next Match</string>
     <string name="action_update_match">Refresh</string>
     <string name="action_add_note">Add Note</string>
+    <string name="match_time">Match Time</string>
 
     <!-- Add Note Dialog -->
     <string name="add_note_title">Add a Note</string>

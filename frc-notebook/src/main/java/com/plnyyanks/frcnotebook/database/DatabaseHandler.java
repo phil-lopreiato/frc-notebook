@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -97,8 +97,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_BLUEALLIANCE + " TEXT,"
                 + KEY_REDALLIANCE + " TEXT,"
                 + KEY_BLUESCORE + " INTEGER,"
-                + KEY_REDSCORE + " INTEGER"
-                + KEY_MATCHTIME + "TEXT"
+                + KEY_REDSCORE + " INTEGER,"
+                + KEY_MATCHTIME + " TEXT"
                 + ")";
         db.execSQL(CREATE_MATCHES_TABLE);
 
@@ -152,6 +152,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String updateQuery = "ALTER TABLE "+TABLE_MATCHES+" ADD COLUMN "+KEY_MATCHTIME+" TEXT";
             sqLiteDatabase.execSQL(updateQuery);
 
+            return;
+        }
+
+        if(oldVersion<16 && newVersion>=16 ){
+            if(!columnExists(sqLiteDatabase,TABLE_MATCHES,KEY_MATCHTIME)) {
+                Log.d(Constants.LOG_TAG,"Adding match time column");
+                String updateQuery = "ALTER TABLE " + TABLE_MATCHES + " ADD COLUMN " + KEY_MATCHTIME + " TEXT";
+                sqLiteDatabase.execSQL(updateQuery);
+            }
             return;
         }
 
@@ -480,8 +489,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return matchList;
     }
     public boolean matchExists(String key) {
+        Log.d(Constants.LOG_TAG,"Testing key: "+key);
+        if(key==null) return false;
         Cursor cursor = db.query(TABLE_MATCHES, new String[]{KEY_MATCHKEY}, KEY_MATCHKEY + "=?", new String[]{key}, null, null, null, null);
         return cursor.moveToFirst();
+
     }
     public int updateMatch(Match in) {
 
@@ -1221,5 +1233,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+    private boolean columnExists(SQLiteDatabase inDatabase, String inTable, String columnToCheck) {
+        try{
+            //query 1 row
+            Cursor mCursor  = inDatabase.rawQuery( "SELECT * FROM " + inTable + " LIMIT 0", null );
+
+            //getColumnIndex gives us the index (0 to ...) of the column - otherwise we get a -1
+            if(mCursor.getColumnIndex(columnToCheck) != -1)
+                return true;
+            else
+                return false;
+
+        }catch (Exception Exp){
+            //something went wrong. Missing the database? The table?
+            Log.d("... - existsColumnInTable","When checking whether a column exists in the table, an error occurred: " + Exp.getMessage());
+            return false;
+        }
     }
 }

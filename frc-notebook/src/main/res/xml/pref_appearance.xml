@@ -24,5 +24,10 @@
             android:defaultValue="false"
             android:summary="@string/pref_desc_field_monitor"
             android:key="show_field_monitor" />
+        <CheckBoxPreference
+            android:title="@string/pref_title_match_times"
+            android:defaultValue="false"
+            android:summary="@string/pref_desc_match_times"
+            android:key="show_match_times" />
     </PreferenceCategory>
 </PreferenceScreen>

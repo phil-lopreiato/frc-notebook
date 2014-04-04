@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
+import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
@@ -36,7 +37,9 @@ public class EventDetailFetcher extends AsyncTask<String,String,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         loadIntoDatabase(s);
-
+        if(ShowLocalEvents.adapter!=null){
+            ShowLocalEvents.adapter.notifyDataSetChanged();
+        }
     }
 
     private void loadIntoDatabase(String data){

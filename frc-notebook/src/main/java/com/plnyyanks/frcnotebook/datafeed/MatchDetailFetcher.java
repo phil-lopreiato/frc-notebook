@@ -12,6 +12,7 @@ import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -37,7 +38,12 @@ public class MatchDetailFetcher extends AsyncTask<String,String,String>{
 
             case USFIRST:
             default:
-                USFIRSTParser.fetchMatches_USFIRST(strings[1].substring(0,4),strings[1].substring(4));
+                try {
+                    USFIRSTParser.fetchMatches_USFIRST(strings[1].substring(0,4),strings[1].substring(4));
+                } catch (IOException e) {
+                    //error, toast it
+                    return "Error downloading data";
+                }
                 break;
         }
         return "";
@@ -48,7 +54,10 @@ public class MatchDetailFetcher extends AsyncTask<String,String,String>{
         super.onPostExecute(s);
 
         //we've finished. now toast the user
-        Toast.makeText(context, "Info downloaded for " + this.eventKey, Toast.LENGTH_SHORT).show();
+        if(s.equals(""))
+            Toast.makeText(context, "Info downloaded for " + this.eventKey, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
     }
 
 

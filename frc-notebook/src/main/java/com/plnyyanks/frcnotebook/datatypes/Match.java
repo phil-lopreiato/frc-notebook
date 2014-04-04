@@ -16,7 +16,28 @@ import java.util.HashMap;
 public class Match implements Comparable<Match>{
 
     public enum MATCH_TYPES{
-        QUAL,QUARTER,SEMI,FINAL;
+        QUAL {
+            @Override
+            public MATCH_TYPES previous() {
+                return null; // see below for options for this line
+            };
+        },
+        QUARTER,
+        SEMI,
+        FINAL {
+            @Override
+            public MATCH_TYPES next() {
+                return null; // see below for options for this line
+            };
+        };
+        public MATCH_TYPES next() {
+            // No bounds checking required here, because the last instance overrides
+            return values()[ordinal() + 1];
+        }
+        public MATCH_TYPES previous() {
+            // No bounds checking required here, because the last instance overrides
+            return values()[ordinal() - 1];
+        }
     }
 
     public static final HashMap<MATCH_TYPES,String> SHORT_TYPES,LONG_TYPES;
@@ -74,10 +95,59 @@ public class Match implements Comparable<Match>{
     }
 
     public String getNextMatch(){
+        String eventKey = matchKey.split("_")[0];
+        MATCH_TYPES type = getMatchType();
         if(isOfType(MATCH_TYPES.QUAL)){
-            //return buildMatchKey(matchKey.split("_")[0],QUAL_)
+            String nextQual = buildMatchKey(eventKey,MATCH_TYPES.QUAL,1,matchNumber+1);
+            if(StartActivity.db.matchExists(nextQual)){
+                return nextQual;
+            }else{
+                
+                return buildMatchKey(eventKey,MATCH_TYPES.QUARTER,1,1);
+            }
+        }else{
+            String nextInSet = buildMatchKey(eventKey,type,setNumber+1,matchNumber);
+            if(StartActivity.db.matchExists(nextInSet)){
+                return nextInSet;
+            }else{
+                String nextSet = buildMatchKey(eventKey,type,1,matchNumber+1);
+                if(StartActivity.db.matchExists(nextSet)){
+                    return nextSet;
+                }else if(type.next() !=null){
+                    String nextRound = buildMatchKey(eventKey,type.next(),1,1);
+                    return nextRound;
+                }else{
+                    return null;
+                }
+            }
         }
-        return "";
+    }
+
+    public String getPreviousMatch(){
+        String eventKey = matchKey.split("_")[0];
+        MATCH_TYPES type = getMatchType();
+        if(isOfType(MATCH_TYPES.QUAL)){
+            String lastQual = buildMatchKey(eventKey,MATCH_TYPES.QUAL,1,matchNumber-1);
+            if(StartActivity.db.matchExists(lastQual)){
+                return lastQual;
+            }else{
+                return null;
+            }
+        }else{
+            String lastInSet = buildMatchKey(eventKey,type,setNumber-1,matchNumber);
+            if(StartActivity.db.matchExists(lastInSet)){
+                return lastInSet;
+            }else{
+                String lastSet = buildMatchKey(eventKey,type,1,matchNumber-1);
+                if(StartActivity.db.matchExists(lastSet)){
+                    return lastSet;
+                }else if(type.previous()!=null){
+                    return buildMatchKey(eventKey,type.previous(),1,1);
+                }else{
+                    return null;
+                }
+            }
+        }
     }
 
     public void setMatchKey(String matchKey) {
