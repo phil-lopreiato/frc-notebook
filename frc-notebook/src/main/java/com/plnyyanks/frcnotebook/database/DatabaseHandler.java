@@ -489,8 +489,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return matchList;
     }
     public boolean matchExists(String key) {
+        Log.d(Constants.LOG_TAG,"Testing key: "+key);
+        if(key==null) return false;
         Cursor cursor = db.query(TABLE_MATCHES, new String[]{KEY_MATCHKEY}, KEY_MATCHKEY + "=?", new String[]{key}, null, null, null, null);
         return cursor.moveToFirst();
+
     }
     public int updateMatch(Match in) {
 

@@ -79,8 +79,8 @@ public class ViewMatch extends Activity {
         parentEvent = match.getParentEvent();
         eventKey = parentEvent.getEventKey();
 
-        nextKey = matchKey.replaceFirst("\\d+$",Integer.toString(match.getMatchNumber() + 1));
-        previousKey = matchKey.replaceFirst("\\d+$",Integer.toString(match.getMatchNumber()-1));
+        nextKey = match.getNextMatch();
+        previousKey = match.getPreviousMatch();
         Log.d(Constants.LOG_TAG,"Set View Match Vars, matchKey:"+matchKey+", eventKey:"+eventKey+", next: "+nextKey+", prev: "+previousKey);
     }
 
