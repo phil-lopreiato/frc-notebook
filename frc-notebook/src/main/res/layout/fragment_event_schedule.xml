@@ -13,8 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/match_sort_order"
-        android:entries="@array/match_sort_options"
-        android:visibility="gone"/>
+        android:entries="@array/match_sort_options"/>
 
     <ProgressBar style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"

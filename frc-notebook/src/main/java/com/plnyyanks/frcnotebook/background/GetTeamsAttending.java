@@ -114,19 +114,16 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.d(Constants.LOG_TAG, "Sort selected: "+i);
             ArrayList<Team> teamList = StartActivity.db.getAllTeamAtEvent(eventKey);
             switch(i){
                 default:
                 case 0:
-                    Log.d(Constants.LOG_TAG,"Team Number sort");
                     //sort by team number
                     Team.setSortType(Team.COMPARE_TEAM_NUMBER);
                     Collections.sort(teamList);
 
                     break;
                 case 1:
-                    Log.d(Constants.LOG_TAG,"Num notes sort");
                     //sort by notes, asc
                     Team.setSortType(Team.COMPARE_NUM_NOTES);
                     Collections.sort(teamList);

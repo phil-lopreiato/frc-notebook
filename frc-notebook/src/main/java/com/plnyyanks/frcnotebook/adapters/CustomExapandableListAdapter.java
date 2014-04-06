@@ -43,6 +43,8 @@ public abstract class CustomExapandableListAdapter extends BaseExpandableListAda
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        if(groups == null || groups.get(groupPosition) == null)
+            return 0;
         return groups.get(groupPosition).children.size();
     }
 

@@ -15,6 +15,8 @@ import java.util.HashMap;
  */
 public class Match implements Comparable<Match>{
 
+    public enum SORT_TYPES{ MATCH_NO,NUM_NOTES_ASC,NUM_NOTES_DSC}
+
     public enum MATCH_TYPES{
         QUAL {
             @Override
@@ -65,6 +67,8 @@ public class Match implements Comparable<Match>{
     private int setNumber;
     private int blueScore;
     private int redScore;
+
+    private static SORT_TYPES sortType = SORT_TYPES.MATCH_NO;
 
 
     public Match(){
@@ -154,6 +158,10 @@ public class Match implements Comparable<Match>{
         this.matchKey = matchKey;
     }
 
+    public String getEventKey(){
+        return matchKey.split("_")[0];
+    }
+
     public MATCH_TYPES getMatchType() {
         if(isOfType(MATCH_TYPES.QUAL)) return MATCH_TYPES.QUAL;
         if(isOfType(MATCH_TYPES.QUARTER)) return MATCH_TYPES.QUARTER;
@@ -239,24 +247,46 @@ public class Match implements Comparable<Match>{
     }
 
     public String getTitle(boolean showEvent){
+        return getTitle(showEvent,false);
+    }
+
+    public String getTitle(boolean showEvent, boolean showNotes){
+        String out = "";
         if(showEvent){
-            return getParentEvent().getShortName()+" "+getTitle();
+            out += getParentEvent().getShortName()+" "+getTitle();
         }else{
-            return getTitle();
+            out += getTitle();
         }
+        if(showNotes){
+            int notes = StartActivity.db.getAllNotes("",getEventKey(),getMatchKey()).size();
+            out += (notes>0)?" ("+notes+" Notes)":"";
+        }
+        return out;
+    }
+
+    public static void setSortType(SORT_TYPES type){
+        sortType = type;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(Match match) {
-            if(this.setNumber == match.getSetNumber()){
-                return Integer.compare(this.matchNumber,match.getMatchNumber());
-            }else{
-                return Integer.compare(this.setNumber,match.getSetNumber());
-            }
+        switch(sortType) {
+            case MATCH_NO:
+            default:
+                if (this.setNumber == match.getSetNumber()) {
+                    return Integer.compare(this.matchNumber, match.getMatchNumber());
+                } else {
+                    return Integer.compare(this.setNumber, match.getSetNumber());
+                }
+            case NUM_NOTES_ASC:
+                return Integer.compare(StartActivity.db.getAllNotes("",getEventKey(),getMatchKey()).size(),StartActivity.db.getAllNotes("",match.getEventKey(),match.getMatchKey()).size());
+            case NUM_NOTES_DSC:
+                return Integer.compare(StartActivity.db.getAllNotes("",match.getEventKey(),match.getMatchKey()).size(),StartActivity.db.getAllNotes("",getEventKey(),getMatchKey()).size());
+        }
     }
 
     public static String buildMatchKey(String eventKey,MATCH_TYPES type,int set, int match){
-        return eventKey+"_"+SHORT_TYPES.get(type)+(type==MATCH_TYPES.QUAL?"":set)+"m"+match;
+        return eventKey + "_" + SHORT_TYPES.get(type) + (type == MATCH_TYPES.QUAL ? "" : set) + "m" + match;
     }
 }
