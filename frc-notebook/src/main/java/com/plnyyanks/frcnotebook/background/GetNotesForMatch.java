@@ -74,7 +74,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         TextView matchTitle = (TextView) activity.findViewById(R.id.match_title);
         String titleString = Match.LONG_TYPES.get(match.getMatchType()) + (match.getMatchType()== Match.MATCH_TYPES.QUAL ? " " : (" " + match.getSetNumber() + " Match ")) + match.getMatchNumber();
         matchTitle.setText(titleString);
-
+git c
         if(PreferenceHandler.getTimesEnabled()){
             String matchTime = match.getMatchTime();
             if(matchTime!=null && !matchTime.equals("")){
@@ -86,7 +86,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                     Date currentTime = new Date();
                     int hourdif = currentTime.getHours() - matchStart.getHours();
                     int mindif = currentTime.getMinutes() - matchStart.getMinutes();
-                    String timeString =  Math.abs(hourdif)+":"+Math.abs(mindif);
+                    String timeString =  Math.abs(hourdif)+":"+String.format("%02d", Math.abs(mindif));
                     boolean ahead;
                     if(hourdif>0 || (hourdif==0 && mindif>0)){
                         timeString += " behind";
