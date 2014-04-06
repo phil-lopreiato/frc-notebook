@@ -81,7 +81,13 @@ public class EventListFetcher extends AsyncTask<Activity,String,JsonArray>{
         for(Event e:list){
             currentWeek = e.getCompetitionWeek();
             if(eventWeek != currentWeek){
-                events.add(new ListHeader(" Week "+currentWeek));
+                String header;
+                if(currentWeek ==  9){
+                    header = year + " Championship Event";
+                }else{
+                    header = year + " Week " + currentWeek;
+                }
+                events.add(new ListHeader(header));
                 keys.add("week"+currentWeek);
             }
             eventWeek = currentWeek;

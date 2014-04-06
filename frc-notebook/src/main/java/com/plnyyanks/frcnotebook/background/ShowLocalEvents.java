@@ -71,7 +71,13 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
         for (Event e : storedEvents) {
             currentWeek = e.getCompetitionWeek();
             if (eventWeek != currentWeek) {
-                finalEvents.add(new ListHeader(e.getEventYear() + " Week " + currentWeek));
+                String header;
+                if(currentWeek ==  9){
+                    header = e.getEventYear() + " Championship Event";
+                }else{
+                    header = e.getEventYear() + " Week " + currentWeek;
+                }
+                finalEvents.add(new ListHeader(header));
                 finalKeys.add(e.getEventYear() + "_week" + currentWeek);
             }
             eventWeek = currentWeek;
