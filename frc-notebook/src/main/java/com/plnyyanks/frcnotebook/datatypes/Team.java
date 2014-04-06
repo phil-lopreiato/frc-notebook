@@ -119,6 +119,11 @@ public class Team implements Comparable<Team>{
         }
     }
 
+    public String buildTitle(boolean numNotes){
+        int notes = StartActivity.db.getAllNotes(teamKey).size();
+        return teamNumber+(numNotes&&notes>0?" ("+notes+" Notes)":"");
+    }
+
     public static void setSortType(int type){
         compareType = type;
     }

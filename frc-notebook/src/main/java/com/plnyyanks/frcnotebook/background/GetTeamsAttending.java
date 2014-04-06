@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.background;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewTeam;
@@ -26,9 +28,9 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
     private Activity activity;
     private String msg = "",eventKey;
-    private ArrayList<ListItem> teams;
-    private ArrayList<String> keys;
-    ListViewArrayAdapter adapter;
+    private static ArrayList<ListItem> teams;
+    private static ArrayList<String> keys;
+    private static ListViewArrayAdapter adapter;
 
     public GetTeamsAttending(Activity activity){
         super();
@@ -46,7 +48,7 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
         teams = new ArrayList<ListItem>();
         keys  = new ArrayList<String>();
         for (Team t : teamList) {
-            teams.add(new ListElement(Integer.toString(t.getTeamNumber()), t.getTeamKey()));
+            teams.add(new ListElement(t.buildTitle(true), t.getTeamKey()));
             keys.add(t.getTeamKey());
         }
 
@@ -112,15 +114,19 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            Log.d(Constants.LOG_TAG, "Sort selected: "+i);
             ArrayList<Team> teamList = StartActivity.db.getAllTeamAtEvent(eventKey);
             switch(i){
+                default:
                 case 0:
+                    Log.d(Constants.LOG_TAG,"Team Number sort");
                     //sort by team number
                     Team.setSortType(Team.COMPARE_TEAM_NUMBER);
                     Collections.sort(teamList);
 
                     break;
                 case 1:
+                    Log.d(Constants.LOG_TAG,"Num notes sort");
                     //sort by notes, asc
                     Team.setSortType(Team.COMPARE_NUM_NOTES);
                     Collections.sort(teamList);
@@ -136,11 +142,12 @@ public class GetTeamsAttending extends AsyncTask<String,String,String> {
             teams = new ArrayList<ListItem>();
             keys  = new ArrayList<String>();
             for (Team t : teamList) {
-                teams.add(new ListElement(Integer.toString(t.getTeamNumber()), t.getTeamKey()));
+                teams.add(new ListElement(t.buildTitle(true), t.getTeamKey()));
                 keys.add(t.getTeamKey());
             }
-
-            adapter.notifyDataSetChanged();
+            adapter = new ListViewArrayAdapter(activity,teams,keys);
+            ListView teamListView = (ListView) activity.findViewById(R.id.team_list);
+            teamListView.setAdapter(adapter);
         }
 
         @Override
