@@ -77,6 +77,7 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
     @Override
     protected void onResume() {
         checkThemeChanged(StartActivity.class);
+        new ShowLocalEvents(getActionBar().getSelectedNavigationIndex()).execute(this);
         super.onResume();
     }
 
