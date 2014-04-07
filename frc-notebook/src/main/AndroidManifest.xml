@@ -76,6 +76,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.SettingsActivity" />
         </activity>
+
+        <receiver android:name="com.plnyyanks.frcnotebook.widget.WidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/example_appwidget_info" />
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

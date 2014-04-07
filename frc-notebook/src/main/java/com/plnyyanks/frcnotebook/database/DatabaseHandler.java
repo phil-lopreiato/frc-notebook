@@ -291,6 +291,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return eventList;
     }
+    public ArrayList<Event> getUpcomingEvents(){
+        Date now = new Date();
+        Date weekFromNow = new Date(now.getTime() + (86400 * 7 * 1000));
+
+        ArrayList<Event> eventList = new ArrayList<Event>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Date currentDate = new Date();
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setEventKey(cursor.getString(0));
+                event.setEventName(cursor.getString(1));
+                event.setShortName(cursor.getString(2));
+                event.setEventYear(cursor.getInt(3));
+                event.setEventLocation(cursor.getString(4));
+                event.setEventStart(cursor.getString(5));
+                event.setEventEnd(cursor.getString(6));
+                if(now.before(event.getStartDate()) && weekFromNow.after(event.getEndDate()))
+                    eventList.add(event);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return eventList;
+    }
     public boolean eventExists(String key) {
         Cursor cursor = db.query(TABLE_EVENTS, new String[]{KEY_EVENTKEY}, KEY_EVENTKEY + "=?", new String[]{key}, null, null, null, null);
         return cursor.moveToFirst();
