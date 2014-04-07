@@ -61,6 +61,12 @@ public class PreferenceHandler {
         }
     }
 
+    public static String getAppVersion(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        return prefs.getString("app_version","");
+    }
+
     private static void updatePrefs(int old,int current){
         if(old<20 && current >= 20){
             setDataSource(Constants.DATAFEED_SOURCES.USFIRST);

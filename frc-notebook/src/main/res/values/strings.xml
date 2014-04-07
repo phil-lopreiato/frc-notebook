@@ -102,6 +102,9 @@
     <!-- Delete Dialog -->
     <string name="delete_title">Confirm Deletion</string>
 
+    <!-- License Dialog -->
+    <string name="license_title">Open Source License</string>
+
     <!-- Predefined Notes-->
     <string name="title_activity_predefined_note_manager">Predefined Notes</string>
     <string name="action_new_predef_note">Add</string>

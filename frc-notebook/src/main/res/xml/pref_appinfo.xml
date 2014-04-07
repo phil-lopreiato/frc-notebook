@@ -8,6 +8,12 @@
             android:title="@string/pref_title_github"
             android:summary="@string/pref_desc_github"
             android:key="github_link"/>
+        <Preference
+            android:title="@string/pref_view_changelog"
+            android:key="view_changelog"/>
+        <Preference
+            android:title="@string/pref_view_license"
+            android:key="view_license"/>
         <EditTextPreference
             android:key="app_version"
             android:title="@string/pref_app_version"

@@ -37,6 +37,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
+
 public class SettingsActivity extends PreferenceActivity {
     /**
      * Determines whether to always show the simplified settings UI, where
@@ -153,6 +154,10 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("app_version"));
         Preference githubLink = (Preference)findPreference("github_link");
         githubLink.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/plnyyanks/frc-notebook/")));
+        Preference changelogLink = (Preference)findPreference("view_changelog");
+        changelogLink.setIntent(new Intent(Intent.ACTION_VIEW,Uri.parse("https://github.com/plnyyanks/frc-notebook/releases/tag/v"+PreferenceHandler.getAppVersion())));
+        Preference showLicense = (Preference)findPreference("view_license");
+        showLicense.setIntent(new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.gnu.org/licenses/gpl-3.0.html")));
     }
 
     /** {@inheritDoc} */
