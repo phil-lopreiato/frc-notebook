@@ -127,6 +127,11 @@ public class Event implements Comparable<Event>{
         }
     }
 
+    public boolean isHappeningNow(){
+        Date now = new Date();
+        return now.after(startDate) && now.before(endDate);
+    }
+
     public int getEventYear() {
         return eventYear;
     }

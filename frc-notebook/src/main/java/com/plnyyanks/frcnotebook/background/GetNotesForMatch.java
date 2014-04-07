@@ -26,6 +26,7 @@ import com.plnyyanks.frcnotebook.adapters.ActionBarCallback;
 import com.plnyyanks.frcnotebook.adapters.AllianceExpandableListAdapter;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
+import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
@@ -71,10 +72,11 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         selectedNote = "";
 
         Match match = StartActivity.db.getMatch(thisMatchKey);
+        Event parentEvent = match.getParentEvent();
         TextView matchTitle = (TextView) activity.findViewById(R.id.match_title);
         String titleString = Match.LONG_TYPES.get(match.getMatchType()) + (match.getMatchType()== Match.MATCH_TYPES.QUAL ? " " : (" " + match.getSetNumber() + " Match ")) + match.getMatchNumber();
         matchTitle.setText(titleString);
-        if(PreferenceHandler.getTimesEnabled()){
+        if(PreferenceHandler.getTimesEnabled() && parentEvent.isHappeningNow()){
             String matchTime = match.getMatchTime();
             if(matchTime!=null && !matchTime.equals("")){
                 TextView timeOffset = (TextView)activity.findViewById(R.id.match_time);
