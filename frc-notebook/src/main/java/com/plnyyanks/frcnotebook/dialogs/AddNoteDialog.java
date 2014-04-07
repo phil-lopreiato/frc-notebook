@@ -5,7 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +16,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.plnyyanks.frcnotebook.Constants;
@@ -23,10 +28,12 @@ import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.adapters.AdapterInterface;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
 import com.plnyyanks.frcnotebook.background.GetNotesForTeam;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,6 +47,7 @@ public class AddNoteDialog extends DialogFragment {
     private static Match match;
     private static String eventKey;
     private static AdapterInterface redAdapter,blueAdapter,genericAdapter,teamViewAdapter;
+    private Uri fileUri;
 
     public AddNoteDialog(){
         super();
@@ -75,6 +83,12 @@ public class AddNoteDialog extends DialogFragment {
         builder.setTitle(R.string.add_note_title);
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(activity.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fragment_add_note,null);
+
+        ImageView camIcon = (ImageView)layout.findViewById(R.id.add_note_picture);
+        camIcon.setOnClickListener(new AddPictureListener());
+        if(PreferenceHandler.getTheme()==R.style.theme_dark){
+            camIcon.setBackgroundResource(R.drawable.ic_action_camera_dark);
+        }
 
         //if match is set, get the teams for this match
         final JsonArray redAlliance,
@@ -321,5 +335,24 @@ public class AddNoteDialog extends DialogFragment {
         return team_choices;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getActivity(),"Meow",Toast.LENGTH_SHORT);
+    }
+
+    class AddPictureListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            // create Intent to take a picture and return control to the calling application
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            fileUri = Uri.fromFile(new File(activity.getFilesDir(), "testImage.png")); //TODO better naming!
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+            // start the image capture Intent
+            startActivityForResult(intent, Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
 
 }
