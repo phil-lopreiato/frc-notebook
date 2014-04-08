@@ -9,10 +9,7 @@ import android.widget.RemoteViews;
 
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.datatypes.ListElement;
-import com.plnyyanks.frcnotebook.datatypes.ListItem;
 
 import java.util.ArrayList;
 
@@ -28,25 +25,28 @@ public class WidgetProvider extends AppWidgetProvider{
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+
+        // Create an Intent to launch the main activity
+        Intent intent = new Intent(context, StartActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        views.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
+
         for (int i=0; i<appWidgetIds.length; i++) {
             ArrayList<Event> events = StartActivity.db.getUpcomingEvents();
-            ListItem[] finalEvents = new ListItem[events.size()];
-            String[] finalKeys = new String[events.size()];
-            for (int j = 0; j < finalEvents.length; j++) {
-                finalEvents[j] = new ListElement(events.get(j).getEventName(), events.get(j).getEventKey());
-                finalKeys[j] = events.get(j).getEventKey();
+            for (Event e:events) {
+                RemoteViews eventView = new RemoteViews(context.getPackageName(),R.layout.widget_element);
+                eventView.setTextViewText(R.id.widget_event,e.getEventName());
+
+                Intent eventIntent = new Intent();
+                intent.setClass(context,EventClickReceiver.class);
+                intent.setAction(context.getString(R.string.action_view_event));
+                intent.putExtra("event_key",e.getEventKey());
+                eventView.setOnClickPendingIntent(R.id.widget_event, PendingIntent.getBroadcast(context, 0, eventIntent, 0));
+
+                views.addView(R.id.widget_layout,eventView);
             }
-
-            // Create an Intent to launch ExampleActivity
-            Intent intent = new Intent(context, StartActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-            ListViewArrayAdapter adapter = new ListViewArrayAdapter(context, finalEvents, finalKeys);
-            views.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
-
-            appWidgetManager.updateAppWidget(appWidgetIds[i],views);
+            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
         }
     }
 }

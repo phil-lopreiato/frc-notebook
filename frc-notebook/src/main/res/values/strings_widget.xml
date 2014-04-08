@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="action_view_event">com.plnyyanks.frcnotebook.VIEW_EVENT</string>
+    <string name="widget_header">Upcoming FRC Events</string>
+
+</resources>
