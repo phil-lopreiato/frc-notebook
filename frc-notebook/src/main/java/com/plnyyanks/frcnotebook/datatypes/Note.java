@@ -137,7 +137,8 @@ public class Note {
 
         if(displayMatch && !note.getMatchKey().equals("all")){
             Match parentMatch = StartActivity.db.getMatch(note.getMatchKey());
-            output += parentMatch.getTitle()+" ";
+            if(parentMatch!=null)
+                output += parentMatch.getTitle()+" ";
         }
         if(displayEvent||displayMatch||displayTeam){
             output += "- ";
