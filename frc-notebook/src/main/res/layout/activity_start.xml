@@ -17,21 +17,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/download_event_button"
-        android:id="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:onClick="openDownloader"
-        android:visibility="gone"/>
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/button"
         android:id="@+id/event_list"
         android:layout_below="@id/select_event_header">
 
