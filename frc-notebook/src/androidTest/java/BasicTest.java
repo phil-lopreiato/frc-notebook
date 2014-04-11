@@ -12,8 +12,19 @@ import junit.framework.TestCase;
 public class BasicTest extends TestCase {
 
     @SmallTest
-    public void testBasics() {
+    public void testBoolean() {
         assertEquals("Test true == true",true,true);
+        assertEquals("Test false == false",false,false);
+    }
+
+    @SmallTest
+    public void testMultiplication(){
         assertEquals("10 x 5 must be 50", 50, 10*5);
+    }
+
+    @SmallTest
+    public void testAddition(){
+        assertEquals("2+2=4?",2+2,4);
+        assertEquals("2-2=0",2-2,0);
     }
 }
