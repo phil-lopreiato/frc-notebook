@@ -1,17 +1,23 @@
 package com.plnyyanks.frcnotebook.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.activities.ViewMatch;
+import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.background.GetNotesForMatch;
+import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 import com.plnyyanks.frcnotebook.dialogs.EditNoteDialog;
@@ -26,6 +32,33 @@ public class AllianceExpandableListAdapter extends CustomExapandableListAdapter 
     public AllianceExpandableListAdapter(Activity act, SparseArray<ListGroup> groups) {
         super(act, groups);
         this.groups = groups;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.expandablelist_team_group, null);
+        }
+
+        final ListGroup group = (ListGroup) getGroup(groupPosition);
+        CheckedTextView textView = (CheckedTextView)convertView.findViewById(R.id.matchlist_group);
+        textView.setText(group.string);
+        textView.setChecked(isExpanded);
+
+        ImageView infoButton = (ImageView)convertView.findViewById(R.id.group_more_info);
+        if(PreferenceHandler.getTheme() == R.style.theme_dark){
+            infoButton.setBackgroundResource(R.drawable.ic_action_about_dark);
+        }
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String teamKey = "frc"+group.string.split(" ")[0];
+                ViewTeam.setTeam(teamKey);
+                activity.startActivity(new Intent(activity,ViewTeam.class));
+            }
+        });
+
+        return convertView;
     }
 
     @Override

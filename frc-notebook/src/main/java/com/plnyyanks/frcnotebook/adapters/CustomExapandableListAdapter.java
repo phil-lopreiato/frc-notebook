@@ -1,14 +1,18 @@
 package com.plnyyanks.frcnotebook.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.media.Image;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 
 import com.plnyyanks.frcnotebook.R;
+import com.plnyyanks.frcnotebook.activities.ViewTeam;
 import com.plnyyanks.frcnotebook.datatypes.ListGroup;
 import com.plnyyanks.frcnotebook.datatypes.Note;
 
@@ -74,14 +78,14 @@ public abstract class CustomExapandableListAdapter extends BaseExpandableListAda
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.expandablelist_group, null);
         }
         ListGroup group = (ListGroup) getGroup(groupPosition);
         ((CheckedTextView) convertView).setText(group.string);
         ((CheckedTextView) convertView).setChecked(isExpanded);
+
         return convertView;
     }
 
