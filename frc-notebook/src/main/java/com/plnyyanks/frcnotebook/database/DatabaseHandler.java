@@ -25,7 +25,7 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 16;
-    private static final String DATABASE_NAME = "VOL_NOTES",
+    public static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
             KEY_EVENTKEY    = "eventKey",
@@ -826,6 +826,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.close();
 
+        return noteList;
+    }
+    public ArrayList<Note> getAllNotes(String whereClause,String[] vars){
+        ArrayList<Note> noteList = new ArrayList<Note>();
+        Cursor cursor = db.query(TABLE_NOTES, new String[]{KEY_NOTEID, KEY_EVENTKEY, KEY_MATCHKEY, KEY_TEAMKEY, KEY_NOTE, KEY_NOTETIME,KEY_NOTEPARENT,KEY_NOTEPICS},
+                whereClause,vars, null, null, null, null);
+
+        //loop through rows
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                note.setId(cursor.getShort(0));
+                note.setEventKey(cursor.getString(1));
+                note.setMatchKey(cursor.getString(2));
+                note.setTeamKey(cursor.getString(3));
+                note.setNote(cursor.getString(4));
+                note.setTimestamp(cursor.getLong(5));
+                note.setParent(cursor.getShort(6));
+                note.setPictures(cursor.getString(7));
+
+                noteList.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey) {

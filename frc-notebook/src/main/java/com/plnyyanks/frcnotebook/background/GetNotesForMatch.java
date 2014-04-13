@@ -129,15 +129,14 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 teamKey = iterator.next().getAsString();
                 ArrayList<Note> notes = new ArrayList<Note>();
                 if(PreferenceHandler.showGeneralNotes()){
-                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
-                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                    notes.addAll(StartActivity.db.getAllNotes(StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all","all"}));
                 }
                 notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 
                 for (Note n : notes) {
-                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,true));
+                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, false,false));
                     teamHeader.children_keys.add(Short.toString(n.getId()));
                 }
 
@@ -151,8 +150,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 teamKey = iterator.next().getAsString();
                 ArrayList<Note> notes = new ArrayList<Note>();
                 if(PreferenceHandler.showGeneralNotes()){
-                    notes.addAll(StartActivity.db.getAllNotes(teamKey,"all","all"));
-                    notes.addAll(StartActivity.db.getAllNotes(teamKey,eventKey,"all"));
+                    notes.addAll(StartActivity.db.getAllNotes(StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all","all"}));
                 }
                 notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
@@ -160,7 +158,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
 
 
                 for (Note n : notes) {
-                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,true));
+                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, false,false));
                     teamHeader.children_keys.add(Short.toString(n.getId()));
                 }
 
@@ -169,7 +167,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
         }
 
         //generic notes go here
-        final ArrayList<Note> genericNotes = StartActivity.db.getAllNotes("all",eventKey,match.getMatchKey());
+        final ArrayList<Note> genericNotes = StartActivity.db.getAllNotes(StartActivity.db.KEY_TEAMKEY+"=? AND "+StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all",eventKey,match.getMatchKey()});
         Log.d(Constants.LOG_TAG,"Found "+genericNotes.size()+" generic notes");
         ArrayList<ListItem> genericVals = new ArrayList<ListItem>();
         ArrayList<String> genericKeys = new ArrayList<String>();
