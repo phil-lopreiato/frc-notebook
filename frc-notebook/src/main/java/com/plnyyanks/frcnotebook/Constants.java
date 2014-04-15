@@ -18,6 +18,7 @@ public class Constants {
     public static final String DB_BACKUP_NAME = "backup.json";
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    public static final int SELECT_FILE_REQUEST_CODE = 101;
 
     public static final HashMap<String, String> MATCH_LEVELS;
     static {

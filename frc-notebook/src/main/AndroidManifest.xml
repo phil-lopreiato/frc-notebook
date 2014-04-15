@@ -6,7 +6,8 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
 
     <application
@@ -21,6 +22,7 @@
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -50,7 +52,7 @@
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.SettingsActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings" >
         </activity>
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.ViewMatch"
@@ -71,10 +73,14 @@
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.PredefinedNoteManager"
             android:label="@string/title_activity_predefined_note_manager"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.SettingsActivity">
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.SettingsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.SettingsActivity" />
+        </activity>
+        <activity
+            android:name="com.plnyyanks.frcnotebook.activities.AddEvent"
+            android:label="@string/title_activity_add_event" >
         </activity>
     </application>
 

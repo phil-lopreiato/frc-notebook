@@ -160,15 +160,20 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return false;
+            case R.id.action_download_event:
+                openDownloader(null);
+                return false;
+            case R.id.action_create_evnet:
+                startActivity(new Intent(this, AddEvent.class));
+                return false;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if(id == R.id.action_download_event){
-            openDownloader(null);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public  DatabaseHandler getdb(){

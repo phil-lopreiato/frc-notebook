@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/event_title"
+                android:hint="@string/property_event_title"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_half_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/event_short"
+                android:layout_below="@+id/event_title"
+                android:layout_alignLeft="@+id/event_title"
+                android:layout_alignStart="@+id/event_title"
+                android:hint="@string/property_event_short"
+                android:layout_alignRight="@+id/event_title"
+                android:layout_alignEnd="@+id/event_title" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:id="@+id/event_key"
+                android:layout_below="@+id/event_short"
+                android:layout_alignLeft="@+id/event_short"
+                android:layout_alignStart="@+id/event_short"
+                android:layout_alignRight="@+id/event_short"
+                android:layout_alignEnd="@+id/event_short"
+                android:hint="@string/property_event_key" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/event_start"
+                android:hint="@string/property_event_start"
+                style="@android:style/Widget.DeviceDefault.Spinner"
+                android:onClick="showDatePicker"
+                android:layout_below="@+id/event_key"
+                android:layout_alignLeft="@+id/event_key"
+                android:layout_alignStart="@+id/event_key"
+                android:layout_alignRight="@+id/event_key"
+                android:layout_alignEnd="@+id/event_key" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/event_end"
+                android:hint="@string/property_event_end"
+                style="@android:style/Widget.DeviceDefault.Spinner"
+                android:onClick="showDatePicker"
+                android:layout_below="@+id/event_start"
+                android:layout_alignLeft="@+id/event_key"
+                android:layout_alignStart="@+id/event_key"
+                android:layout_alignRight="@+id/event_start"
+                android:layout_alignEnd="@+id/event_start" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/teams_attending"
+                android:layout_below="@+id/event_end"
+                android:layout_alignLeft="@+id/event_end"
+                android:layout_alignStart="@+id/event_end"
+                android:layout_alignRight="@+id/event_end"
+                android:layout_alignEnd="@+id/event_end"
+                android:hint="@string/property_teams_attending"
+                android:lines="2" />
+
+            <EditText
+                style="@android:style/Widget.DeviceDefault.Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:id="@+id/match_schedule"
+                android:hint="@string/property_matches"
+                android:layout_below="@+id/teams_attending"
+                android:layout_alignLeft="@+id/event_end"
+                android:layout_alignStart="@+id/event_end"
+                android:layout_alignRight="@+id/event_end"
+                android:layout_alignEnd="@+id/event_end"
+                android:onClick="getScheduleFile" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

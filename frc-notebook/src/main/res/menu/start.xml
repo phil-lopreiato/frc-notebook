@@ -8,6 +8,10 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always|withText" />
 
+    <item android:id="@+id/action_create_evnet"
+        android:orderInCategory="90"
+        android:title="@string/action_create_event"/>
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

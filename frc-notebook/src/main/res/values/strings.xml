@@ -18,7 +18,6 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_view_tba">View on TBA</string>
 
-
     <!-- Download Event Activity -->
     <string name="title_activity_event_download">Download Event Info</string>
     <string name="download_event_title">Select an Event</string>
@@ -31,6 +30,7 @@
     <string name="no_events_this_week_message">No stored events competing this week. Click the plus button above to download data for an event</string>
     <string name="delete_event_message">Are you sure you want to delete </string>
     <string name="view_all_notes_message">All Events</string>
+
     <string-array name="event_list_navi_options">
         <item>All Events</item>
         <item>Competing Now</item>
@@ -40,6 +40,7 @@
     <string name="title_activity_view_event">View Event</string>
     <string name="teams_attending_header">Teams Attending</string>
     <string name="team_fetch_error">Error getting teams from database</string>
+
     <string-array name="team_list_sort_options">
         <item>Sort by team number</item>
         <item>Sort by number of notes (ascending)</item>
@@ -96,7 +97,7 @@
     <string name="edit_note_team_title">Note on Team </string>
     <string name="edit_note_generic_title">Edit Note</string>
 
-    <!-- Field Monitor-->
+    <!-- Field Monitor -->
     <string name="title_activity_field_monitor">Field Monitor</string>
 
     <!-- Delete Dialog -->
@@ -105,10 +106,21 @@
     <!-- License Dialog -->
     <string name="license_title">Open Source License</string>
 
-    <!-- Predefined Notes-->
+    <!-- Predefined Notes -->
     <string name="title_activity_predefined_note_manager">Predefined Notes</string>
     <string name="action_new_predef_note">Add</string>
     <string name="delete_predef_note_message">Are you sure you want to delete this predefined note?</string>
     <string name="no_predef_notes">You don\'t have any predefined notes yet. Tap the plus in the action bar to add one</string>
+
+    <!-- Add Event Dialog -->
+    <string name="action_create_event">Create Unofficial Event</string>
+    <string name="title_activity_add_event">Add Event</string>
+    <string name="property_event_title">Event Title</string>
+    <string name="property_event_short">Short Event Title</string>
+    <string name="property_event_key">Event Key</string>
+    <string name="property_event_start">Start Date</string>
+    <string name="property_event_end">End Date</string>
+    <string name="property_teams_attending">Teams Attending\n(comma separated list, optional)</string>
+    <string name="property_matches">Match Schedule File (optional)</string>
 
 </resources>
