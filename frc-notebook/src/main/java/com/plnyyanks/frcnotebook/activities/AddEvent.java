@@ -63,7 +63,7 @@ public class AddEvent extends Activity {
         boolean result = false;
         for(String ext:validExtensions){
             result = result || file.matches("\\w+\\."+ext+"$");
-            
+
         }
         return result;
     }

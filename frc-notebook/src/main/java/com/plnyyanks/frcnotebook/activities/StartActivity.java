@@ -189,7 +189,7 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
     }
 
     public static void checkThemeChanged(Class<?> cls){
-        if(currentTheme != PreferenceHandler.getTheme()){
+        if(currentTheme != PreferenceHandler.getTheme() && startActivityContext != null){
             currentTheme = PreferenceHandler.getTheme();
             Intent intent = new Intent(startActivityContext, cls);
             startActivityContext.startActivity(intent);
