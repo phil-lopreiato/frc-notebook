@@ -936,7 +936,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
+        //Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey, String eventKey, String matchKey) {
@@ -993,7 +993,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
+        //Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
         return noteList;
     }
     public ArrayList<Note> getAllMatchNotes(String teamKey, String eventKey) {
@@ -1033,7 +1033,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
+        //Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
         return noteList;
     }
     public short noteExists(Note note) {

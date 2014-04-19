@@ -25,7 +25,16 @@ public class AddMatchesFromURL extends AsyncTask<String,String,String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Toast.makeText(activity,"Fetching matches...",Toast.LENGTH_SHORT).show();
+        try{
+            Toast.makeText(activity,"Fetching matches...",Toast.LENGTH_SHORT).show();
+        }catch(RuntimeException e){
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity,"Fetching matches...",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -33,23 +42,33 @@ public class AddMatchesFromURL extends AsyncTask<String,String,String> {
         String url = params[0],eventKey = params[1];
         String[] parts  = url.split("\\.");
         String extension = parts[parts.length-1];
-        if(extension.equals("html")){
+        if(extension.equals("html") || extension.equals("csv")){
             return USFIRSTParser.fetchMatchesFromURL(url, eventKey);
-        }else if(extension.equals("csv")){
-            //TODO CSV PARSING!
-            return "csv Parsing coming soon";
         }else{
             return "Unsupported filetype. Use .html or .csv";
         }
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(final String s) {
         super.onPostExecute(s);
-        if(!s.isEmpty()){
-            Toast.makeText(activity,s,Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(activity,"Matches added",Toast.LENGTH_SHORT).show();
+        try {
+            if (!s.isEmpty()) {
+                Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Matches added", Toast.LENGTH_SHORT).show();
+            }
+        }catch(RuntimeException e){
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!s.isEmpty()) {
+                        Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "Matches added", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }

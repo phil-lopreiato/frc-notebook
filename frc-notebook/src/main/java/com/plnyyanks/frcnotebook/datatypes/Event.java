@@ -53,7 +53,6 @@ public class Event implements Comparable<Event>{
             startDate = parseDate(eventStart);
             endDate = parseDate(eventEnd);
             endDate.setTime(endDate.getTime() + 24*60*60*1000);
-            Log.d(Constants.LOG_TAG,"Logged event with start date:"+startDate.toString());
         } catch (ParseException e) {
             startDate = new Date();
             endDate = new Date();
