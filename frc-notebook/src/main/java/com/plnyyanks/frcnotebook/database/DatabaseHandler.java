@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
     public static final String DATABASE_NAME = "VOL_NOTES",
 
     TABLE_EVENTS            = "events",
@@ -35,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_EVENTLOC    = "eventLocation",
             KEY_EVENTSTART  = "startDate",
             KEY_EVENTEND    = "endDate",
+            KEY_EVENTOFFICIAL= "official",
 
     TABLE_MATCHES           = "matches",
             KEY_MATCHTIME   = "time",
@@ -85,7 +86,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_EVENTYEAR + " INTEGER,"
                 + KEY_EVENTLOC + " TEXT,"
                 + KEY_EVENTSTART + " TEXT,"
-                + KEY_EVENTEND + " TEXT"
+                + KEY_EVENTEND + " TEXT,"
+                + KEY_EVENTOFFICIAL+ " INTEGER DEFAULT 1"
                 + ")";
         db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -164,6 +166,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return;
         }
 
+        if(oldVersion<17 && newVersion>=17){
+            if(!columnExists(sqLiteDatabase,TABLE_EVENTS,KEY_EVENTOFFICIAL)) {
+                Log.d(Constants.LOG_TAG,"Adding event official column");
+                String updateQuery = "ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_EVENTOFFICIAL + " INTEGER DEFAULT 1";
+                sqLiteDatabase.execSQL(updateQuery);
+            }
+            return;
+        }
+
         // on upgrade drop older tables
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
@@ -201,6 +212,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(KEY_EVENTLOC, in.getEventLocation());
             values.put(KEY_EVENTSTART, in.getEventStart());
             values.put(KEY_EVENTEND, in.getEventEnd());
+            values.put(KEY_EVENTOFFICIAL,in.isOfficial());
 
             //insert the row
             return db.insert(TABLE_EVENTS, null, values);
@@ -210,10 +222,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public Event getEvent(String key) {
 
-        Cursor cursor = db.query(TABLE_EVENTS, new String[]{KEY_EVENTKEY, KEY_EVENTNAME, KEY_EVENTSHORT, KEY_EVENTYEAR, KEY_EVENTLOC, KEY_EVENTSTART, KEY_EVENTEND},
+        Cursor cursor = db.query(TABLE_EVENTS, new String[]{KEY_EVENTKEY, KEY_EVENTNAME, KEY_EVENTSHORT, KEY_EVENTYEAR, KEY_EVENTLOC, KEY_EVENTSTART, KEY_EVENTEND,KEY_EVENTOFFICIAL},
                 KEY_EVENTKEY + "=?", new String[]{key}, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            Event event = new Event(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(3));
+            Event event = new Event(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(3),cursor.getInt(7)==1);
             cursor.close();
             return event;
         } else {
@@ -239,6 +251,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setEventLocation(cursor.getString(4));
                 event.setEventStart(cursor.getString(5));
                 event.setEventEnd(cursor.getString(6));
+                event.setOfficial(cursor.getInt(7)==1);
 
                 eventList.add(event);
             } while (cursor.moveToNext());
@@ -266,6 +279,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.setEventLocation(cursor.getString(4));
                 event.setEventStart(cursor.getString(5));
                 event.setEventEnd(cursor.getString(6));
+                event.setOfficial(cursor.getInt(7)==1);
                 if(currentDate.compareTo(event.getStartDate())>=0 && currentDate.compareTo(event.getEndDate())<=0)
                     eventList.add(event);
             } while (cursor.moveToNext());
@@ -305,6 +319,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EVENTLOC, in.getEventLocation());
         values.put(KEY_EVENTSTART, in.getEventStart());
         values.put(KEY_EVENTEND, in.getEventEnd());
+        values.put(KEY_EVENTOFFICIAL,in.isOfficial());
 
         return db.update(TABLE_EVENTS, values, KEY_EVENTKEY + " =?", new String[]{in.getEventKey()});
     }
@@ -329,6 +344,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 event.addProperty(KEY_EVENTLOC, cursor.getString(4));
                 event.addProperty(KEY_EVENTSTART, cursor.getString(5));
                 event.addProperty(KEY_EVENTEND, cursor.getString(6));
+                event.addProperty(KEY_EVENTOFFICIAL,cursor.getInt(7)==1);
 
                 output.add(event);
             } while (cursor.moveToNext());
@@ -352,6 +368,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             event.setEventLocation(e.get(KEY_EVENTLOC).getAsString());
             event.setEventStart(e.get(KEY_EVENTSTART).getAsString());
             event.setEventEnd(e.get(KEY_EVENTEND).getAsString());
+            event.setOfficial(e.get(KEY_EVENTOFFICIAL).getAsBoolean());
 
             addEvent(event);
         }
@@ -695,6 +712,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.close();
     }
+    public void addEventToTeam(String teamKey,String eventKey){
+        Team team = getTeam(teamKey);
+        if(team == null){
+            Log.w(Constants.LOG_TAG,"Team key "+teamKey+" not found");
+            return;
+        }
+        team.addEvent(eventKey);
+
+        updateTeam(team,false);
+    }
+    public void addEventToTeams(String[] teamKeys,String eventKey){
+        for(String team:teamKeys)
+            addEventToTeam(team,eventKey);
+    }
     public JsonArray exportTeams() {
         JsonArray output = new JsonArray();
         String selectQuery = "SELECT * FROM " + TABLE_TEAMS;
@@ -851,7 +882,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
+        //Log.d(Constants.LOG_TAG, " FOUND " + noteList.size() + " NOTES");
         return noteList;
     }
     public ArrayList<Note> getAllNotes(String teamKey) {

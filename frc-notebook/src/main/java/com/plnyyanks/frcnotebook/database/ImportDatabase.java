@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
+import com.plnyyanks.frcnotebook.dialogs.ProgressDialog;
 import com.plnyyanks.frcnotebook.json.JSONManager;
 
 import java.io.BufferedReader;
@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class ImportDatabase extends AsyncTask<String, String, String> {
     Activity activity;
-    DatabaseProgressDialog progress;
+    ProgressDialog progress;
 
     public ImportDatabase(Activity activity) {
         super();
@@ -29,7 +29,7 @@ public class ImportDatabase extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progress = new DatabaseProgressDialog("Importing Database");
+        progress = new ProgressDialog("Importing Database");
         progress.show(activity.getFragmentManager(), "importing_data");
     }
 

@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.dialogs.DatabaseProgressDialog;
+import com.plnyyanks.frcnotebook.dialogs.ProgressDialog;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 public class BackupDatabase extends AsyncTask<Boolean,String,String> {
 
     Activity activity;
-    DatabaseProgressDialog progress;
+    ProgressDialog progress;
 
     public BackupDatabase(Activity activity){
         super();
@@ -24,7 +24,7 @@ public class BackupDatabase extends AsyncTask<Boolean,String,String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progress = new DatabaseProgressDialog("Exporting Database");
+        progress = new ProgressDialog("Exporting Database");
         progress.show(activity.getFragmentManager(),"exporting_data");
     }
 

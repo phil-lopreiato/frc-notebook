@@ -38,6 +38,8 @@
 
     <!-- Team List -->
     <string name="title_activity_view_event">View Event</string>
+    <string name="action_add_matches">Add Matches from URL</string>
+    <string name="title_add_matches">Match Source URL</string>
     <string name="teams_attending_header">Teams Attending</string>
     <string name="team_fetch_error">Error getting teams from database</string>
 
@@ -115,12 +117,13 @@
     <!-- Add Event Dialog -->
     <string name="action_create_event">Create Unofficial Event</string>
     <string name="title_activity_add_event">Add Event</string>
+    <string name="action_add_event">Add Event</string>
     <string name="property_event_title">Event Title</string>
     <string name="property_event_short">Short Event Title</string>
     <string name="property_event_key">Event Key</string>
     <string name="property_event_start">Start Date</string>
     <string name="property_event_end">End Date</string>
     <string name="property_teams_attending">Teams Attending\n(comma separated list, optional)</string>
-    <string name="property_matches">Match Schedule File (optional)</string>
+    <string name="property_matches">Match Schedule URL (optional)</string>
 
 </resources>

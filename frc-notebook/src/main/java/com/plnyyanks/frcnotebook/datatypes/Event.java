@@ -3,6 +3,7 @@ package com.plnyyanks.frcnotebook.datatypes;
 import android.util.Log;
 
 import com.plnyyanks.frcnotebook.Constants;
+import com.plnyyanks.frcnotebook.datafeed.USFIRSTParser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ public class Event implements Comparable<Event>{
     private int    eventYear;
     private Date   startDate,
                    endDate;
+    private boolean official;
 
     public static final DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
     public static final SimpleDateFormat weekFormatter = new SimpleDateFormat("w");
@@ -37,7 +39,7 @@ public class Event implements Comparable<Event>{
 
     }
 
-    public Event(String eventKey, String eventName, String shortName, String eventLocation, String eventStart, String eventEnd, int eventYear) {
+    public Event(String eventKey, String eventName, String shortName, String eventLocation, String eventStart, String eventEnd, int eventYear,boolean official) {
         this.eventKey = eventKey;
         this.eventName = eventName;
         this.shortName = shortName;
@@ -45,6 +47,7 @@ public class Event implements Comparable<Event>{
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
         this.eventYear = eventYear;
+        this.official = official;
 
         try {
             startDate = parseDate(eventStart);
@@ -138,6 +141,14 @@ public class Event implements Comparable<Event>{
 
     public void setEventYear(int eventYear) {
         this.eventYear = eventYear;
+    }
+
+    public void setOfficial(boolean official){
+        this.official = official;
+    }
+
+    public boolean isOfficial(){
+        return official;
     }
 
     public ArrayList<Match> getQuals() {

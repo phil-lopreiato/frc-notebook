@@ -2,7 +2,9 @@ package com.plnyyanks.frcnotebook.datatypes;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
 import java.util.ArrayList;
@@ -52,7 +54,10 @@ public class Team implements Comparable<Team>{
         if(teamEvents == null)
             teamEvents = new ArrayList<String>();
 
-        teamEvents.add(eventKey);
+        if(!teamEvents.contains(eventKey)) {
+            Log.d(Constants.LOG_TAG, "Adding " + eventKey + " to " + teamKey);
+            teamEvents.add(eventKey);
+        }
     }
 
     public String getTeamKey() {

@@ -2,11 +2,13 @@ package com.plnyyanks.frcnotebook.datafeed;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -86,6 +88,9 @@ public class EventDetailFetcher extends AsyncTask<String,String,String> {
 
         String end = data.get("end_date").getAsString();
         event.setEventEnd(end);
+
+        Log.d(Constants.LOG_TAG, "official: " + data.get("official"));
+        event.setOfficial(data.get("official").getAsBoolean());
 
         return StartActivity.db.addEvent(event);
     }

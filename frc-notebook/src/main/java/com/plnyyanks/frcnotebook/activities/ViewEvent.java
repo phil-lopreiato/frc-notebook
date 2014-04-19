@@ -23,10 +23,12 @@ import com.plnyyanks.frcnotebook.background.GetTeamsAttending;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datafeed.EventDetailFetcher;
 import com.plnyyanks.frcnotebook.datatypes.Event;
+import com.plnyyanks.frcnotebook.dialogs.InputURLForMatchesDialog;
 
 public class ViewEvent extends Activity implements ActionBar.TabListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+    public static final int ID_ADD_MATCHES = 1124;
 
     private static String key;
     private static Event event;
@@ -109,6 +111,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_event, menu);
+
+        if(!event.isOfficial()){
+            //allow updating of scores via URL for unofficial events
+            menu.add(0,ID_ADD_MATCHES,Menu.NONE,R.string.action_add_matches);
+        }
         return true;
     }
 
@@ -129,6 +136,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 return true;
             case R.id.action_view_tba:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://thebluealliance.com/event/" + key)));
+                return true;
+            case ID_ADD_MATCHES:
+                new InputURLForMatchesDialog(getString(R.string.title_add_matches),event).show(getFragmentManager(),"addMatchesFromURL");
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

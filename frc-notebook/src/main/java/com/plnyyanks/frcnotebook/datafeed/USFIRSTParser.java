@@ -28,10 +28,25 @@ public class USFIRSTParser {
     public static void fetchMatches_USFIRST(String year, String eventKey) throws IOException {
         try {
             URL url = new URL(URL_PATTERN.replaceAll("%year%", year).replaceAll("%event%", eventKey));
-            parsePage(getPageContents(url),year+eventKey);
+            parsePage(getPageContents(url),year+eventKey,false);
         } catch (MalformedURLException e) {
             Log.e(Constants.LOG_TAG,"Malformed URL Excpetion while attempting to fetch match results for "+year+eventKey+"\n"+e.getStackTrace());
         }
+    }
+
+    public static String fetchMatchesFromURL(String address,String eventKey){
+        try {
+            if(!address.startsWith("http://") || !address.startsWith("https://")){
+                address = "http://"+address;
+            }
+            URL url = new URL(address);
+            parsePage(getPageContents(url),eventKey,true);
+        } catch (MalformedURLException e) {
+            return "Error: Malformed URL";
+        } catch (IOException e) {
+            return "Error: Unable to fetch matches";
+        }
+        return "";
     }
 
     private static Document getPageContents(URL url) throws IOException {
@@ -46,15 +61,15 @@ public class USFIRSTParser {
         return out;
     }
 
-    public static void parsePage(Document page,String eventKey) {
+    public static void parsePage(Document page,String eventKey,boolean addEventToTeams) {
         Elements tables = page.select("table");
         if (tables.size() < 4)
             return;
-        parseResultTable(tables.get(2),eventKey);
-        parseResultTable(tables.get(3),eventKey);
+        parseResultTable(tables.get(2),eventKey,addEventToTeams);
+        parseResultTable(tables.get(3),eventKey,addEventToTeams);
     }
 
-    private static void parseResultTable(Element table,String eventKey) {
+    private static void parseResultTable(Element table,String eventKey,boolean addEventToTeams) {
         Elements rows = table.select("tr"), cells;
         int len;
         String redScore, blueScore;
@@ -85,6 +100,15 @@ public class USFIRSTParser {
                 match.setMatchKey(Match.buildMatchKey(eventKey,match.getMatchType(),match.getSetNumber(),match.getMatchNumber()));
 
                 StartActivity.db.addMatch(match);
+                if(addEventToTeams) {
+                    Log.d(Constants.LOG_TAG,"Adding event to teams");
+                    StartActivity.db.addEventToTeams(new String[]{  "frc"+cells.get(len - 8).text(),
+                            "frc"+cells.get(len - 7).text(),
+                            "frc"+cells.get(len - 6).text(),
+                            "frc"+cells.get(len - 5).text(),
+                            "frc"+cells.get(len - 4).text(),
+                            "frc"+cells.get(len - 3).text()}, eventKey);
+                }
             }
         }
     }

@@ -64,6 +64,7 @@ public class ViewTeam extends Activity implements ActionBar.TabListener {
         for(String eventKey:events){
             Log.d(Constants.LOG_TAG, "Making AB Tab for " + eventKey);
             Event event = StartActivity.db.getEvent(eventKey);
+            if(event == null) continue;
             ActionBar.Tab eventTab = bar.newTab();
             eventTab.setTag(event.getEventKey());
             eventTab.setText(event.getShortName());
