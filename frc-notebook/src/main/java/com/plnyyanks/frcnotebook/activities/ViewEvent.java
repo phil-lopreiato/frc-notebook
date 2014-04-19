@@ -113,7 +113,7 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         getMenuInflater().inflate(R.menu.view_event, menu);
 
         if(!event.isOfficial()){
-            //allow updating of scores via URL for unofficial events
+            //allow updating of scores via URL for unofficial events, but not for official ones
             menu.add(0,ID_ADD_MATCHES,Menu.NONE,R.string.action_add_matches);
         }
         return true;
