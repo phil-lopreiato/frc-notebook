@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -373,7 +374,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             event.setEventName(e.get(KEY_EVENTNAME).getAsString());
             event.setShortName(e.get(KEY_EVENTSHORT).getAsString());
             event.setEventYear(e.get(KEY_EVENTYEAR).getAsInt());
-            event.setEventLocation(e.get(KEY_EVENTLOC).getAsString());
+            if(!(e.get(KEY_EVENTLOC) instanceof JsonNull))
+                event.setEventLocation(e.get(KEY_EVENTLOC).getAsString());
             event.setEventStart(e.get(KEY_EVENTSTART).getAsString());
             event.setEventEnd(e.get(KEY_EVENTEND).getAsString());
             event.setOfficial(e.get(KEY_EVENTOFFICIAL).getAsBoolean());
