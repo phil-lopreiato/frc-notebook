@@ -108,7 +108,7 @@ public class Event implements Comparable<Event>{
             startDate = parseDate(eventStart);
         } catch (ParseException e) {
             startDate = new Date();
-            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -127,7 +127,7 @@ public class Event implements Comparable<Event>{
             endDate.setTime(endDate.getTime() + 24*60*60*1000);
         } catch (ParseException e) {
             endDate = new Date();
-            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -209,6 +209,7 @@ public class Event implements Comparable<Event>{
     }
 
     public int getCompetitionWeek(){
+        if(startDate == null) return -1;
         int week = Integer.parseInt(weekFormatter.format(startDate))-8;
         return week<0?0:week;
     }
@@ -219,7 +220,7 @@ public class Event implements Comparable<Event>{
             int week = Integer.parseInt(weekFormatter.format(eventDate))-8;
             return week<0?0:week;
         } catch (ParseException e) {
-            Log.e(Constants.LOG_TAG,"Unable to parse date string. "+e.getStackTrace().toString());
+            Log.e(Constants.LOG_TAG,"Unable to parse date string. "+Arrays.toString(e.getStackTrace()));
             return -1;
         }
     }

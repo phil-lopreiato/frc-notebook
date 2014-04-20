@@ -68,17 +68,21 @@ public class ShowLocalEvents extends AsyncTask<Activity,String,String> {
             finalEvents.add(new ListElement(parentActivity.getString(R.string.view_all_notes_message),"all"));
             finalKeys.add("all");
         }
+        boolean offseasonHeader = false;
         for (Event e : storedEvents) {
             currentWeek = e.getCompetitionWeek();
-            if (eventWeek != currentWeek) {
+            if (eventWeek != currentWeek && !offseasonHeader) {
                 String header;
                 if(currentWeek ==  9){
                     header = e.getEventYear() + " Championship Event";
+                }else if(currentWeek>9) {
+                    header = e.getEventYear() + " Offseason";
                 }else{
                     header = e.getEventYear() + " Week " + currentWeek;
                 }
                 finalEvents.add(new ListHeader(header));
                 finalKeys.add(e.getEventYear() + "_week" + currentWeek);
+                offseasonHeader = currentWeek>9;
             }
             eventWeek = currentWeek;
 
