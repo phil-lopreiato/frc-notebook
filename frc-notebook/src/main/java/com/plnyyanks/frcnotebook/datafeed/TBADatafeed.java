@@ -137,11 +137,13 @@ public class TBADatafeed {
         } else {
             if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.TBAv2)
                 fetchMatches_TBAv2(eventKey);
-            else if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.USFIRST)
-                USFIRSTParser.fetchMatches_USFIRST(eventKey);
-            return "Info downloaded for " + eventKey;
+            else if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.USFIRST){
+                String matchResult = USFIRSTParser.fetchMatches_USFIRST(eventKey);
+                if(!matchResult.isEmpty())
+                    return matchResult;
+            }
         }
-
+        return "Info downloaded for " + eventKey;
     }
 
     public static LinkedHashMap<String, ListItem> fetchEvents_TBAv1(String year) {

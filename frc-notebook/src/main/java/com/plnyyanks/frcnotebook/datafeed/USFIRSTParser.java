@@ -31,19 +31,22 @@ import au.com.bytecode.opencsv.CSVReader;
 public class USFIRSTParser {
     private static final String URL_PATTERN = "http://www2.usfirst.org/%year%comp/events/%event%/matchresults.html";
 
-    public static void fetchMatches_USFIRST(String eventKey){
-        fetchMatches_USFIRST(eventKey.substring(0,4),eventKey.substring(4));
+    public static String fetchMatches_USFIRST(String eventKey){
+        return fetchMatches_USFIRST(eventKey.substring(0,4),eventKey.substring(4));
     }
 
-    public static void fetchMatches_USFIRST(String year, String eventKey){
+    public static String fetchMatches_USFIRST(String year, String eventKey){
         try {
             URL url = new URL(URL_PATTERN.replaceAll("%year%", year).replaceAll("%event%", eventKey));
             parsePage(getPageContents(url),year+eventKey,false);
         } catch (MalformedURLException e) {
             Log.e(Constants.LOG_TAG,"Malformed URL Exception while attempting to fetch match results for "+year+eventKey+"\n"+e.getStackTrace());
+            return "Malformed URL Exception while attempting to fetch match results for "+year+eventKey;
         } catch (IOException e) {
             Log.e(Constants.LOG_TAG,"IO Exception while attempting to fetch match results for "+year+eventKey+"\n"+e.getStackTrace());
+            return "IO Exception while attempting to fetch match results for "+year+eventKey;
         }
+        return "";
     }
 
     public static String fetchMatchesFromURL(String address,String eventKey){
