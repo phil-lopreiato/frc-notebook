@@ -32,18 +32,16 @@ public class MatchDetailFetcher extends AsyncTask<String,String,String>{
     protected String doInBackground(String... strings) {
         switch(PreferenceHandler.getDataSource()) {
             case TBAv1:
-            case TBAv2:
                 TBADatafeed.fetchMatches_TBAv1(strings[0]);
+                break;
+
+            case TBAv2:
+                TBADatafeed.fetchMatches_TBAv2(strings[0]);
                 break;
 
             case USFIRST:
             default:
-                try {
-                    USFIRSTParser.fetchMatches_USFIRST(strings[1].substring(0,4),strings[1].substring(4));
-                } catch (IOException e) {
-                    //error, toast it
-                    return "Error downloading data";
-                }
+                USFIRSTParser.fetchMatches_USFIRST(strings[1].substring(0,4),strings[1].substring(4));
                 break;
         }
         return "";

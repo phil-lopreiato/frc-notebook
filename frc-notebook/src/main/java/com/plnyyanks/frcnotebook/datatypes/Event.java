@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
@@ -30,7 +31,8 @@ public class Event implements Comparable<Event>{
                    endDate;
     private boolean official;
 
-    public static final DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+    public static final DateFormat     df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH),
+                                       df2= new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
     public static final SimpleDateFormat weekFormatter = new SimpleDateFormat("w");
 
     private ArrayList<Match> quals,quarterFinals,semiFinals,finals;
@@ -56,7 +58,7 @@ public class Event implements Comparable<Event>{
         } catch (ParseException e) {
             startDate = new Date();
             endDate = new Date();
-            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + e.getStackTrace());
+            Log.e(Constants.LOG_TAG, "Unable to parse event date. " + Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -223,8 +225,14 @@ public class Event implements Comparable<Event>{
     }
 
     private static Date parseDate(String dateString) throws ParseException {
-        return df.parse(dateString);
+        try {
+            return df.parse(dateString);
+        } catch (ParseException e) {
+            Log.d(Constants.LOG_TAG,"TBAv1 date parse failed. Trying with v2 format...");
+            return df2.parse(dateString);
+        }
     }
+
 
     @Override
     public int compareTo(Event event) {

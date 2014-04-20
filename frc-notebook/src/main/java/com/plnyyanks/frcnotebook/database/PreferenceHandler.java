@@ -36,6 +36,12 @@ public class PreferenceHandler {
         return prefs != null && prefs.getBoolean("show_match_times", false);
     }
 
+    public static String getYear(){
+        if(prefs==null)
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        return prefs.getString("competition_season","2014");
+    }
+
     public static boolean showMatchScores(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
