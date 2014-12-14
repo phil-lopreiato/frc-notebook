@@ -1,15 +1,14 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 25
         versionName "3.2.1"
-        testPackageName "com.plnyyanks.frcnotebook.tests"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     signingConfigs {
@@ -23,25 +22,17 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
-                def file = variant.outputFile
-                variant.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+                variant.outputs.each { output ->
+                    output.outputFile = new File(output.outputFile.parent, "frc-notebook-v" + defaultConfig.versionName + ".apk")
+                }
             }
         }
     }
     lintOptions {
         abortOnError false
-    }
-    sourceSets{
-        main{
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-        }
-        androidTest{
-
-        }
     }
 }
 
@@ -63,8 +54,8 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
-    compile files('libs/gson-2.2.4.jar')
-    compile files('libs/jsoup-1.7.3.jar')
-    compile files('libs/opencsv-2.3.jar')
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'org.jsoup:jsoup:1.7.3'
+    compile 'net.sf.opencsv:opencsv:2.3'
 }
