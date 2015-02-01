@@ -9,7 +9,8 @@
     <string name="submit">Submit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="current_year">2014</string>
+    <string name="current_year">2015</string>
+    <string name="license_label">Open Source Licenses</string>
 
     <!-- Actions -->
     <string name="action_settings">Settings</string>

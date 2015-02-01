@@ -82,6 +82,14 @@
             android:name="com.plnyyanks.frcnotebook.activities.AddEvent"
             android:label="@string/title_activity_add_event" >
         </activity>
+        <activity
+            android:name="com.plnyyanks.frcnotebook.activities.OpenSourceLicensesActivity"
+            android:label="@string/license_label"
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
+            </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

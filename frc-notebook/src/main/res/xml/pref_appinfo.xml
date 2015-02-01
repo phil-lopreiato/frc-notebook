@@ -11,12 +11,14 @@
         <Preference
             android:title="@string/pref_view_changelog"
             android:key="view_changelog"/>
-        <Preference
-            android:title="@string/pref_view_license"
-            android:key="view_license"/>
         <EditTextPreference
             android:key="app_version"
             android:title="@string/pref_app_version"
             android:selectable="false"/>
+        <Preference
+            android:key="licenses"
+            android:persistent="false"
+            android:selectable="true"
+            android:title="@string/license_label" />
     </PreferenceCategory>
 </PreferenceScreen>
