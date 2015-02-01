@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
-import com.plnyyanks.frcnotebook.database.PreferenceHandler;
 import com.plnyyanks.frcnotebook.datatypes.Event;
 import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
@@ -88,7 +87,7 @@ public class TBADatafeed {
         if (teamResult == -1) {
             return "Error writing teams to database";
         } else {
-            if(matches.size()>0){
+            if (matches.size() > 0) {
                 TBADatafeed.fetchMatches_TBAv1(matches.toString());
             }
 
@@ -97,9 +96,9 @@ public class TBADatafeed {
 
     }
 
-    public static String fetchEventDetails_TBAv2(String eventKey){
+    public static String fetchEventDetails_TBAv2(String eventKey) {
         String eventData = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/event/" + eventKey, true);
-        String teamData = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/event/" + eventKey+"/teams",true);
+        String teamData = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/event/" + eventKey + "/teams", true);
 
         JsonObject eventObject = JSONManager.getAsJsonObject(eventData);
         JsonArray teams = JSONManager.getasJsonArray(teamData);
@@ -138,14 +137,9 @@ public class TBADatafeed {
         if (teamResult == -1) {
             return "Error writing teams to database";
         } else {
-            if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.TBAv2)
-                fetchMatches_TBAv2(eventKey);
-            else if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.USFIRST){
-                String matchResult = USFIRSTParser.fetchMatches_USFIRST(eventKey);
-                if(!matchResult.isEmpty())
-                    return matchResult;
-            }
+            fetchMatches_TBAv2(eventKey);
         }
+
         return "Info downloaded for " + eventKey;
     }
 
@@ -225,11 +219,11 @@ public class TBADatafeed {
                 } else {
                     header = year + " Week " + currentWeek;
                 }
-                output.put("week" + currentWeek,new ListHeader(header));
+                output.put("week" + currentWeek, new ListHeader(header));
             }
             eventWeek = currentWeek;
 
-            output.put(e.getEventKey(),new ListElement(e.getEventName(), e.getEventKey()));
+            output.put(e.getEventKey(), new ListElement(e.getEventName(), e.getEventKey()));
         }
 
         return output;

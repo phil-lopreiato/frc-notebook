@@ -43,8 +43,8 @@ public class Constants {
     }
 
     public enum DATAFEED_SOURCES{
-        TBAv1,
+        //TBAv1,
         TBAv2,
-        USFIRST;
+        //USFIRST;
     }
 }

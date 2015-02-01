@@ -85,7 +85,7 @@ public class PreferenceHandler {
 
     private static void updatePrefs(int old,int current){
         if(old<20 && current >= 20){
-            setDataSource(Constants.DATAFEED_SOURCES.USFIRST);
+            setDataSource(Constants.DATAFEED_SOURCES.TBAv2);
         }
     }
 
@@ -93,9 +93,9 @@ public class PreferenceHandler {
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
         if(prefs == null)
-            return Constants.DATAFEED_SOURCES.USFIRST; //if still null...
+            return Constants.DATAFEED_SOURCES.TBAv2; //if still null...
 
-        return Constants.DATAFEED_SOURCES.valueOf(prefs.getString("data_source", Constants.DATAFEED_SOURCES.USFIRST.toString()));
+        return Constants.DATAFEED_SOURCES.valueOf(prefs.getString("data_source", Constants.DATAFEED_SOURCES.TBAv2.toString()));
     }
 
     public static void setDataSource(Constants.DATAFEED_SOURCES source){

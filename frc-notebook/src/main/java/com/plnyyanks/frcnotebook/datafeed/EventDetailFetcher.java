@@ -2,21 +2,9 @@ package com.plnyyanks.frcnotebook.datafeed;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.plnyyanks.frcnotebook.Constants;
-import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.background.ShowLocalEvents;
-import com.plnyyanks.frcnotebook.database.PreferenceHandler;
-import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.datatypes.Team;
-import com.plnyyanks.frcnotebook.json.JSONManager;
-
-import java.util.Iterator;
 
 /**
  * File created by phil on 2/19/2014.
@@ -38,10 +26,7 @@ public class EventDetailFetcher extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        if(PreferenceHandler.getDataSource() == Constants.DATAFEED_SOURCES.TBAv1)
-            return TBADatafeed.fetchEventDetails_TBAv1(event);
-        else
-            return TBADatafeed.fetchEventDetails_TBAv2(event);
+        return TBADatafeed.fetchEventDetails_TBAv2(event);
     }
 
     @Override
