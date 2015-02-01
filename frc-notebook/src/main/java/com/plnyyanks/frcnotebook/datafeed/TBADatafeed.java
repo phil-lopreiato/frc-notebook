@@ -1,7 +1,6 @@
 package com.plnyyanks.frcnotebook.datafeed;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,13 +19,12 @@ import com.plnyyanks.frcnotebook.json.JSONManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 /**
  * File created by phil on 4/2/14.
- * Copyright 2014, Phil Lopreiato
+ * Copyright 2015, Phil Lopreiato
  * This file is part of FRC Notebook.
  * FRC Notebook is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * FRC Notebook is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -196,36 +194,33 @@ public class TBADatafeed {
         return output;
     }
 
-    /* Can't do this without lots of API requests because v2 of the API only gives an array of event keys.
-          So we'll stick with v1 for this part now
-     */
-    public static HashMap<String, ListItem> fetchEvents_TBAv2(String year) {
-        /*String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/events/" + year, true);
+    public static LinkedHashMap<String, ListItem> fetchEvents_TBAv2(String year) {
+        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/events/" + year, true);
         JsonArray result = JSONManager.getasJsonArray(data);
 
         //now, add the events to the event picker activity
         Iterator<JsonElement> iterator = result.iterator();
 
         JsonObject element;
-        String eventName, eventKey;
         ArrayList<Event> list = new ArrayList<Event>();
         for (int i = 0; i < result.size() && iterator.hasNext(); i++) {
             Event e = new Event();
-            e.setEventKey(eventKey);
-            e.setEventName(eventName);
+            element = iterator.next().getAsJsonObject();
+            e.setEventKey(element.get("key").getAsString());
+            e.setEventName(element.get("name").getAsString());
             e.setEventStart(element.get("start_date").getAsString());
             list.add(e);
         }
 
         Collections.sort(list);
         int eventWeek = Integer.parseInt(Event.weekFormatter.format(new Date())),
-                currentWeek;*/
-        HashMap<String, ListItem> output = new HashMap<String, ListItem>();
-        /*for (Event e : list) {
+                currentWeek;
+        LinkedHashMap<String, ListItem> output = new LinkedHashMap<>();
+        for (Event e : list) {
             currentWeek = e.getCompetitionWeek();
             if (eventWeek != currentWeek) {
                 String header;
-                if (currentWeek == 9) {
+                if (currentWeek == 9) { //FIXME this might change in the future
                     header = year + " Championship Event";
                 } else {
                     header = year + " Week " + currentWeek;
@@ -234,9 +229,9 @@ public class TBADatafeed {
             }
             eventWeek = currentWeek;
 
-            output.put(e.getEventKey(),new ListElement(e.getEventName(), e.getEventKey()))
+            output.put(e.getEventKey(),new ListElement(e.getEventName(), e.getEventKey()));
         }
-        */
+
         return output;
     }
 

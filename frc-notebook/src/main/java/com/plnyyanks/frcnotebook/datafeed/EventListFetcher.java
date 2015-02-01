@@ -3,35 +3,20 @@ package com.plnyyanks.frcnotebook.datafeed;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.adapters.ListViewArrayAdapter;
 import com.plnyyanks.frcnotebook.database.PreferenceHandler;
-import com.plnyyanks.frcnotebook.datatypes.Event;
-import com.plnyyanks.frcnotebook.datatypes.ListElement;
 import com.plnyyanks.frcnotebook.datatypes.ListHeader;
 import com.plnyyanks.frcnotebook.datatypes.ListItem;
-import com.plnyyanks.frcnotebook.json.JSONManager;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 /**
@@ -56,12 +41,12 @@ public class EventListFetcher extends AsyncTask<Activity,String,String>{
         listActivity = args[0];
         year = PreferenceHandler.getYear();
         LinkedHashMap<String,ListItem> data;
-        data = TBADatafeed.fetchEvents_TBAv1(year);
+        data = TBADatafeed.fetchEvents_TBAv2(year);
 
-        keys = new ArrayList<String>();
+        keys = new ArrayList<>();
         keys.addAll(data.keySet());
 
-        events = new ArrayList<ListItem>();
+        events = new ArrayList<>();
         events.addAll(data.values());
 
         return "";

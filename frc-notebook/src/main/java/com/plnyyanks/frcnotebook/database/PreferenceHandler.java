@@ -9,6 +9,8 @@ import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.R;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 
+import java.util.Calendar;
+
 /**
  * File created by phil on 3/1/14.
  * Copyright 2014, Phil Lopreiato
@@ -47,7 +49,7 @@ public class PreferenceHandler {
     public static String getYear(){
         if(prefs==null)
             prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
-        return prefs.getString("competition_season","2014");
+        return prefs.getString("competition_season", Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
     }
 
     public static boolean showMatchScores(){
