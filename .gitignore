@@ -1,9 +1,6 @@
 /local.properties
 .DS_Store
 
-# Keys
-*
-
 # Local Properties
 android/src/main/assets/tba.properties
 
