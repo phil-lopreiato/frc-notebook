@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +37,7 @@ import java.util.Date;
 public class StartActivity extends Activity implements ActionBar.OnNavigationListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+    public static final String HAS_LAUNCHED = "has_launched";
 
     public static Context startActivityContext;
     public static Activity activity;
@@ -45,6 +46,11 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
 
     static final int REQUEST_TAKE_PHOTO = 1;
 
+    public static Intent newInstance(Context context){
+        Intent intent = new Intent(context, StartActivity.class);
+        return intent;
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         startActivityContext = this;
@@ -60,6 +66,10 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
 
         getdb();
         PreferenceHandler.setAppVersion(this);
+        
+        if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(HAS_LAUNCHED, false)){
+            startActivity(AuthenticatorActivity.newInstance(this, true));
+        }
 
         //configure action bar to show drop down navigation
         final ActionBar bar = getActionBar();

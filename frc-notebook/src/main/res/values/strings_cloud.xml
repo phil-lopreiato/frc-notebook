@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_authenticator">Sign in</string>
+    <string name="account_type">com.plnyyanks.frcnotebook.account.TBAACCOUNT</string>
+
+    <!-- Strings related to login -->
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="not_now">Not Now</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="gms_not_supported">Your device does not support cloud features</string>
+    <string name="cloud_title">Cloud Settings</string>
+    <string name="cloud_description">FRC Notebook includes a cloud-based features that allow you to share and sync notes between your own devices and your friends\'!\n
+    Enabling cloud features requires you to grant access to your Google Account.</string>
+    <string name="enable_cloud">Enable Cloud Features</string>
+    
+</resources>

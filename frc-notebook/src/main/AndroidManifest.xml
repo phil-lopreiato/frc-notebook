@@ -2,14 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.plnyyanks.frcnotebook" >
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- GCM stuff -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.plnyyanks.frcnotebook.permission.C2D_MESSAGE" />
+
+    <!-- Device Accounts -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -90,8 +99,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
             </activity>
-    </application>
+        <activity
+            android:name=".activities.AuthenticatorActivity"
+            android:label="@string/title_activity_authenticator"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <service
+            android:name="com.plnyyanks.frcnotebook.accounts.AccountAuthenticatorService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <receiver
+            android:name="com.plnyyanks.frcnotebook.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.thebluealliance.androidclient" />
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>

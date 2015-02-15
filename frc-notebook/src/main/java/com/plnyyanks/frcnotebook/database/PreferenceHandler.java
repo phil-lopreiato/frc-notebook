@@ -105,4 +105,12 @@ public class PreferenceHandler {
 
         prefs.edit().putString("data_source",source.toString()).commit();
     }
+    
+    public static void setHasLoaded(boolean val){
+        if(prefs == null){
+            prefs = PreferenceManager.getDefaultSharedPreferences(StartActivity.startActivityContext);
+        }
+        if(prefs == null) return;
+        prefs.edit().putBoolean(StartActivity.HAS_LAUNCHED, val).commit();
+    }
 }
