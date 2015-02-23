@@ -44,7 +44,6 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
     public static void setEvent(String eventKey){
         key = eventKey;
         event = StartActivity.db.getEvent(key);
-
     }
 
     @Override
@@ -133,6 +132,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id){
+            case R.id.action_add_collaborator:
+                startActivity(CollaboratorsActivity.newInstance(this, key));
+                return true;
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);

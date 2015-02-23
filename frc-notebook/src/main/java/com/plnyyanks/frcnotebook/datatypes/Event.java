@@ -3,7 +3,6 @@ package com.plnyyanks.frcnotebook.datatypes;
 import android.util.Log;
 
 import com.plnyyanks.frcnotebook.Constants;
-import com.plnyyanks.frcnotebook.datafeed.USFIRSTParser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -231,10 +230,10 @@ public class Event implements Comparable<Event>{
 
     private static Date parseDate(String dateString) throws ParseException {
         try {
-            return df.parse(dateString);
-        } catch (ParseException e) {
-            Log.d(Constants.LOG_TAG,"TBAv1 date parse failed. Trying with v2 format...");
             return df2.parse(dateString);
+        } catch (ParseException e) {
+            Log.d(Constants.LOG_TAG,"TBAv2 date parse failed. Trying with v1 format...");
+            return df.parse(dateString);
         }
     }
 

@@ -126,5 +126,9 @@
     <string name="property_event_end">End Date</string>
     <string name="property_teams_attending">Teams Attending\n(comma separated list, optional)</string>
     <string name="property_matches">Match Schedule URL (optional)</string>
+    
+    <!-- Collaborators -->
+    <string name="title_activity_collaborators">Collaborators Activity</string>
+    <string name="action_add_collaborator">Add Collaborator</string>
 
 </resources>

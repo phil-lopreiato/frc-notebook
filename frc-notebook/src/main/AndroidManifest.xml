@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -27,7 +27,7 @@
         android:versionCode="25"
         android:versionName="3.2.1" >
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.StartActivity"
+            android:name=".activities.StartActivity"
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,76 +36,77 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.EventDownloadActivity"
+            android:name=".activities.EventDownloadActivity"
             android:label="@string/title_activity_event_download"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.ViewEvent"
+            android:name=".activities.ViewEvent"
             android:label="@string/title_activity_view_event"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.ViewTeam"
+            android:name=".activities.ViewTeam"
             android:label="@string/title_activity_view_team"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
+            android:parentActivityName=".activities.ViewEvent" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.ViewEvent" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.ViewMatch"
+            android:name=".activities.ViewMatch"
             android:label="@string/title_activity_view_match"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewEvent" >
+            android:parentActivityName=".activities.ViewEvent" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.ViewEvent" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.FieldMonitorActivity"
+            android:name=".activities.FieldMonitorActivity"
             android:label="@string/title_activity_field_monitor"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch" >
+            android:parentActivityName=".activities.ViewMatch" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.ViewMatch" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.PredefinedNoteManager"
+            android:name=".activities.PredefinedNoteManager"
             android:label="@string/title_activity_predefined_note_manager"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.SettingsActivity" >
+            android:parentActivityName=".activities.SettingsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.SettingsActivity" />
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.AddEvent"
+            android:name=".activities.AddEvent"
             android:label="@string/title_activity_add_event" >
         </activity>
         <activity
-            android:name="com.plnyyanks.frcnotebook.activities.OpenSourceLicensesActivity"
+            android:name=".activities.OpenSourceLicensesActivity"
             android:label="@string/license_label"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.StartActivity" >
+            android:parentActivityName=".activities.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.StartActivity" />
-            </activity>
+        </activity>
         <activity
             android:name=".activities.AuthenticatorActivity"
             android:label="@string/title_activity_authenticator"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <service
-            android:name="com.plnyyanks.frcnotebook.accounts.AccountAuthenticatorService"
-            android:exported="false">
+            android:name=".accounts.AccountAuthenticatorService"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -114,15 +115,22 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
         <receiver
-            android:name="com.plnyyanks.frcnotebook.gcm.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:name=".gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
                 <category android:name="com.thebluealliance.androidclient" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".activities.CollaboratorsActivity"
+            android:label="@string/title_activity_collaborators"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
     </application>
 
 </manifest>
