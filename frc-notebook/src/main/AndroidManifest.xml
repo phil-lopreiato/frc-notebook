@@ -65,7 +65,8 @@
         <activity
             android:name="com.plnyyanks.frcnotebook.activities.FieldMonitorActivity"
             android:label="@string/title_activity_field_monitor"
-            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch" >
+            android:parentActivityName="com.plnyyanks.frcnotebook.activities.ViewMatch"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.plnyyanks.frcnotebook.activities.ViewMatch" />
