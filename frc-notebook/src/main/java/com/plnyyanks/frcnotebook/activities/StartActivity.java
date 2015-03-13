@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -117,6 +116,10 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.start, menu);
+        MenuItem fieldMonitor = menu.findItem(R.id.action_field_monitor);
+        if(fieldMonitor != null && !PreferenceHandler.getFMEnabled()){
+            fieldMonitor.setVisible(false);
+        }
         return true;
     }
 
@@ -171,13 +174,16 @@ public class StartActivity extends Activity implements ActionBar.OnNavigationLis
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
-                return false;
+                return true;
             case R.id.action_download_event:
                 openDownloader(null);
-                return false;
+                return true;
             case R.id.action_create_evnet:
                 startActivity(new Intent(this, AddEvent.class));
-                return false;
+                return true;
+            case R.id.action_field_monitor:
+                startActivity(new Intent(this, FieldMonitorActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

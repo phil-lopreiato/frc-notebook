@@ -8,6 +8,11 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always|withText" />
 
+    <item android:id="@+id/action_field_monitor"
+        android:title="Field Monitor"
+        android:orderInCategory="80"
+        android:showAsAction="never" />
+    
     <item android:id="@+id/action_create_evnet"
         android:orderInCategory="90"
         android:title="@string/action_create_event"/>

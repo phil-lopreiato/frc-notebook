@@ -12,6 +12,11 @@
         android:orderInCategory="90"
         android:showAsAction="never"/>
 
+    <item android:id="@+id/action_field_monitor"
+        android:title="Field Monitor"
+        android:orderInCategory="80"
+        android:showAsAction="never" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

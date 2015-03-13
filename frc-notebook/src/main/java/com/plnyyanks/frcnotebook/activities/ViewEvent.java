@@ -123,6 +123,11 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
             //allow updating of scores via URL for unofficial events, but not for official ones
             menu.add(0,ID_ADD_MATCHES,Menu.NONE,R.string.action_add_matches);
         }
+
+        MenuItem fieldMonitor = menu.findItem(R.id.action_field_monitor);
+        if(fieldMonitor != null && !PreferenceHandler.getFMEnabled()){
+            fieldMonitor.setVisible(false);
+        }
         return true;
     }
 
@@ -149,6 +154,9 @@ public class ViewEvent extends Activity implements ActionBar.TabListener {
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.action_field_monitor:
+                startActivity(new Intent(this, FieldMonitorActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
