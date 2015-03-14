@@ -3,10 +3,16 @@ package com.plnyyanks.frcnotebook.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.plnyyanks.frcnotebook.R;
 
@@ -20,6 +26,7 @@ import com.plnyyanks.frcnotebook.R;
 public class FieldMonitorActivity extends Activity {
 
     WebView webview;
+    ProgressBar loadProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +35,50 @@ public class FieldMonitorActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         webview = (WebView)findViewById(R.id.field_monitor_webview);
+        loadProgress = (ProgressBar)findViewById(R.id.webview_progress);
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setLoadWithOverviewMode(true); // load fully zoomed out
+        webview.getSettings().setBuiltInZoomControls(true);
+        webview.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress)
+            {
+                if(progress < 100 && loadProgress.getVisibility() == ProgressBar.GONE){
+                    loadProgress.setVisibility(ProgressBar.VISIBLE);
+                    loadProgress.setVisibility(View.VISIBLE);
+                }
+                loadProgress.setProgress(progress);
+                if(progress == 100) {
+                    loadProgress.setVisibility(ProgressBar.GONE);
+                    loadProgress.setVisibility(View.GONE);
+                }
+            }
+        });
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
         webview.loadUrl("http://10.0.100.5/FieldMonitor");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        if(event.getAction() == KeyEvent.ACTION_DOWN){
+            switch(keyCode){
+                case KeyEvent.KEYCODE_BACK:
+                    if(webview.canGoBack()){
+                        webview.goBack();
+                    }else{
+                        finish();
+                    }
+                    return true;
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
