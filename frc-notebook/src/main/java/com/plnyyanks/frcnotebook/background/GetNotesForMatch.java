@@ -135,6 +135,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
                 ArrayList<Note> notes = new ArrayList<Note>();
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey));
                 if(PreferenceHandler.showGeneralNotes()){
                     notes.addAll(StartActivity.db.getAllNotes(StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all","all"}));
                 }
@@ -143,7 +144,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 
                 for (Note n : notes) {
-                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, false,false));
+                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,false));
                     teamHeader.children_keys.add(Short.toString(n.getId()));
                 }
 
@@ -156,6 +157,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
             for (int i = 0; iterator.hasNext(); i++) {
                 teamKey = iterator.next().getAsString();
                 ArrayList<Note> notes = new ArrayList<Note>();
+                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey));
                 if(PreferenceHandler.showGeneralNotes()){
                     notes.addAll(StartActivity.db.getAllNotes(StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all","all"}));
                 }
@@ -165,7 +167,7 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
 
 
                 for (Note n : notes) {
-                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, false,false));
+                    teamHeader.children.add(Note.buildMatchNoteTitle(n, false, true,false));
                     teamHeader.children_keys.add(Short.toString(n.getId()));
                 }
 
