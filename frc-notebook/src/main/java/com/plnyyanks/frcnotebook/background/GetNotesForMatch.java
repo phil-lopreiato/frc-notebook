@@ -161,7 +161,6 @@ public class GetNotesForMatch extends AsyncTask<String, String, String> {
                 if(PreferenceHandler.showGeneralNotes()){
                     notes.addAll(StartActivity.db.getAllNotes(StartActivity.db.KEY_EVENTKEY+"=? AND "+ StartActivity.db.KEY_MATCHKEY + "=?",new String[]{"all","all"}));
                 }
-                notes.addAll(StartActivity.db.getAllNotes(teamKey, eventKey, thisMatchKey));
                 int size = notes.size();
                 ListGroup teamHeader = new ListGroup(teamKey.substring(3)+(size>0?(" ("+ notes.size()+")"):""));
 
