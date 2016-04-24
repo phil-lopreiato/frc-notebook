@@ -10,7 +10,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 29
-        versionName "3.3.3"
+        versionName "3.3.4"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     compileOptions {
@@ -19,9 +19,9 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("../../keystore.jks")
-            keyAlias "frc-notebook"
-
+            storeFile file("somefile.jks")
+            keyAlias "notRealAlias"
+            
             storePassword "notRealPassword"
             keyPassword "notRealPassword"
         }
@@ -53,13 +53,17 @@ android {
 
 
 task askForPasswords << {
-    // Must create String because System.readPassword() returns char[]
-    // (and assigning that below fails silently)
-    def storePw = new String(System.console().readPassword("\nKeystore password: "))
-    def keyPw  = new String(System.console().readPassword("Key password: "))
-
-    android.signingConfigs.release.storePassword = storePw
-    android.signingConfigs.release.keyPassword = keyPw
+    // add in signing keys from local.properties
+    def config = new Properties()
+    def propFile = file("../local.properties")
+    System.out.println("Loading property file: " + propFile.absolutePath)
+    if (propFile.canRead()) {
+        config.load(new FileInputStream(propFile))
+        android.signingConfigs.release.storeFile = file(config["release.key"])
+        android.signingConfigs.release.storePassword = config["release.key.password"]
+        android.signingConfigs.release.keyAlias = config["release.key.alias"]
+        android.signingConfigs.release.keyPassword = config["release.key.aliasPass"]
+    }
 }
 
 tasks.whenTaskAdded { theTask ->
