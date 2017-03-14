@@ -2,7 +2,7 @@
 .DS_Store
 
 # Local Properties
-android/src/main/assets/tba.properties
+frc-notebook/src/main/assets/*.properties
 
 # Built application files
 *.apk
