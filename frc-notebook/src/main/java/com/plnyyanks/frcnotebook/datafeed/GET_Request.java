@@ -1,18 +1,14 @@
 package com.plnyyanks.frcnotebook.datafeed;
 
-import android.util.Log;
-
 import com.plnyyanks.frcnotebook.Constants;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * File created by phil on 2/18/2014.
@@ -24,18 +20,17 @@ import java.io.InputStreamReader;
 public class GET_Request {
     public static String getWebData(String url, boolean tbaheader){
 
-        InputStream is = null;
-        String result = "";
+        InputStream is;
+        String result;
 
         // HTTP
         try {
-            HttpClient httpclient = new DefaultHttpClient(); // for port 80 requests!
-            HttpGet httpget = new HttpGet(url);
+            Log.d(Constants.LOG_TAG, "Fetching " + url);
+            URL httpget = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) httpget.openConnection();
             if(tbaheader)
-                httpget.addHeader(Constants.TBA_HEADER, Constants.TBA_HEADER_TEXT);
-            HttpResponse response = httpclient.execute(httpget);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
+                urlConnection.addRequestProperty(Constants.TBA_HEADER, Constants.TBA_HEADER_TEXT);
+            is = urlConnection.getInputStream();
         } catch(Exception e) {
             Log.e(Constants.LOG_TAG, e.toString());
             return null;
@@ -45,9 +40,9 @@ public class GET_Request {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is,"utf-8"),8);
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
             is.close();
             result = sb.toString();

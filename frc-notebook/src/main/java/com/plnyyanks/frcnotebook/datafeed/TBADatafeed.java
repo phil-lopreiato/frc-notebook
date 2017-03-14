@@ -1,10 +1,9 @@
 package com.plnyyanks.frcnotebook.datafeed;
 
-import android.util.Log;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.plnyyanks.frcnotebook.Constants;
 import com.plnyyanks.frcnotebook.activities.StartActivity;
 import com.plnyyanks.frcnotebook.datatypes.Event;
@@ -14,6 +13,8 @@ import com.plnyyanks.frcnotebook.datatypes.ListItem;
 import com.plnyyanks.frcnotebook.datatypes.Match;
 import com.plnyyanks.frcnotebook.datatypes.Team;
 import com.plnyyanks.frcnotebook.json.JSONManager;
+
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,8 +98,10 @@ public class TBADatafeed {
     }
 
     public static String fetchEventDetails_TBAv2(String eventKey) {
-        String eventData = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/event/" + eventKey, true);
-        String teamData = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/event/" + eventKey + "/teams", true);
+        String eventData = GET_Request.getWebData("https://www.thebluealliance.com/api/v2/event/"
+                                                  + eventKey, true);
+        String teamData = GET_Request.getWebData("https://www.thebluealliance.com/api/v2/event/"
+                                                 + eventKey + "/teams", true);
 
         JsonObject eventObject = JSONManager.getAsJsonObject(eventData);
         JsonArray teams = JSONManager.getasJsonArray(teamData);
@@ -144,7 +147,7 @@ public class TBADatafeed {
     }
 
     public static LinkedHashMap<String, ListItem> fetchEvents_TBAv1(String year) {
-        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v1/events/list?year=" + year, true);
+        String data = GET_Request.getWebData("https://www.thebluealliance.com/api/v1/events/list?year=" + year, true);
         JsonArray result = JSONManager.getasJsonArray(data);
 
         //now, add the events to the event picker activity
@@ -189,7 +192,7 @@ public class TBADatafeed {
     }
 
     public static LinkedHashMap<String, ListItem> fetchEvents_TBAv2(String year) {
-        String data = GET_Request.getWebData("http://www.thebluealliance.com/api/v2/events/" + year, true);
+        String data = GET_Request.getWebData("https://www.thebluealliance.com/api/v2/events/" + year, true);
         JsonArray result = JSONManager.getasJsonArray(data);
 
         //now, add the events to the event picker activity
@@ -233,7 +236,8 @@ public class TBADatafeed {
         String matchList = matchesToFetch.replaceAll("\"", "");
         matchList = matchList.substring(1, matchList.length() - 1);
 
-        String requestString = "http://www.thebluealliance.com/api/v1/match/details?match=" + matchList;
+        String requestString = "https://www.thebluealliance.com/api/v1/match/details?match=" +
+                               matchList;
         String result = GET_Request.getWebData(requestString, true);
 
         JsonArray matches = JSONManager.getasJsonArray(result);
@@ -267,7 +271,8 @@ public class TBADatafeed {
     }
 
     public static void fetchMatches_TBAv2(String eventKey) {
-        String requestString = "http://www.thebluealliance.com/api/v2/event/" + eventKey + "/matches";
+        String requestString = "https://www.thebluealliance.com/api/v2/event/" + eventKey +
+                               "/matches";
         String result = GET_Request.getWebData(requestString, true);
 
         JsonArray matches = JSONManager.getasJsonArray(result);

@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class Constants {
 
-    public static final String LOG_TAG = "com.plnyyanks.frcnotebook";
+    public static final String LOG_TAG = "frcnotebook";
     public static final String TBA_HEADER      = "X-TBA-App-Id";
     public static final String TBA_HEADER_TEXT = "plnyyanks:frcNotebook:v2.4";
 
