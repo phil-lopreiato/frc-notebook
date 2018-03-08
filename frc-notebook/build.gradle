@@ -10,7 +10,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 30
-        versionName "3.3.5"
+        versionName "3.3.6"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     compileOptions {
