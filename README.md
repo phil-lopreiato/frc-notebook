@@ -7,5 +7,5 @@ FRC® Notebook is an app intended for FRC volunteers to keep notes on the teams 
 
 FRC Notebook is open source - feel free to [pull request](https://github.com/plnyyanks/frc-notebook). And please, report any bugs/feature requests to the [issue tracker](https://github.com/plnyyanks/frc-notebook/issues)
 
-FRC® is a registered trademarks of FIRST® (www.usfirst.org) which is not overseeing, involved with, or 
+FRC® is a registered trademarks of FIRST® (www.firstinspires.org) which is not overseeing, involved with, or 
 responsible for this activity, product, or service.
