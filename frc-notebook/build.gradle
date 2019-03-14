@@ -3,12 +3,12 @@ apply plugin: 'com.android.application'
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 28
         versionCode 32
         versionName "3.3.7"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
