@@ -9,7 +9,7 @@
     <ListPreference
         android:key="competition_season"
         android:title="@string/pref_title_year"
-        android:defaultValue="2019"
+        android:defaultValue="2020"
         android:entries="@array/pref_year_items"
         android:entryValues="@array/pref_year_items"/>
 
