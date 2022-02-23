@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 32
-        versionName "3.3.7"
+        versionCode 34
+        versionName "3.3.9"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     compileOptions {
