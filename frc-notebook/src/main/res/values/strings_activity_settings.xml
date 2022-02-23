@@ -8,7 +8,8 @@
 
     <string name="pref_title_year">Competition Season</string>
     <string-array name="pref_year_items">
-		<item>2020</item>
+        <item>2022</item>
+        <item>2020</item>
         <item>2019</item>
         <item>2018</item>
         <item>2017</item>
